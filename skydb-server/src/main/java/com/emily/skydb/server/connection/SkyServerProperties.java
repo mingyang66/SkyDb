@@ -10,14 +10,6 @@ import java.time.Duration;
  */
 public class SkyServerProperties {
     /**
-     * 属性配置前缀
-     */
-    public static final String PREFIX = "spring.emily.rpc.server";
-    /**
-     * 是否开启RPC服务端
-     */
-    private boolean enabled = true;
-    /**
      * 端口号,默认：9999
      */
     private int port = 9999;
@@ -25,14 +17,6 @@ public class SkyServerProperties {
      * 超过多长时间未发生读写就发送一次心跳包，默认：30秒
      */
     private Duration idleTimeOut = Duration.ofSeconds(30);
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 
     public int getPort() {
         return port;

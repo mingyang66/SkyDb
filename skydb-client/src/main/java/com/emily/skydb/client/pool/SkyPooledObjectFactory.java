@@ -104,7 +104,7 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyConnection
             //重新连接
             connection.connect(address);
         }
-        System.out.println("验证对象是否可用:{}"+connection.isAvailable());
+        System.out.println("验证对象是否可用:{}" + connection.isAvailable());
         return connection.isAvailable();
     }
 

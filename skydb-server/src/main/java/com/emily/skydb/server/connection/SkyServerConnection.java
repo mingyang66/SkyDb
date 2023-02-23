@@ -48,7 +48,7 @@ public class SkyServerConnection {
     /**
      * 启动netty服务端
      */
-    public void startServer() {
+    public void start() {
         try {
             //创建服务端的启动对象，并使用链式编程来设置参数
             ServerBootstrap serverBootstrap = new ServerBootstrap();

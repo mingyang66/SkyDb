@@ -56,8 +56,6 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
         if (msg == null) {
             return;
         }
-        //开始时间
-        long startTime = System.currentTimeMillis();
         //请求协议
         SkyRequest request = null;
         //返回结果

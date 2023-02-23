@@ -43,7 +43,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        //logger.info("客户端信息：{}", ctx.channel().remoteAddress());
+        System.out.println("客户端信息：{}" + ctx.channel().remoteAddress());
         //初始化通道
         this.channel = ctx.channel();
         //继续传播事件
@@ -52,7 +52,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-       // logger.info("服务断开连接：{}", ctx.channel().remoteAddress());
+        System.out.println("服务断开连接：{}" + ctx.channel().remoteAddress());
         super.channelInactive(ctx);
     }
 
@@ -109,7 +109,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        //logger.info("通道{}已经超过20秒未与服务端进行读写操作，发送心跳包...", ctx.channel().remoteAddress());
+        System.out.println("通道{}已经超过20秒未与服务端进行读写操作，发送心跳包..." + ctx.channel().remoteAddress());
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent e = (IdleStateEvent) evt;
             switch (e.state()) {
@@ -145,7 +145,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
-       // logger.error(PrintExceptionInfo.printErrorInfo(cause));
+        // logger.error(PrintExceptionInfo.printErrorInfo(cause));
     }
 
 }

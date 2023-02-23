@@ -32,7 +32,7 @@ public class SkyProxy {
             connection = pool.borrowObject();
             return connection.getClientChannelHandler().send(message);
         } catch (Exception exception) {
-           // logger.error(PrintExceptionInfo.printErrorInfo(exception));
+            // logger.error(PrintExceptionInfo.printErrorInfo(exception));
             //throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), "Rpc调用异常");
             return null;
         } finally {

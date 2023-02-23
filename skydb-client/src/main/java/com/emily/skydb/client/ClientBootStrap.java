@@ -1,4 +1,4 @@
-package com.emily.skydb.client.example;
+package com.emily.skydb.client;
 
 import com.emily.skydb.client.proxy.SkyProxy;
 import com.emily.skydb.core.SkyRequest;
@@ -24,7 +24,7 @@ public class ClientBootStrap {
         request.getParams().put("username", "田晓霞");
         request.getParams().put("password", "123456");
 
-        for(int i=0;i<10000;i++) {
+        for (int i = 0; i < 10000; i++) {
             //连接netty，并获得一个代理对象
             SkyResponse<SkyRequest> bean = SkyProxy.execute(request);
             System.out.println((bean.getData().getDbName()));

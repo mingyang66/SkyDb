@@ -122,7 +122,7 @@ public class SkyConnection extends AbstractConnection<Channel> {
             e.printStackTrace();
             return false;
             //logger.error(PrintExceptionInfo.printErrorInfo(e));
-           // throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), "创建连接失败");
+            // throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), "创建连接失败");
         }
     }
 

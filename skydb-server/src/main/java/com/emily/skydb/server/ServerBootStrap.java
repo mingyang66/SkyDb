@@ -1,8 +1,8 @@
-package com.emily.skydb.server.example;
+package com.emily.skydb.server;
 
 
-import com.emily.skydb.server.connection.SkyServerConnection;
 import com.emily.skydb.server.connection.SkyServerProperties;
+import com.emily.skydb.server.manager.SkyServerManager;
 
 /**
  * @author Emily
@@ -10,7 +10,7 @@ import com.emily.skydb.server.connection.SkyServerProperties;
 public class ServerBootStrap {
     public static void main(String[] args) {
         SkyServerProperties properties = new SkyServerProperties();
-        new SkyServerConnection(properties).startServer();
+        SkyServerManager.init(properties);
     }
 
 }

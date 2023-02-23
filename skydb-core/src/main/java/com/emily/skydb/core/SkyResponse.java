@@ -1,7 +1,6 @@
 package com.emily.skydb.core;
 
 
-
 import com.emily.skydb.core.enums.HttpStatusType;
 
 import java.io.Serializable;

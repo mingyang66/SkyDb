@@ -17,12 +17,13 @@ public class ObjectUtils {
         oos.writeObject(obj);
         return bo.toByteArray();
     }
+
     public static <T> T deserialize(byte[] bytes) {
         T object = null;
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
             ObjectInputStream ois = new ObjectInputStream(bis);
-            object = (T)ois.readObject();
+            object = (T) ois.readObject();
             ois.close();
             bis.close();
         } catch (IOException ex) {
