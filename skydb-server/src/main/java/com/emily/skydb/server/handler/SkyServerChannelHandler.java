@@ -6,7 +6,6 @@ import com.emily.skydb.core.SkyRequest;
 import com.emily.skydb.core.SkyResponse;
 import com.emily.skydb.core.enums.HttpStatusType;
 import com.emily.skydb.core.exception.PrintExceptionInfo;
-import com.emily.skydb.server.registry.SkyProviderRegistry;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -22,15 +21,6 @@ import java.util.Objects;
  * @create: 2021/09/17
  */
 public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
-
-    /**
-     * RPC服务注册中心
-     */
-    private SkyProviderRegistry registry;
-
-    public SkyServerChannelHandler(SkyProviderRegistry registry) {
-        this.registry = registry;
-    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

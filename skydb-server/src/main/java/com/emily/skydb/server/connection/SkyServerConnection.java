@@ -4,7 +4,6 @@ import com.emily.skydb.core.SkyTail;
 import com.emily.skydb.core.decoder.SkyDecoder;
 import com.emily.skydb.core.encoder.SkyEncoder;
 import com.emily.skydb.server.handler.SkyServerChannelHandler;
-import com.emily.skydb.server.registry.SkyProviderRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -24,10 +23,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class SkyServerConnection {
 
-    /**
-     * RPC服务注册中心
-     */
-    private SkyProviderRegistry registry = new SkyProviderRegistry();
     /**
      * 用于处理客户端的连接请求
      */
@@ -93,7 +88,7 @@ public class SkyServerConnection {
                             //自定义解码器
                             pipeline.addLast(new SkyDecoder());
                             //自定义处理器
-                            pipeline.addLast(new SkyServerChannelHandler(registry));
+                            pipeline.addLast(new SkyServerChannelHandler());
                         }
                     });
             //启动服务器，并绑定端口并且同步
