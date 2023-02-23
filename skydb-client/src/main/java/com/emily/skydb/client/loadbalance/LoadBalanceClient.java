@@ -1,6 +1,6 @@
 package com.emily.skydb.client.loadbalance;
 
-import com.emily.skydb.client.SkyClientProperties;
+import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.client.pool.SkyConnection;
 
 import java.util.List;

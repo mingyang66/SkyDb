@@ -1,7 +1,7 @@
 package com.emily.skydb.server;
 
 
-import com.emily.skydb.server.connection.SkyServerProperties;
+import com.emily.skydb.server.manager.SkyServerProperties;
 import com.emily.skydb.server.manager.SkyServerManager;
 
 /**

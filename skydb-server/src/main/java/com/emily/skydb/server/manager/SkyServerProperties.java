@@ -1,4 +1,4 @@
-package com.emily.skydb.server.connection;
+package com.emily.skydb.server.manager;
 
 import java.time.Duration;
 

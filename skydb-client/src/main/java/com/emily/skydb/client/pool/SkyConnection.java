@@ -1,7 +1,7 @@
 package com.emily.skydb.client.pool;
 
-import com.emily.skydb.client.SkyClientProperties;
 import com.emily.skydb.client.handler.SkyClientChannelHandler;
+import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.SkyTail;
 import com.emily.skydb.core.constant.CharacterInfo;
 import com.emily.skydb.core.decoder.SkyDecoder;

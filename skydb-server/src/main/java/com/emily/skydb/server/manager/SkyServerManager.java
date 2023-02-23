@@ -1,7 +1,6 @@
 package com.emily.skydb.server.manager;
 
 import com.emily.skydb.server.connection.SkyServerConnection;
-import com.emily.skydb.server.connection.SkyServerProperties;
 
 /**
  * @Description :  服务端管理器类

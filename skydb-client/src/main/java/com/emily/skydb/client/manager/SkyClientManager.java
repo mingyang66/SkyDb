@@ -1,10 +1,14 @@
-package com.emily.skydb.client;
+package com.emily.skydb.client.manager;
 
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.pool.SkyConnection;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
+import com.emily.skydb.core.ObjectUtils;
+import com.emily.skydb.core.SkyMessage;
+import com.emily.skydb.core.SkyRequest;
+import com.emily.skydb.core.SkyResponse;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
@@ -13,16 +17,18 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
  * @author: Emily
  * @create: 2021/09/22
  */
-public class SkyClientPoolManager {
+public class SkyClientManager {
 
 
-    private static SkyObjectPool pool;
+    public static SkyObjectPool POOL;
 
-    public static SkyObjectPool getObjectPool() {
-        if (pool != null) {
-            return pool;
+    public static SkyObjectPool initPool(SkyClientProperties properties) {
+        if (POOL != null) {
+            return POOL;
         }
-        SkyClientProperties properties = new SkyClientProperties();
+        if (properties == null) {
+            properties = new SkyClientProperties();
+        }
         LoadBalance loadBalance = new RoundLoadBalance();
         SkyPooledObjectFactory factory = new SkyPooledObjectFactory(properties, loadBalance);
         //设置对象池的相关参数
@@ -49,10 +55,10 @@ public class SkyClientPoolManager {
         poolConfig.setJmxEnabled(false);
 
         //新建一个对象池,传入对象工厂和配置
-        pool = new SkyObjectPool(factory, poolConfig);
+        POOL = new SkyObjectPool(factory, poolConfig);
 
-        initPool(properties.getPool().getInitialSize(), properties.getPool().getMaxIdle());
-        return pool;
+        initObjectPool(properties.getPool().getInitialSize(), properties.getPool().getMaxIdle());
+        return POOL;
     }
 
     /**
@@ -61,7 +67,7 @@ public class SkyClientPoolManager {
      * @param initialSize 初始化连接数
      * @param maxIdle     最大空闲连接数
      */
-    private static void initPool(int initialSize, int maxIdle) {
+    private static void initObjectPool(int initialSize, int maxIdle) {
         if (initialSize <= 0) {
             return;
         }
@@ -69,12 +75,33 @@ public class SkyClientPoolManager {
         int size = Math.min(initialSize, maxIdle);
         for (int i = 0; i < size; i++) {
             try {
-                pool.addObject();
+                POOL.addObject();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
+    /**
+     * 通过连接池发送
+     *
+     * @return
+     */
+    public static SkyResponse execute(SkyRequest request) throws Exception {
+        SkyMessage message = SkyMessage.build(ObjectUtils.serialize(request));
+        //Channel对象
+        SkyConnection connection = null;
+        try {
+            connection = SkyClientManager.POOL.borrowObject();
+            return connection.getClientChannelHandler().send(message);
+        } catch (Exception exception) {
+            // logger.error(PrintExceptionInfo.printErrorInfo(exception));
+            //throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), "Rpc调用异常");
+            return null;
+        } finally {
+            if (connection != null) {
+                SkyClientManager.POOL.returnObject(connection);
+            }
+        }
+    }
 
 }
