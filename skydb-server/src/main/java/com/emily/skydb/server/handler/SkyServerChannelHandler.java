@@ -32,8 +32,8 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Rpc服务器连接断开：{}" + ctx.channel().remoteAddress());
         ctx.channel().close();
+        System.out.println("Rpc服务器连接断开：{}" + ctx.channel().remoteAddress());
     }
 
     /**
