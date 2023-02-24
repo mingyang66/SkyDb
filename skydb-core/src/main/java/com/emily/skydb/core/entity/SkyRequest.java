@@ -1,4 +1,4 @@
-package com.emily.skydb.core;
+package com.emily.skydb.core.entity;
 
 
 import java.io.Serializable;

@@ -2,8 +2,8 @@ package com.emily.skydb.client;
 
 import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
-import com.emily.skydb.core.SkyRequest;
-import com.emily.skydb.core.SkyResponse;
+import com.emily.skydb.core.entity.SkyRequest;
+import com.emily.skydb.core.entity.SkyResponse;
 
 /**
  * @program: SkyDb

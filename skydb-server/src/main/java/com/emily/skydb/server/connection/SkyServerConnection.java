@@ -1,6 +1,6 @@
 package com.emily.skydb.server.connection;
 
-import com.emily.skydb.core.SkyTail;
+import com.emily.skydb.core.entity.SkyTail;
 import com.emily.skydb.core.decoder.SkyDecoder;
 import com.emily.skydb.core.encoder.SkyEncoder;
 import com.emily.skydb.server.handler.SkyServerChannelHandler;

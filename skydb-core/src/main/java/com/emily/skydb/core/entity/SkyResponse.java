@@ -1,4 +1,4 @@
-package com.emily.skydb.core;
+package com.emily.skydb.core.entity;
 
 
 import com.emily.skydb.core.enums.HttpStatusType;
