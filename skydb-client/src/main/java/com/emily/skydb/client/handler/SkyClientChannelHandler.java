@@ -1,7 +1,7 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.core.entity.SkyTransMessage;
 import com.emily.skydb.core.entity.SkyResponse;
+import com.emily.skydb.core.entity.SkyTransMessage;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -80,7 +80,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
         } finally {
             //手动释放消息，否则会导致内存泄漏
             boolean f = ReferenceCountUtil.release(msg);
-            if(f){
+            if (f) {
                 System.out.println(msg);
             }
         }
@@ -100,7 +100,9 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
         }
         return this.response;
     }
+
     private static final ByteBuf HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer("Heartbeat...", CharsetUtil.UTF_8));
+
     /**
      * 用户时间触发，心跳
      *

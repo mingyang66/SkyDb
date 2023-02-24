@@ -1,8 +1,5 @@
 package com.emily.skydb.core.entity;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-
 /**
  * @program: SkyDb
  * @description: Rpc客户端及服务端交互消息
@@ -62,7 +59,6 @@ public class SkyTransMessage {
         message.setLen(body.length);
         //设置心跳包内容
         message.setBody(body);
-        //ByteBuf buf = Unpooled.buffer().writeByte(packageType).readBytes(body.length).writeBytes(body);
         return message;
     }
 }
