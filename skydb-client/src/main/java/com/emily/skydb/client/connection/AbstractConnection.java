@@ -1,4 +1,4 @@
-package com.emily.skydb.client.pool;
+package com.emily.skydb.client.connection;
 
 /**
  * @program: SkyDb

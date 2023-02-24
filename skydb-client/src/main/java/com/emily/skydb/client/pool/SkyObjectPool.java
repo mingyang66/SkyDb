@@ -1,5 +1,6 @@
 package com.emily.skydb.client.pool;
 
+import com.emily.skydb.client.connection.SkyConnection;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.AbandonedConfig;
 import org.apache.commons.pool2.impl.GenericObjectPool;

@@ -1,4 +1,4 @@
-package com.emily.skydb.client.pool;
+package com.emily.skydb.client.connection;
 
 import com.emily.skydb.client.handler.SkyClientChannelHandler;
 import com.emily.skydb.client.manager.SkyClientProperties;

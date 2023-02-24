@@ -120,7 +120,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
                     //设置包类型为心跳包
                     message.setPackageType((byte) 1);
                     //设置心跳包内容
-                    message.setBody(ObjectUtils.serialize(SkyResponse.buildResponse("heartBeat...")));
+                    message.setBody(ObjectUtils.serialize("heartBeat..."));
                     //消息包长度
                     message.setLen(message.getBody().length);
                     //发送心跳包
@@ -145,6 +145,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
+        System.out.println("------发生异常-------" + cause.getMessage());
         // logger.error(PrintExceptionInfo.printErrorInfo(cause));
     }
 

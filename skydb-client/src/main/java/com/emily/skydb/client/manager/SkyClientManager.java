@@ -1,8 +1,8 @@
 package com.emily.skydb.client.manager;
 
+import com.emily.skydb.client.connection.SkyConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
-import com.emily.skydb.client.pool.SkyConnection;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
 import com.emily.skydb.core.ObjectUtils;
@@ -81,6 +81,7 @@ public class SkyClientManager {
             }
         }
     }
+
     /**
      * 通过连接池发送
      *

@@ -14,10 +14,6 @@ import java.util.Map;
 public class SkyRequest implements Serializable {
 
     /**
-     * 事务唯一标识, 36位
-     */
-    private String traceId;
-    /**
      * sql语句唯一标识
      */
     private String sqlId;
@@ -36,14 +32,6 @@ public class SkyRequest implements Serializable {
 
     public void setSqlId(String sqlId) {
         this.sqlId = sqlId;
-    }
-
-    public String getTraceId() {
-        return traceId;
-    }
-
-    public void setTraceId(String traceId) {
-        this.traceId = traceId;
     }
 
     public String getDbName() {

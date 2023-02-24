@@ -12,7 +12,8 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @program: SkyDb
@@ -47,7 +48,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         //请求协议
-        SkyRequest request = null;
+        SkyRequest request;
         //返回结果
         SkyResponse rpcResponse = null;
         try {
@@ -58,23 +59,20 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             //心跳包
             if (packageType == 1) {
                 String heartBeat = new String(message.getBody(), StandardCharsets.UTF_8);
-                System.out.println("通道{}的心跳包是：" + ctx.channel().remoteAddress() + "--" + heartBeat);
+                System.out.println("通道{}的心跳包是：" + ctx.channel().isActive() + "--" + heartBeat);
                 return;
             }
             //请求协议
             request = ObjectUtils.deserialize(message.getBody());
             //Rpc响应结果
             rpcResponse = SkyResponse.buildResponse(request);
+            System.out.println("------------------------------接收到对象----------------------------------------------------" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         } catch (Exception ex) {
             //异常结果
             Object response = PrintExceptionInfo.printErrorInfo(ex);
             //Rpc响应结果
             rpcResponse = SkyResponse.buildResponse(HttpStatusType.EXCEPTION.getStatus(), HttpStatusType.EXCEPTION.getMessage(), response);
         } finally {
-            //设置请求上下文的事物唯一标识
-            if (Objects.nonNull(request)) {
-                rpcResponse.setTraceId(request.getTraceId());
-            }
             //发送调用方法调用结果
             ctx.writeAndFlush(SkyMessage.build(ObjectUtils.serialize(rpcResponse)));
             //手动释放消息，否则会导致内存泄漏

@@ -1,5 +1,6 @@
 package com.emily.skydb.client.pool;
 
+import com.emily.skydb.client.connection.SkyConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.manager.SkyClientProperties;
 import org.apache.commons.pool2.PooledObject;

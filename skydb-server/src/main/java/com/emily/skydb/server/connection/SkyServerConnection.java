@@ -11,10 +11,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @program: SkyDb
@@ -81,7 +79,7 @@ public class SkyServerConnection {
                         protected void initChannel(Channel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             //空闲状态处理器，参数说明：读时间空闲时间，0禁用时间|写事件空闲时间，0则禁用|读或写空闲时间，0则禁用
-                            pipeline.addLast(new IdleStateHandler(0, 0, properties.getIdleTimeOut().getSeconds(), TimeUnit.SECONDS));
+                            //pipeline.addLast(new IdleStateHandler(0, 0, properties.getIdleTimeOut().getSeconds(), TimeUnit.SECONDS));
                             //分隔符解码器
                             pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(SkyTail.TAIL)));
                             //自定义编码器

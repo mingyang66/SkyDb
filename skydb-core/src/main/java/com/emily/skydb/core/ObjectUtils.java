@@ -10,7 +10,7 @@ import java.io.*;
 public class ObjectUtils {
     public static byte[] serialize(Serializable obj) throws Exception {
         if (obj == null) {
-            return null;
+            return new byte[]{};
         }
         ByteArrayOutputStream bo = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bo);
