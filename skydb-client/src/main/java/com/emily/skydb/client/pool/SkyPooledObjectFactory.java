@@ -1,6 +1,6 @@
 package com.emily.skydb.client.pool;
 
-import com.emily.skydb.client.connection.SkyConnection;
+import com.emily.skydb.client.connection.SkyClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.manager.SkyClientProperties;
 import org.apache.commons.pool2.PooledObject;
@@ -15,7 +15,7 @@ import java.util.Objects;
  * @author: Emily
  * @create: 2021/09/28
  */
-public class SkyPooledObjectFactory implements PooledObjectFactory<SkyConnection> {
+public class SkyPooledObjectFactory implements PooledObjectFactory<SkyClientConnection> {
 
 
     private SkyClientProperties properties;
@@ -33,12 +33,12 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyConnection
      * @throws Exception
      */
     @Override
-    public PooledObject<SkyConnection> makeObject() throws Exception {
+    public PooledObject<SkyClientConnection> makeObject() throws Exception {
         System.out.println("创建对象...");
         //获取RPC服务器地址
         String address = loadBalance.selectServiceAddress(properties.getAddress());
         //RPC连接对象
-        SkyConnection connection = new SkyConnection(properties);
+        SkyClientConnection connection = new SkyClientConnection(properties);
         //建立Rpc连接
         connection.connect(address);
         return new DefaultPooledObject<>(connection);
@@ -51,9 +51,9 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyConnection
      * @throws Exception
      */
     @Override
-    public void destroyObject(PooledObject<SkyConnection> pooledObject) throws Exception {
+    public void destroyObject(PooledObject<SkyClientConnection> pooledObject) throws Exception {
         System.out.println("销毁对象...");
-        SkyConnection connection = pooledObject.getObject();
+        SkyClientConnection connection = pooledObject.getObject();
         if (Objects.nonNull(connection)) {
             connection.close();
         }
@@ -66,9 +66,9 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyConnection
      * @throws Exception
      */
     @Override
-    public void activateObject(PooledObject<SkyConnection> pooledObject) throws Exception {
+    public void activateObject(PooledObject<SkyClientConnection> pooledObject) throws Exception {
         System.out.println("激活对象...");
-        SkyConnection connection = pooledObject.getObject();
+        SkyClientConnection connection = pooledObject.getObject();
         if (!connection.isAvailable()) {
             //获取RPC服务器地址
             String address = loadBalance.selectServiceAddress(properties.getAddress());
@@ -84,7 +84,7 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyConnection
      * @throws Exception
      */
     @Override
-    public void passivateObject(PooledObject<SkyConnection> pooledObject) throws Exception {
+    public void passivateObject(PooledObject<SkyClientConnection> pooledObject) throws Exception {
         System.out.println("钝化对象...");
     }
 
@@ -95,8 +95,8 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyConnection
      * @return
      */
     @Override
-    public boolean validateObject(PooledObject<SkyConnection> pooledObject) {
-        SkyConnection connection = pooledObject.getObject();
+    public boolean validateObject(PooledObject<SkyClientConnection> pooledObject) {
+        SkyClientConnection connection = pooledObject.getObject();
         if (!connection.isAvailable()) {
             //连接不可用，关闭连接
             connection.close();

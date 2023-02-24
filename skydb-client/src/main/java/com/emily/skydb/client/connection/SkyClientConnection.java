@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class SkyConnection extends AbstractConnection<Channel> {
+public class SkyClientConnection extends AbstractConnection<Channel> {
 
     /**
      * 线程工作组
@@ -41,7 +41,7 @@ public class SkyConnection extends AbstractConnection<Channel> {
 
     private SkyClientProperties properties;
 
-    public SkyConnection(SkyClientProperties properties) {
+    public SkyClientConnection(SkyClientProperties properties) {
         this.properties = properties;
     }
 
@@ -121,8 +121,6 @@ public class SkyConnection extends AbstractConnection<Channel> {
         } catch (InterruptedException e) {
             e.printStackTrace();
             return false;
-            //logger.error(PrintExceptionInfo.printErrorInfo(e));
-            // throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), "创建连接失败");
         }
     }
 

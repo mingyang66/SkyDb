@@ -1,6 +1,6 @@
 package com.emily.skydb.client.manager;
 
-import com.emily.skydb.client.connection.SkyConnection;
+import com.emily.skydb.client.connection.SkyClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
@@ -32,7 +32,7 @@ public class SkyClientManager {
         LoadBalance loadBalance = new RoundLoadBalance();
         SkyPooledObjectFactory factory = new SkyPooledObjectFactory(properties, loadBalance);
         //设置对象池的相关参数
-        GenericObjectPoolConfig<SkyConnection> poolConfig = new GenericObjectPoolConfig<>();
+        GenericObjectPoolConfig<SkyClientConnection> poolConfig = new GenericObjectPoolConfig<>();
         //最大空闲连接数
         poolConfig.setMaxIdle(properties.getPool().getMaxIdle());
         //最小空闲连接数
@@ -90,7 +90,7 @@ public class SkyClientManager {
     public static SkyResponse execute(SkyRequest request) throws Exception {
         SkyMessage message = SkyMessage.build(ObjectUtils.serialize(request));
         //Channel对象
-        SkyConnection connection = null;
+        SkyClientConnection connection = null;
         try {
             connection = SkyClientManager.POOL.borrowObject();
             return connection.getClientChannelHandler().send(message);
