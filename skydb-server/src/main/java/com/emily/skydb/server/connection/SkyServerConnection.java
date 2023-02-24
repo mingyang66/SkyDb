@@ -1,8 +1,8 @@
 package com.emily.skydb.server.connection;
 
-import com.emily.skydb.core.decoder.SkyDecoder;
-import com.emily.skydb.core.encoder.SkyEncoder;
-import com.emily.skydb.core.entity.SkyTail;
+import com.emily.skydb.core.decoder.SkyTransDecoder;
+import com.emily.skydb.core.encoder.SkyTransEncoder;
+import com.emily.skydb.core.entity.SkyTransTail;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.handler.SkyServerChannelHandler;
 import com.emily.skydb.server.manager.SkyServerProperties;
@@ -87,11 +87,11 @@ public class SkyServerConnection {
                             //空闲状态处理器，参数说明：读时间空闲时间，0禁用时间|写事件空闲时间，0则禁用|读或写空闲时间，0则禁用
                             //pipeline.addLast(new IdleStateHandler(0, 0, properties.getIdleTimeOut().getSeconds(), TimeUnit.SECONDS));
                             //分隔符解码器
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(SkyTail.TAIL)));
+                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(SkyTransTail.TAIL)));
                             //自定义编码器
-                            pipeline.addLast(new SkyEncoder());
+                            pipeline.addLast(new SkyTransEncoder());
                             //自定义解码器
-                            pipeline.addLast(new SkyDecoder());
+                            pipeline.addLast(new SkyTransDecoder());
                             //自定义处理器
                             pipeline.addLast(new SkyServerChannelHandler(handler));
                         }

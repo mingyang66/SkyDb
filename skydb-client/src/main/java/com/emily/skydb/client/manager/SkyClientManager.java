@@ -4,9 +4,9 @@ import com.emily.skydb.client.connection.SkyClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
-import com.emily.skydb.core.entity.SkyRequest;
-import com.emily.skydb.core.entity.SkyResponse;
+import com.emily.skydb.core.entity.SkyTransBody;
 import com.emily.skydb.core.entity.SkyTransMessage;
+import com.emily.skydb.core.entity.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
@@ -85,8 +85,8 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static SkyResponse execute(SkyRequest request) throws Exception {
-        SkyTransMessage message = SkyTransMessage.build(ObjectUtils.serialize(request));
+    public static SkyTransResponse execute(SkyTransBody transBody) throws Exception {
+        SkyTransMessage message = SkyTransMessage.build(ObjectUtils.serialize(transBody));
         //Channel对象
         SkyClientConnection connection = null;
         try {

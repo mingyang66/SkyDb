@@ -13,7 +13,7 @@ import java.util.List;
  * @author: Emily
  * @create: 2021/09/23
  */
-public class SkyDecoder extends ByteToMessageDecoder {
+public class SkyTransDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> list) throws Exception {

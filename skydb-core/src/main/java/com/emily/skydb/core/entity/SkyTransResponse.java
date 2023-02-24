@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author: Emily
  * @create: 2021/10/30
  */
-public class SkyResponse<T> implements Serializable {
+public class SkyTransResponse<T> implements Serializable {
     /**
      * 状态码
      */
@@ -51,12 +51,12 @@ public class SkyResponse<T> implements Serializable {
     }
 
 
-    public static <T> SkyResponse<T> buildResponse(T data) {
+    public static <T> SkyTransResponse<T> buildResponse(T data) {
         return buildResponse(HttpStatusType.OK.getStatus(), HttpStatusType.OK.getMessage(), data);
     }
 
-    public static <T> SkyResponse<T> buildResponse(int status, String message, T data) {
-        SkyResponse response = new SkyResponse<>();
+    public static <T> SkyTransResponse<T> buildResponse(int status, String message, T data) {
+        SkyTransResponse response = new SkyTransResponse<>();
         response.setStatus(status);
         response.setMessage(message);
         response.setData(data);

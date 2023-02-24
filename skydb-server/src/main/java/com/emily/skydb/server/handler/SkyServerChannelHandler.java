@@ -1,7 +1,7 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.entity.SkyResponse;
 import com.emily.skydb.core.entity.SkyTransMessage;
+import com.emily.skydb.core.entity.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -58,7 +58,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             System.out.println("心跳包是：" + heartBeat);
             return;
         }
-        SkyResponse response = this.handler.handler(message);
+        SkyTransResponse response = this.handler.handler(message);
 
         //发送调用方法调用结果
         ctx.writeAndFlush(SkyTransMessage.build(ObjectUtils.serialize(response)));

@@ -3,9 +3,9 @@ package com.emily.skydb.client.connection;
 import com.emily.skydb.client.handler.SkyClientChannelHandler;
 import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.constant.CharacterInfo;
-import com.emily.skydb.core.decoder.SkyDecoder;
-import com.emily.skydb.core.encoder.SkyEncoder;
-import com.emily.skydb.core.entity.SkyTail;
+import com.emily.skydb.core.decoder.SkyTransDecoder;
+import com.emily.skydb.core.encoder.SkyTransEncoder;
+import com.emily.skydb.core.entity.SkyTransTail;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -89,11 +89,11 @@ public class SkyClientConnection extends AbstractConnection<Channel> {
                             //空闲状态处理器，参数说明：读时间空闲时间，0禁用时间|写事件空闲时间，0则禁用|读或写空闲时间，0则禁用
                             pipeline.addLast(new IdleStateHandler(0, 0, properties.getIdleTimeOut().getSeconds(), TimeUnit.SECONDS));
                             //分隔符解码器
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(SkyTail.TAIL)));
+                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(SkyTransTail.TAIL)));
                             //自定义编码器
-                            pipeline.addLast(new SkyEncoder());
+                            pipeline.addLast(new SkyTransEncoder());
                             //自定义解码器
-                            pipeline.addLast(new SkyDecoder());
+                            pipeline.addLast(new SkyTransDecoder());
                             //自定义handler处理
                             pipeline.addLast(clientChannelHandler);
                         }

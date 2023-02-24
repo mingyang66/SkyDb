@@ -6,6 +6,6 @@ package com.emily.skydb.core.entity;
  * @author: Emily
  * @create: 2021/10/09
  */
-public class SkyTail {
+public class SkyTransTail {
     public static final byte[] TAIL = new byte[]{'\r', '\n'};
 }

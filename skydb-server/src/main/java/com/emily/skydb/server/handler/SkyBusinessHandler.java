@@ -1,13 +1,13 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.entity.SkyRequest;
-import com.emily.skydb.core.entity.SkyResponse;
+import com.emily.skydb.core.entity.SkyTransBody;
 import com.emily.skydb.core.entity.SkyTransMessage;
+import com.emily.skydb.core.entity.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 
 /**
  * @Description :  后置业务处理
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/2/24 1:34 PM
  */
 public interface SkyBusinessHandler {
@@ -17,10 +17,10 @@ public interface SkyBusinessHandler {
      * @param message
      * @return
      */
-    default SkyResponse handler(SkyTransMessage message) {
+    default SkyTransResponse handler(SkyTransMessage message) {
         //请求协议
-        SkyRequest request = ObjectUtils.deserialize(message.getBody());
+        SkyTransBody transBody = ObjectUtils.deserialize(message.getBody());
         //Rpc响应结果
-        return SkyResponse.buildResponse(request);
+        return SkyTransResponse.buildResponse(transBody);
     }
 }
