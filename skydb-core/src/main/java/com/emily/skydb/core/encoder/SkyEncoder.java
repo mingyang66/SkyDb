@@ -1,6 +1,6 @@
 package com.emily.skydb.core.encoder;
 
-import com.emily.skydb.core.entity.SkyMessage;
+import com.emily.skydb.core.entity.SkyTransMessage;
 import com.emily.skydb.core.entity.SkyTail;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,10 +12,10 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @author: Emily
  * @create: 2021/09/23
  */
-public class SkyEncoder extends MessageToByteEncoder<SkyMessage> {
+public class SkyEncoder extends MessageToByteEncoder<SkyTransMessage> {
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, SkyMessage message, ByteBuf byteBuf) throws Exception {
+    protected void encode(ChannelHandlerContext ctx, SkyTransMessage message, ByteBuf byteBuf) throws Exception {
         if (message == null) {
             return;
         }

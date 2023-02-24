@@ -1,8 +1,9 @@
 package com.emily.skydb.server.connection;
 
-import com.emily.skydb.core.entity.SkyTail;
 import com.emily.skydb.core.decoder.SkyDecoder;
 import com.emily.skydb.core.encoder.SkyEncoder;
+import com.emily.skydb.core.entity.SkyTail;
+import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.handler.SkyServerChannelHandler;
 import com.emily.skydb.server.manager.SkyServerProperties;
 import io.netty.bootstrap.ServerBootstrap;
@@ -31,11 +32,16 @@ public class SkyServerConnection {
      */
     private EventLoopGroup workerGroup = new NioEventLoopGroup();
     /**
+     * 后置业务处理类
+     */
+    private SkyBusinessHandler handler;
+    /**
      * 属性配置
      */
     private SkyServerProperties properties;
 
-    public SkyServerConnection(SkyServerProperties properties) {
+    public SkyServerConnection(SkyBusinessHandler handler, SkyServerProperties properties) {
+        this.handler = handler;
         this.properties = properties;
     }
 
@@ -87,7 +93,7 @@ public class SkyServerConnection {
                             //自定义解码器
                             pipeline.addLast(new SkyDecoder());
                             //自定义处理器
-                            pipeline.addLast(new SkyServerChannelHandler());
+                            pipeline.addLast(new SkyServerChannelHandler(handler));
                         }
                     });
             //启动服务器，并绑定端口并且同步

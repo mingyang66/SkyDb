@@ -1,19 +1,16 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.utils.ObjectUtils;
-import com.emily.skydb.core.entity.SkyMessage;
-import com.emily.skydb.core.entity.SkyRequest;
+import com.emily.skydb.core.entity.SkyTransMessage;
 import com.emily.skydb.core.entity.SkyResponse;
-import com.emily.skydb.core.enums.HttpStatusType;
-import com.emily.skydb.core.exception.PrintExceptionInfo;
+import com.emily.skydb.core.utils.ObjectUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * @program: SkyDb
@@ -22,6 +19,12 @@ import java.time.format.DateTimeFormatter;
  * @create: 2021/09/17
  */
 public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
+
+    private SkyBusinessHandler handler;
+
+    public SkyServerChannelHandler(SkyBusinessHandler handler) {
+        this.handler = handler;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -47,39 +50,22 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
         if (msg == null) {
             return;
         }
-        //请求协议
-        SkyRequest request;
-        //返回结果
-        SkyResponse rpcResponse = null;
-        try {
-            //请求消息
-            SkyMessage message = (SkyMessage) msg;
-            //消息类型
-            byte packageType = message.getPackageType();
-            //心跳包
-            if (packageType == 1) {
-                String heartBeat = new String(message.getBody(), StandardCharsets.UTF_8);
-                System.out.println("通道{}的心跳包是：" + ctx.channel().isActive() + "--" + heartBeat);
-                return;
-            }
-            //请求协议
-            request = ObjectUtils.deserialize(message.getBody());
-            //Rpc响应结果
-            rpcResponse = SkyResponse.buildResponse(request);
-            System.out.println("------------------------------接收到对象----------------------------------------------------" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        } catch (Exception ex) {
-            //异常结果
-            Object response = PrintExceptionInfo.printErrorInfo(ex);
-            //Rpc响应结果
-            rpcResponse = SkyResponse.buildResponse(HttpStatusType.EXCEPTION.getStatus(), HttpStatusType.EXCEPTION.getMessage(), response);
-        } finally {
-            //发送调用方法调用结果
-            ctx.writeAndFlush(SkyMessage.build(ObjectUtils.serialize(rpcResponse)));
-            //手动释放消息，否则会导致内存泄漏
-            ReferenceCountUtil.release(msg);
-            //记录请求相依日志
-            //RecordLogger.recordResponse(request, rpcResponse, startTime);
+        //请求消息
+        SkyTransMessage message = (SkyTransMessage) msg;
+        //消息类型
+        byte packageType = message.getPackageType();
+        //心跳包
+        if (packageType == 1) {
+            String heartBeat = new String(message.getBody(), StandardCharsets.UTF_8);
+            System.out.println("心跳包是：" + heartBeat);
+            return;
         }
+        SkyResponse response = this.handler.handler(message);
+
+        //发送调用方法调用结果
+        ctx.writeAndFlush(SkyTransMessage.build(ObjectUtils.serialize(response)));
+        //手动释放消息，否则会导致内存泄漏
+        ReferenceCountUtil.release(msg);
     }
 
 

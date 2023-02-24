@@ -1,6 +1,6 @@
 package com.emily.skydb.core.decoder;
 
-import com.emily.skydb.core.entity.SkyMessage;
+import com.emily.skydb.core.entity.SkyTransMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -29,7 +29,7 @@ public class SkyDecoder extends ByteToMessageDecoder {
         //将字节流中的数据读入到字节数组
         byteBuf.readBytes(data);
         //添加消息体
-        list.add(SkyMessage.build(packageType, data));
+        list.add(SkyTransMessage.build(packageType, data));
         //重置readerIndex和writerIndex为0
         byteBuf.clear();
     }

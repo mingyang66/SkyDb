@@ -1,5 +1,7 @@
 package com.emily.skydb.client;
 
+import com.emily.skydb.client.loadbalance.LoadBalance;
+import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.entity.SkyRequest;
@@ -17,21 +19,22 @@ public class ClientBootStrap {
 
     public static void main(String[] args) throws Exception {
         SkyClientProperties properties = new SkyClientProperties();
+        LoadBalance loadBalance = new RoundLoadBalance();
         properties.getPool().setMinIdle(1);
-        SkyClientManager.initPool(properties);
+        SkyClientManager.initPool(properties, loadBalance);
         SkyRequest request = new SkyRequest();
         request.setDbName("account");
         request.setSqlId("123");
         request.getParams().put("username", "田晓霞");
         request.getParams().put("password", "123456");
 
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1000000; i++) {
             //连接netty，并获得一个代理对象
             SkyResponse<SkyRequest> bean = SkyClientManager.execute(request);
             if (bean != null) {
-                System.out.println((bean.getData().getDbName()) + "-------------" + (bean.getData().getDbName()));
+                System.out.println((bean.getData().getDbName()) + "-------------" + (bean.getData().getDbName())+"---"+i);
             }
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
         }
     }
 

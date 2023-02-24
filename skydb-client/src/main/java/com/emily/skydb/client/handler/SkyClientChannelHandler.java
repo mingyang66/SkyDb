@@ -1,13 +1,16 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.core.utils.ObjectUtils;
-import com.emily.skydb.core.entity.SkyMessage;
+import com.emily.skydb.core.entity.SkyTransMessage;
 import com.emily.skydb.core.entity.SkyResponse;
+import com.emily.skydb.core.utils.ObjectUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 
 import java.time.Duration;
@@ -68,7 +71,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
         try {
             synchronized (this.object) {
                 //将消息对象转换为指定消息体
-                SkyMessage message = (SkyMessage) msg;
+                SkyTransMessage message = (SkyTransMessage) msg;
                 //将真实的消息体转换为字符串类型
                 this.response = ObjectUtils.deserialize(message.getBody());
                 //唤醒等待线程
@@ -76,7 +79,10 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
             }
         } finally {
             //手动释放消息，否则会导致内存泄漏
-            ReferenceCountUtil.release(msg);
+            boolean f = ReferenceCountUtil.release(msg);
+            if(f){
+                System.out.println(msg);
+            }
         }
     }
 
@@ -85,21 +91,16 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
      *
      * @param message
      */
-    public SkyResponse send(SkyMessage message) {
-        try {
-            synchronized (this.object) {
-                //发送Rpc请求
-                this.channel.writeAndFlush(message);
-                //释放当前线程资源，并等待指定超时时间，默认：10000ms
-                this.object.wait(readTimeOut.toMillis());
-            }
-            return this.response;
-        } catch (Exception exception) {
-            //throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), PrintExceptionInfo.printErrorInfo(exception));
-            return null;
+    public SkyResponse send(SkyTransMessage message) throws InterruptedException {
+        synchronized (this.object) {
+            //发送Rpc请求
+            this.channel.writeAndFlush(message);
+            //释放当前线程资源，并等待指定超时时间，默认：10000ms
+            this.object.wait(readTimeOut.toMillis());
         }
+        return this.response;
     }
-
+    private static final ByteBuf HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer("Heartbeat...", CharsetUtil.UTF_8));
     /**
      * 用户时间触发，心跳
      *
@@ -116,7 +117,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
                 case READER_IDLE:
                 case WRITER_IDLE:
                 case ALL_IDLE:
-                    SkyMessage message = new SkyMessage();
+                    SkyTransMessage message = new SkyTransMessage();
                     //设置包类型为心跳包
                     message.setPackageType((byte) 1);
                     //设置心跳包内容

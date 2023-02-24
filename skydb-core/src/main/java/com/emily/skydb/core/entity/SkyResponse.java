@@ -13,10 +13,6 @@ import java.io.Serializable;
  */
 public class SkyResponse<T> implements Serializable {
     /**
-     * 事务唯一标识, 36位
-     */
-    private String traceId;
-    /**
      * 状态码
      */
     private int status;
@@ -29,13 +25,6 @@ public class SkyResponse<T> implements Serializable {
      */
     private T data;
 
-    public String getTraceId() {
-        return traceId;
-    }
-
-    public void setTraceId(String traceId) {
-        this.traceId = traceId;
-    }
 
     public int getStatus() {
         return status;
@@ -68,7 +57,6 @@ public class SkyResponse<T> implements Serializable {
 
     public static <T> SkyResponse<T> buildResponse(int status, String message, T data) {
         SkyResponse response = new SkyResponse<>();
-        //response.setTraceId(ThreadContextHolder.current().getTraceId());
         response.setStatus(status);
         response.setMessage(message);
         response.setData(data);

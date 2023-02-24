@@ -2,13 +2,12 @@ package com.emily.skydb.client.manager;
 
 import com.emily.skydb.client.connection.SkyClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
-import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
-import com.emily.skydb.core.utils.ObjectUtils;
-import com.emily.skydb.core.entity.SkyMessage;
+import com.emily.skydb.core.entity.SkyTransMessage;
 import com.emily.skydb.core.entity.SkyRequest;
 import com.emily.skydb.core.entity.SkyResponse;
+import com.emily.skydb.core.utils.ObjectUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
@@ -22,14 +21,13 @@ public class SkyClientManager {
 
     public static SkyObjectPool POOL;
 
-    public static SkyObjectPool initPool(SkyClientProperties properties) {
+    public static SkyObjectPool initPool(SkyClientProperties properties, LoadBalance loadBalance) {
         if (POOL != null) {
             return POOL;
         }
         if (properties == null) {
             properties = new SkyClientProperties();
         }
-        LoadBalance loadBalance = new RoundLoadBalance();
         SkyPooledObjectFactory factory = new SkyPooledObjectFactory(properties, loadBalance);
         //设置对象池的相关参数
         GenericObjectPoolConfig<SkyClientConnection> poolConfig = new GenericObjectPoolConfig<>();
@@ -88,7 +86,7 @@ public class SkyClientManager {
      * @return
      */
     public static SkyResponse execute(SkyRequest request) throws Exception {
-        SkyMessage message = SkyMessage.build(ObjectUtils.serialize(request));
+        SkyTransMessage message = SkyTransMessage.build(ObjectUtils.serialize(request));
         //Channel对象
         SkyClientConnection connection = null;
         try {
