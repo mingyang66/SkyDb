@@ -56,7 +56,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 实现channelRead 当我们读到服务器数据,该方法自动执行
+     * 根据服务器返回值赋予返回值变量
      *
      * @param ctx
      * @param msg
@@ -65,11 +65,11 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
+            //将消息对象转换为指定消息体
+            DataPacket packet = (DataPacket) msg;
             synchronized (this.object) {
-                //将消息对象转换为指定消息体
-                DataPacket message = (DataPacket) msg;
                 //将真实的消息体转换为字符串类型
-                this.response = ObjectUtils.deserialize(message.getBody());
+                this.response = ObjectUtils.deserialize(packet.getBody());
                 //唤醒等待线程
                 this.object.notify();
             }
@@ -80,7 +80,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 发送请求
+     * 发送TCP请求，并等待返回结果
      *
      * @param message
      */
