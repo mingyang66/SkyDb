@@ -1,9 +1,9 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.BodyProtocol;
 import com.emily.skydb.core.protocol.BaseResponse;
-import com.emily.skydb.core.utils.ObjectUtils;
+import com.emily.skydb.core.protocol.BodyProtocol;
+import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.utils.SerializeUtils;
 
 /**
  * @Description :  后置业务处理
@@ -19,8 +19,11 @@ public interface SkyBusinessHandler {
      */
     default BaseResponse handler(DataPacket packet) {
         //请求协议
-        BodyProtocol bodyProtocol = ObjectUtils.deserialize(packet.getBody());
+        BodyProtocol bodyProtocol = SerializeUtils.deserialize(packet.getBody());
+        TestEntity entity = new TestEntity();
+        entity.password = "1234";
+        entity.username = "田晓霞";
         //Rpc响应结果
-        return BaseResponse.buildResponse("你好，我已经成功返回了。");
+        return BaseResponse.buildResponse("你好啊。。。。我已经收到消息了");
     }
 }

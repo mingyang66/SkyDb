@@ -7,7 +7,14 @@ import java.io.*;
  * @Author :  Emily
  * @CreateDate :  Created in 2023/2/23 2:37 PM
  */
-public class ObjectUtils {
+public class SerializeUtils {
+    /**
+     * 序列化
+     *
+     * @param obj
+     * @return
+     * @throws Exception
+     */
     public static byte[] serialize(Serializable obj) throws Exception {
         if (obj == null) {
             return new byte[0];
@@ -18,6 +25,13 @@ public class ObjectUtils {
         return bo.toByteArray();
     }
 
+    /**
+     * 反序列化
+     *
+     * @param bytes
+     * @param <T>
+     * @return
+     */
     public static <T> T deserialize(byte[] bytes) {
         T object = null;
         try {

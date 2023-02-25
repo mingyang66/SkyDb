@@ -4,10 +4,10 @@ import com.emily.skydb.client.connection.SkyClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
-import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.BodyProtocol;
 import com.emily.skydb.core.protocol.BaseResponse;
-import com.emily.skydb.core.utils.ObjectUtils;
+import com.emily.skydb.core.protocol.BodyProtocol;
+import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.utils.SerializeUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
@@ -85,16 +85,15 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static BaseResponse execute(BodyProtocol bodyProtocol) throws Exception {
-        DataPacket packet = new DataPacket(ObjectUtils.serialize(bodyProtocol));
+    public static BaseResponse invoke(BodyProtocol bodyProtocol) throws Exception {
+        DataPacket packet = new DataPacket(SerializeUtils.serialize(bodyProtocol));
         //Channel对象
         SkyClientConnection connection = null;
         try {
             connection = SkyClientManager.POOL.borrowObject();
             return connection.getClientChannelHandler().send(packet);
-        } catch (Exception exception) {
-            // logger.error(PrintExceptionInfo.printErrorInfo(exception));
-            //throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), "Rpc调用异常");
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         } finally {
             if (connection != null) {

@@ -2,7 +2,7 @@ package com.emily.skydb.server.handler;
 
 import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.utils.ObjectUtils;
+import com.emily.skydb.core.utils.SerializeUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -61,7 +61,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             }
             BaseResponse response = this.handler.handler(packet);
             //发送调用方法调用结果
-            ctx.writeAndFlush(new DataPacket(ObjectUtils.serialize(response)));
+            ctx.writeAndFlush(new DataPacket(SerializeUtils.serialize(response)));
         } finally {
             //手动释放消息，否则会导致内存泄漏
             ReferenceCountUtil.release(msg);
