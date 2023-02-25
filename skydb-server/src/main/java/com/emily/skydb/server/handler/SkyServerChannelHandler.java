@@ -49,16 +49,16 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         //请求消息
-        DataPacket message = (DataPacket) msg;
+        DataPacket packet = (DataPacket) msg;
         //消息类型
-        byte packageType = message.getPackageType();
+        byte packageType = packet.getHead().getPackageType();
         //心跳包
         if (packageType == 1) {
-            String heartBeat = new String(message.getBody(), StandardCharsets.UTF_8);
+            String heartBeat = new String(packet.getBody(), StandardCharsets.UTF_8);
             System.out.println("心跳包是：" + heartBeat);
             return;
         }
-        SkyTransResponse response = this.handler.handler(message);
+        SkyTransResponse response = this.handler.handler(packet);
 
         //发送调用方法调用结果
         ctx.writeAndFlush(new DataPacket(ObjectUtils.serialize(response)));

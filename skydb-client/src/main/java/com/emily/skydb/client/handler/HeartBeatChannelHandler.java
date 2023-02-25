@@ -22,15 +22,8 @@ public class HeartBeatChannelHandler extends ChannelInboundHandlerAdapter {
                     case READER_IDLE:
                     case WRITER_IDLE:
                     case ALL_IDLE:
-                        DataPacket message = new DataPacket();
-                        //设置包类型为心跳包
-                        message.setPackageType((byte) 1);
-                        //设置心跳包内容
-                        message.setBody(ObjectUtils.serialize("heartBeat..."));
-                        //消息包长度
-                        message.setLen(message.getBody().length);
                         //发送心跳包
-                        ctx.channel().writeAndFlush(message);
+                        ctx.channel().writeAndFlush(new DataPacket((byte) 1, ObjectUtils.serialize("heartBeat...")));
                         break;
                     default:
                         break;

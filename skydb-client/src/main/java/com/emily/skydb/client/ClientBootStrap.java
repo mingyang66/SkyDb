@@ -32,7 +32,7 @@ public class ClientBootStrap {
             //连接netty，并获得一个代理对象
             SkyTransResponse<SkyTransBody> bean = SkyClientManager.execute(transBody);
             if (bean != null) {
-                System.out.println((bean.getData().getDbName()) + "-------------" + (bean.getData().getDbName()) + "---" + i);
+                System.out.println((bean.getData().getDbName()) + "-------------" + (bean.getData().getSqlId()) + "---" + i);
             }
             //Thread.sleep(1000);
         }

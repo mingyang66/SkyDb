@@ -7,14 +7,7 @@ package com.emily.skydb.core.protocol;
  * @create: 2021/10/09
  */
 public class DataPacket {
-    /**
-     * 包类型，0-正常RPC请求，1-心跳包
-     */
-    private byte packageType = 0;
-    /**
-     * 消息体长度
-     */
-    private int len;
+    private HeadProtocol head;
     /**
      * 消息
      */
@@ -23,20 +16,12 @@ public class DataPacket {
     public DataPacket() {
     }
 
-    public int getLen() {
-        return len;
+    public HeadProtocol getHead() {
+        return head;
     }
 
-    public void setLen(int len) {
-        this.len = len;
-    }
-
-    public byte getPackageType() {
-        return packageType;
-    }
-
-    public void setPackageType(byte packageType) {
-        this.packageType = packageType;
+    public void setHead(HeadProtocol head) {
+        this.head = head;
     }
 
     public byte[] getBody() {
@@ -52,15 +37,7 @@ public class DataPacket {
     }
 
     public DataPacket(byte packageType, byte[] body) {
-        DataPacket message = new DataPacket();
-        //设置包类型为心跳包
-        message.setPackageType(packageType);
-        //包长度
-        message.setLen(body.length);
-        //设置心跳包内容
-        message.setBody(body);
-        this.packageType = packageType;
-        this.len = body.length;
+        this.head = new HeadProtocol(packageType, body.length + HeadProtocol.LENGTH);
         this.body = body;
     }
 }
