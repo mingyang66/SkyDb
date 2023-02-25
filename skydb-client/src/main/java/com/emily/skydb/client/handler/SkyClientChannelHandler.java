@@ -1,7 +1,7 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.BaseResponse;
+import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -75,10 +75,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
             }
         } finally {
             //手动释放消息，否则会导致内存泄漏
-            boolean f = ReferenceCountUtil.release(msg);
-            if (f) {
-                System.out.println(msg);
-            }
+            ReferenceCountUtil.release(msg);
         }
     }
 

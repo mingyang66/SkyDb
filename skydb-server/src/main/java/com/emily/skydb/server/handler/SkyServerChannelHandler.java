@@ -1,7 +1,7 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.BaseResponse;
+import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -48,22 +48,24 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
         if (msg == null) {
             return;
         }
-        //请求消息
-        DataPacket packet = (DataPacket) msg;
-        //消息类型
-        byte packageType = packet.getHead().getPackageType();
-        //心跳包
-        if (packageType == 1) {
-            String heartBeat = new String(packet.getBody(), StandardCharsets.UTF_8);
-            System.out.println("心跳包是：" + heartBeat);
-            return;
+        try {
+            //请求消息
+            DataPacket packet = (DataPacket) msg;
+            //消息类型
+            byte packageType = packet.getHead().getPackageType();
+            //心跳包
+            if (packageType == 1) {
+                String heartBeat = new String(packet.getBody(), StandardCharsets.UTF_8);
+                System.out.println("心跳包是：" + heartBeat);
+                return;
+            }
+            BaseResponse response = this.handler.handler(packet);
+            //发送调用方法调用结果
+            ctx.writeAndFlush(new DataPacket(ObjectUtils.serialize(response)));
+        } finally {
+            //手动释放消息，否则会导致内存泄漏
+            ReferenceCountUtil.release(msg);
         }
-        BaseResponse response = this.handler.handler(packet);
-
-        //发送调用方法调用结果
-        ctx.writeAndFlush(new DataPacket(ObjectUtils.serialize(response)));
-        //手动释放消息，否则会导致内存泄漏
-        ReferenceCountUtil.release(msg);
     }
 
 
