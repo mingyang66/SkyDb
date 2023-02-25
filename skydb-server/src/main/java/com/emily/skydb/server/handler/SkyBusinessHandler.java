@@ -21,6 +21,6 @@ public interface SkyBusinessHandler {
         //请求协议
         BodyProtocol bodyProtocol = ObjectUtils.deserialize(packet.getBody());
         //Rpc响应结果
-        return BaseResponse.buildResponse(bodyProtocol);
+        return BaseResponse.buildResponse("你好，我已经成功返回了。");
     }
 }

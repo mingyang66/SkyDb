@@ -30,9 +30,9 @@ public class ClientBootStrap {
 
         for (int i = 0; i < 1000000; i++) {
             //连接netty，并获得一个代理对象
-            BaseResponse<BodyProtocol> bean = SkyClientManager.execute(bodyProtocol);
+            BaseResponse<String> bean = SkyClientManager.execute(bodyProtocol);
             if (bean != null) {
-                System.out.println((bean.getData().getDbName()) + "-------------" + (bean.getData().getSqlId()) + "---" + i);
+                System.out.println(bean.getData()+ "-------------" + bean.getData() + "---" + i);
             }
             //Thread.sleep(1000);
         }
