@@ -7,6 +7,9 @@ package com.emily.skydb.core.protocol;
  * @create: 2021/10/09
  */
 public class DataPacket {
+    /**
+     * 请求头
+     */
     private HeadProtocol head;
     /**
      * 消息
@@ -14,6 +17,11 @@ public class DataPacket {
     private byte[] body;
 
     public DataPacket() {
+    }
+
+    public DataPacket(byte packageType, byte[] body) {
+        this.head = new HeadProtocol(packageType, body.length + HeadProtocol.LENGTH);
+        this.body = body;
     }
 
     public HeadProtocol getHead() {
@@ -36,8 +44,5 @@ public class DataPacket {
         this((byte) 0, body);
     }
 
-    public DataPacket(byte packageType, byte[] body) {
-        this.head = new HeadProtocol(packageType, body.length + HeadProtocol.LENGTH);
-        this.body = body;
-    }
+
 }

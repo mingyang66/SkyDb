@@ -5,8 +5,8 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.SkyTransBody;
-import com.emily.skydb.core.protocol.SkyTransResponse;
+import com.emily.skydb.core.protocol.BodyProtocol;
+import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
@@ -85,8 +85,8 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static SkyTransResponse execute(SkyTransBody transBody) throws Exception {
-        DataPacket packet = new DataPacket(ObjectUtils.serialize(transBody));
+    public static BaseResponse execute(BodyProtocol bodyProtocol) throws Exception {
+        DataPacket packet = new DataPacket(ObjectUtils.serialize(bodyProtocol));
         //Channel对象
         SkyClientConnection connection = null;
         try {

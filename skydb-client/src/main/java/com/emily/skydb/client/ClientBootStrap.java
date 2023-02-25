@@ -4,8 +4,8 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
-import com.emily.skydb.core.protocol.SkyTransBody;
-import com.emily.skydb.core.protocol.SkyTransResponse;
+import com.emily.skydb.core.protocol.BodyProtocol;
+import com.emily.skydb.core.protocol.BaseResponse;
 
 /**
  * @program: SkyDb
@@ -22,15 +22,15 @@ public class ClientBootStrap {
         LoadBalance loadBalance = new RoundLoadBalance();
         properties.getPool().setMinIdle(1);
         SkyClientManager.initPool(properties, loadBalance);
-        SkyTransBody transBody = new SkyTransBody();
-        transBody.setDbName("account");
-        transBody.setSqlId("123");
-        transBody.getParams().put("username", "田晓霞");
-        transBody.getParams().put("password", "123456");
+        BodyProtocol bodyProtocol = new BodyProtocol();
+        bodyProtocol.setDbName("account");
+        bodyProtocol.setSqlId("123");
+        bodyProtocol.getParams().put("username", "田晓霞");
+        bodyProtocol.getParams().put("password", "123456");
 
         for (int i = 0; i < 1000000; i++) {
             //连接netty，并获得一个代理对象
-            SkyTransResponse<SkyTransBody> bean = SkyClientManager.execute(transBody);
+            BaseResponse<BodyProtocol> bean = SkyClientManager.execute(bodyProtocol);
             if (bean != null) {
                 System.out.println((bean.getData().getDbName()) + "-------------" + (bean.getData().getSqlId()) + "---" + i);
             }

@@ -6,7 +6,7 @@ import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.constant.CharacterInfo;
 import com.emily.skydb.core.decoder.SkyTransDecoder;
 import com.emily.skydb.core.encoder.SkyTransEncoder;
-import com.emily.skydb.core.protocol.SkyTransTail;
+import com.emily.skydb.core.protocol.TailProtocol;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
@@ -88,7 +88,7 @@ public class SkyClientConnection extends AbstractConnection<Channel> {
                         protected void initChannel(Channel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             //分隔符解码器
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(SkyTransTail.TAIL)));
+                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(TailProtocol.TAIL)));
                             //自定义编码器
                             pipeline.addLast(new SkyTransEncoder());
                             //自定义解码器

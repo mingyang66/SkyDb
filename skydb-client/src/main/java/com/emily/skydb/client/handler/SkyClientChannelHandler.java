@@ -1,7 +1,7 @@
 package com.emily.skydb.client.handler;
 
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.SkyTransResponse;
+import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -25,7 +25,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     /**
      * 服务端返回的结果
      */
-    public SkyTransResponse response;
+    public BaseResponse response;
     /**
      * 通道
      */
@@ -87,7 +87,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
      *
      * @param message
      */
-    public SkyTransResponse send(DataPacket message) throws InterruptedException {
+    public BaseResponse send(DataPacket message) throws InterruptedException {
         synchronized (this.object) {
             //发送Rpc请求
             this.channel.writeAndFlush(message);

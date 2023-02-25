@@ -1,8 +1,8 @@
 package com.emily.skydb.server.handler;
 
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.SkyTransBody;
-import com.emily.skydb.core.protocol.SkyTransResponse;
+import com.emily.skydb.core.protocol.BodyProtocol;
+import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 
 /**
@@ -17,10 +17,10 @@ public interface SkyBusinessHandler {
      * @param packet
      * @return
      */
-    default SkyTransResponse handler(DataPacket packet) {
+    default BaseResponse handler(DataPacket packet) {
         //请求协议
-        SkyTransBody transBody = ObjectUtils.deserialize(packet.getBody());
+        BodyProtocol bodyProtocol = ObjectUtils.deserialize(packet.getBody());
         //Rpc响应结果
-        return SkyTransResponse.buildResponse(transBody);
+        return BaseResponse.buildResponse(bodyProtocol);
     }
 }

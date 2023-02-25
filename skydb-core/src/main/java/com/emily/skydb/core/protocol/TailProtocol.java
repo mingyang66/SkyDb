@@ -6,6 +6,6 @@ package com.emily.skydb.core.protocol;
  * @author: Emily
  * @create: 2021/10/09
  */
-public class SkyTransTail {
+public class TailProtocol {
     public static final byte[] TAIL = new byte[]{'\r', '\n'};
 }
