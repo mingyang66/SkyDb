@@ -1,6 +1,6 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -49,7 +49,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         //请求消息
-        SkyTransMessage message = (SkyTransMessage) msg;
+        DataPacket message = (DataPacket) msg;
         //消息类型
         byte packageType = message.getPackageType();
         //心跳包
@@ -61,7 +61,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
         SkyTransResponse response = this.handler.handler(message);
 
         //发送调用方法调用结果
-        ctx.writeAndFlush(SkyTransMessage.build(ObjectUtils.serialize(response)));
+        ctx.writeAndFlush(new DataPacket(ObjectUtils.serialize(response)));
         //手动释放消息，否则会导致内存泄漏
         ReferenceCountUtil.release(msg);
     }

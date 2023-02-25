@@ -1,6 +1,6 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.Channel;
@@ -67,7 +67,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
         try {
             synchronized (this.object) {
                 //将消息对象转换为指定消息体
-                SkyTransMessage message = (SkyTransMessage) msg;
+                DataPacket message = (DataPacket) msg;
                 //将真实的消息体转换为字符串类型
                 this.response = ObjectUtils.deserialize(message.getBody());
                 //唤醒等待线程
@@ -87,7 +87,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
      *
      * @param message
      */
-    public SkyTransResponse send(SkyTransMessage message) throws InterruptedException {
+    public SkyTransResponse send(DataPacket message) throws InterruptedException {
         synchronized (this.object) {
             //发送Rpc请求
             this.channel.writeAndFlush(message);

@@ -5,7 +5,7 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
 import com.emily.skydb.core.protocol.SkyTransBody;
-import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -86,12 +86,12 @@ public class SkyClientManager {
      * @return
      */
     public static SkyTransResponse execute(SkyTransBody transBody) throws Exception {
-        SkyTransMessage message = SkyTransMessage.build(ObjectUtils.serialize(transBody));
+        DataPacket packet = new DataPacket(ObjectUtils.serialize(transBody));
         //Channel对象
         SkyClientConnection connection = null;
         try {
             connection = SkyClientManager.POOL.borrowObject();
-            return connection.getClientChannelHandler().send(message);
+            return connection.getClientChannelHandler().send(packet);
         } catch (Exception exception) {
             // logger.error(PrintExceptionInfo.printErrorInfo(exception));
             //throw new BasicException(HttpStatusType.EXCEPTION.getStatus(), "Rpc调用异常");

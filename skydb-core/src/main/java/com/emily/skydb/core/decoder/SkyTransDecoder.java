@@ -1,6 +1,6 @@
 package com.emily.skydb.core.decoder;
 
-import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.DataPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -16,21 +16,21 @@ import java.util.List;
 public class SkyTransDecoder extends ByteToMessageDecoder {
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> list) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {
         //包类型，0-正常RPC请求，1-心跳包
-        byte packageType = byteBuf.readByte();
+        byte packageType = buf.readByte();
         //读取消息长度
-        int length = byteBuf.readInt();
+        int length = buf.readInt();
         if (length == 0) {
             return;
         }
         //初始化存储数据字节数组
         byte[] data = new byte[length];
         //将字节流中的数据读入到字节数组
-        byteBuf.readBytes(data);
+        buf.readBytes(data);
         //添加消息体
-        list.add(SkyTransMessage.build(packageType, data));
+        list.add(new DataPacket(packageType, data));
         //重置readerIndex和writerIndex为0
-        byteBuf.clear();
+        buf.clear();
     }
 }

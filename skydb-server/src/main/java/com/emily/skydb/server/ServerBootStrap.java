@@ -1,7 +1,7 @@
 package com.emily.skydb.server;
 
 
-import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.SkyTransResponse;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.manager.SkyServerManager;
@@ -15,7 +15,7 @@ public class ServerBootStrap {
         SkyServerProperties properties = new SkyServerProperties();
         SkyBusinessHandler handler = new SkyBusinessHandler() {
             @Override
-            public SkyTransResponse handler(SkyTransMessage message) {
+            public SkyTransResponse handler(DataPacket message) {
                 return SkyBusinessHandler.super.handler(message);
             }
         };

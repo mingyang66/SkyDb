@@ -1,6 +1,6 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -22,7 +22,7 @@ public class HeartBeatChannelHandler extends ChannelInboundHandlerAdapter {
                     case READER_IDLE:
                     case WRITER_IDLE:
                     case ALL_IDLE:
-                        SkyTransMessage message = new SkyTransMessage();
+                        DataPacket message = new DataPacket();
                         //设置包类型为心跳包
                         message.setPackageType((byte) 1);
                         //设置心跳包内容

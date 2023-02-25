@@ -6,7 +6,7 @@ package com.emily.skydb.core.protocol;
  * @author: Emily
  * @create: 2021/10/09
  */
-public class SkyTransMessage {
+public class DataPacket {
     /**
      * 包类型，0-正常RPC请求，1-心跳包
      */
@@ -20,7 +20,7 @@ public class SkyTransMessage {
      */
     private byte[] body;
 
-    public SkyTransMessage() {
+    public DataPacket() {
     }
 
     public int getLen() {
@@ -47,18 +47,20 @@ public class SkyTransMessage {
         this.body = body;
     }
 
-    public static SkyTransMessage build(byte[] body) {
-        return build((byte) 0, body);
+    public DataPacket(byte[] body) {
+        this((byte) 0, body);
     }
 
-    public static SkyTransMessage build(byte packageType, byte[] body) {
-        SkyTransMessage message = new SkyTransMessage();
+    public DataPacket(byte packageType, byte[] body) {
+        DataPacket message = new DataPacket();
         //设置包类型为心跳包
         message.setPackageType(packageType);
         //包长度
         message.setLen(body.length);
         //设置心跳包内容
         message.setBody(body);
-        return message;
+        this.packageType = packageType;
+        this.len = body.length;
+        this.body = body;
     }
 }
