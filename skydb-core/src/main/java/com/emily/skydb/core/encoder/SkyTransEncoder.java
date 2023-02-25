@@ -1,7 +1,7 @@
 package com.emily.skydb.core.encoder;
 
-import com.emily.skydb.core.entity.SkyTransMessage;
-import com.emily.skydb.core.entity.SkyTransTail;
+import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.SkyTransTail;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

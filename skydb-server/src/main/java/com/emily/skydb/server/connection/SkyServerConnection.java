@@ -2,7 +2,7 @@ package com.emily.skydb.server.connection;
 
 import com.emily.skydb.core.decoder.SkyTransDecoder;
 import com.emily.skydb.core.encoder.SkyTransEncoder;
-import com.emily.skydb.core.entity.SkyTransTail;
+import com.emily.skydb.core.protocol.SkyTransTail;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.handler.SkyServerChannelHandler;
 import com.emily.skydb.server.manager.SkyServerProperties;

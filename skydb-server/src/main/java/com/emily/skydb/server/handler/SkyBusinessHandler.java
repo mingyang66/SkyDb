@@ -1,8 +1,8 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.entity.SkyTransBody;
-import com.emily.skydb.core.entity.SkyTransMessage;
-import com.emily.skydb.core.entity.SkyTransResponse;
+import com.emily.skydb.core.protocol.SkyTransBody;
+import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 
 /**

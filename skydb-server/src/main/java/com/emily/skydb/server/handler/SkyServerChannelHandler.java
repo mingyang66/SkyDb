@@ -1,7 +1,7 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.entity.SkyTransMessage;
-import com.emily.skydb.core.entity.SkyTransResponse;
+import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

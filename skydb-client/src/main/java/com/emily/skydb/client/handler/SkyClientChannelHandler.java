@@ -1,16 +1,12 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.core.entity.SkyTransMessage;
-import com.emily.skydb.core.entity.SkyTransResponse;
+import com.emily.skydb.core.protocol.SkyTransMessage;
+import com.emily.skydb.core.protocol.SkyTransResponse;
 import com.emily.skydb.core.utils.ObjectUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 
 import java.time.Duration;
@@ -99,43 +95,6 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
             this.object.wait(readTimeOut.toMillis());
         }
         return this.response;
-    }
-
-    private static final ByteBuf HEARTBEAT_SEQUENCE = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer("Heartbeat...", CharsetUtil.UTF_8));
-
-    /**
-     * 用户时间触发，心跳
-     *
-     * @param ctx
-     * @param evt
-     * @throws Exception
-     */
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        System.out.println("通道{}已经超过20秒未与服务端进行读写操作，发送心跳包..." + ctx.channel().remoteAddress());
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent e = (IdleStateEvent) evt;
-            switch (e.state()) {
-                case READER_IDLE:
-                case WRITER_IDLE:
-                case ALL_IDLE:
-                    SkyTransMessage message = new SkyTransMessage();
-                    //设置包类型为心跳包
-                    message.setPackageType((byte) 1);
-                    //设置心跳包内容
-                    message.setBody(ObjectUtils.serialize("heartBeat..."));
-                    //消息包长度
-                    message.setLen(message.getBody().length);
-                    //发送心跳包
-                    ctx.channel().writeAndFlush(message);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            //继续传播事件
-            super.userEventTriggered(ctx, evt);
-        }
     }
 
     /**

@@ -4,8 +4,8 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
-import com.emily.skydb.core.entity.SkyTransBody;
-import com.emily.skydb.core.entity.SkyTransResponse;
+import com.emily.skydb.core.protocol.SkyTransBody;
+import com.emily.skydb.core.protocol.SkyTransResponse;
 
 /**
  * @program: SkyDb
