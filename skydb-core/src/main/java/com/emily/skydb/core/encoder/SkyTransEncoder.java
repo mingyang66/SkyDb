@@ -15,9 +15,6 @@ public class SkyTransEncoder extends MessageToByteEncoder<DataPacket> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, DataPacket packet, ByteBuf byteBuf) throws Exception {
-        if (packet == null) {
-            return;
-        }
         //写入包类型
         byteBuf.writeByte(packet.getHead().getPackageType());
         //请求|响应体长度
