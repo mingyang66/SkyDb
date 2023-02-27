@@ -83,7 +83,7 @@ public class SkyServerConnection {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            //基于长度的解码器
+                            //长度编码解码器
                             pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             //自定义解码器
                             pipeline.addLast(new SkyTransDecoder());
