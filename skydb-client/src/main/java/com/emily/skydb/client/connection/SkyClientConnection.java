@@ -6,13 +6,12 @@ import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.constant.CharacterInfo;
 import com.emily.skydb.core.decoder.SkyTransDecoder;
 import com.emily.skydb.core.encoder.SkyTransEncoder;
-import com.emily.skydb.core.protocol.TailProtocol;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -87,12 +86,14 @@ public class SkyClientConnection extends AbstractConnection<Channel> {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            //分隔符解码器
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(TailProtocol.TAIL)));
-                            //自定义编码器
-                            pipeline.addLast(new SkyTransEncoder());
+                            //基于长度的解码器
+                            pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             //自定义解码器
                             pipeline.addLast(new SkyTransDecoder());
+                            //在消息前面加上前缀的编码器
+                            pipeline.addLast(new LengthFieldPrepender(2));
+                            //自定义编码器
+                            pipeline.addLast(new SkyTransEncoder());
                             //自定义handler处理
                             pipeline.addLast(clientChannelHandler);
                             //空闲状态处理器，参数说明：读时间空闲时间，0禁用时间|写事件空闲时间，0则禁用|读或写空闲时间，0则禁用

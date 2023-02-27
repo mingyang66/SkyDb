@@ -1,7 +1,6 @@
 package com.emily.skydb.core.encoder;
 
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.TailProtocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -26,6 +25,6 @@ public class SkyTransEncoder extends MessageToByteEncoder<DataPacket> {
         //写入编码数据字节流
         byteBuf.writeBytes(packet.getBody());
         //写入编码数据结束的行尾标识
-        byteBuf.writeBytes(TailProtocol.TAIL);
+        //byteBuf.writeBytes(TailProtocol.TAIL);
     }
 }

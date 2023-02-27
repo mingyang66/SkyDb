@@ -2,16 +2,15 @@ package com.emily.skydb.server.connection;
 
 import com.emily.skydb.core.decoder.SkyTransDecoder;
 import com.emily.skydb.core.encoder.SkyTransEncoder;
-import com.emily.skydb.core.protocol.TailProtocol;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.handler.SkyServerChannelHandler;
 import com.emily.skydb.server.manager.SkyServerProperties;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 
 import java.util.Objects;
 
@@ -84,12 +83,14 @@ public class SkyServerConnection {
                         @Override
                         protected void initChannel(Channel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            //分隔符解码器
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(8192, Unpooled.copiedBuffer(TailProtocol.TAIL)));
-                            //自定义编码器
-                            pipeline.addLast(new SkyTransEncoder());
+                            //基于长度的解码器
+                            pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             //自定义解码器
                             pipeline.addLast(new SkyTransDecoder());
+                            //在消息前面加上前缀的编码器
+                            pipeline.addLast(new LengthFieldPrepender(2));
+                            //自定义编码器
+                            pipeline.addLast(new SkyTransEncoder());
                             //自定义处理器
                             pipeline.addLast(new SkyServerChannelHandler(handler));
                         }

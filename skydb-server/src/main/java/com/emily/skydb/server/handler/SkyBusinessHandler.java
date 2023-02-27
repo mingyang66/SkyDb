@@ -23,7 +23,11 @@ public interface SkyBusinessHandler {
         TestEntity entity = new TestEntity();
         entity.password = "1234";
         entity.username = "田晓霞";
-        //Rpc响应结果
-        return BaseResponse.buildResponse("你好啊。。。。我已经收到消息了");
+        try {
+            //Rpc响应结果
+            return BaseResponse.buildResponse(bodyProtocol);
+        } catch (Exception exception) {
+            return BaseResponse.buildResponse("发生错误了" + exception.getMessage());
+        }
     }
 }
