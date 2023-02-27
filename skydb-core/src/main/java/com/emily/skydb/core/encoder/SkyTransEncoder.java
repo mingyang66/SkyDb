@@ -24,7 +24,5 @@ public class SkyTransEncoder extends MessageToByteEncoder<DataPacket> {
         byteBuf.writeInt(packet.getHead().getPackageLength());
         //写入编码数据字节流
         byteBuf.writeBytes(packet.getBody());
-        //写入编码数据结束的行尾标识
-        //byteBuf.writeBytes(TailProtocol.TAIL);
     }
 }
