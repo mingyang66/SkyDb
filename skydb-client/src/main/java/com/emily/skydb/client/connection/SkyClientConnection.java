@@ -4,8 +4,8 @@ import com.emily.skydb.client.handler.HeartBeatChannelHandler;
 import com.emily.skydb.client.handler.SkyClientChannelHandler;
 import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.constant.CharacterInfo;
-import com.emily.skydb.core.decoder.SkyTransDecoder;
-import com.emily.skydb.core.encoder.SkyTransEncoder;
+import com.emily.skydb.core.decoder.MessagePackDecoder;
+import com.emily.skydb.core.encoder.MessagePackEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -89,11 +89,11 @@ public class SkyClientConnection extends AbstractConnection<Channel> {
                             //长度编码解码器
                             pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             //自定义解码器
-                            pipeline.addLast(new SkyTransDecoder());
+                            pipeline.addLast(new MessagePackDecoder());
                             //在消息前面加上前缀的编码器
                             pipeline.addLast(new LengthFieldPrepender(2));
                             //自定义编码器
-                            pipeline.addLast(new SkyTransEncoder());
+                            pipeline.addLast(new MessagePackEncoder());
                             //自定义handler处理
                             pipeline.addLast(clientChannelHandler);
                             //空闲状态处理器，参数说明：读时间空闲时间，0禁用时间|写事件空闲时间，0则禁用|读或写空闲时间，0则禁用

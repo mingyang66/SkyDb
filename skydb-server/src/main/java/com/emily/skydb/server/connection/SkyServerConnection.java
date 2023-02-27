@@ -1,7 +1,7 @@
 package com.emily.skydb.server.connection;
 
-import com.emily.skydb.core.decoder.SkyTransDecoder;
-import com.emily.skydb.core.encoder.SkyTransEncoder;
+import com.emily.skydb.core.decoder.MessagePackDecoder;
+import com.emily.skydb.core.encoder.MessagePackEncoder;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.handler.SkyServerChannelHandler;
 import com.emily.skydb.server.manager.SkyServerProperties;
@@ -86,11 +86,11 @@ public class SkyServerConnection {
                             //长度编码解码器
                             pipeline.addLast(new LengthFieldBasedFrameDecoder(65535, 0, 2, 0, 2));
                             //自定义解码器
-                            pipeline.addLast(new SkyTransDecoder());
+                            pipeline.addLast(new MessagePackDecoder());
                             //在消息前面加上前缀的编码器
                             pipeline.addLast(new LengthFieldPrepender(2));
                             //自定义编码器
-                            pipeline.addLast(new SkyTransEncoder());
+                            pipeline.addLast(new MessagePackEncoder());
                             //自定义处理器
                             pipeline.addLast(new SkyServerChannelHandler(handler));
                         }
