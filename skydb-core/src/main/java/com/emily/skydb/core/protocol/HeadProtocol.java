@@ -23,11 +23,4 @@ public class HeadProtocol {
         this.packageType = packageType;
     }
 
-    public byte getPackageType() {
-        return packageType;
-    }
-
-    public void setPackageType(byte packageType) {
-        this.packageType = packageType;
-    }
 }

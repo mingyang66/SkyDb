@@ -23,16 +23,16 @@ public class ClientBootStrap {
         properties.getPool().setMinIdle(1);
         SkyClientManager.initPool(properties, loadBalance);
         BodyProtocol bodyProtocol = new BodyProtocol();
-        bodyProtocol.setDbName("account");
-        bodyProtocol.setSqlId("123");
-        bodyProtocol.getParams().put("username", "田晓霞|孙少平|田晓霞|孙少平||田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平");
-        bodyProtocol.getParams().put("password", "123456");
+        bodyProtocol.dbName = "account";
+        bodyProtocol.sqlId = "123";
+        bodyProtocol.params.put("username", "田晓霞|孙少平|田晓霞|孙少平||田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平|田晓霞|孙少平");
+        bodyProtocol.params.put("password", "123456");
 
         for (int i = 0; i < 1000000; i++) {
             //连接netty，并获得一个代理对象
             BaseResponse<BodyProtocol> bean = SkyClientManager.invoke(bodyProtocol);
             if (bean != null) {
-                System.out.println(bean.getData().getParams().get("username") + "-------------" + bean.getData() + "---" + i);
+                System.out.println(bean.getData().params.get("username") + "-------------" + bean.getData() + "---" + i);
             }
             Thread.sleep(1000);
         }

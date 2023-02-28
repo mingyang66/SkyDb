@@ -16,37 +16,14 @@ public class BodyProtocol implements Serializable {
     /**
      * sql语句唯一标识
      */
-    private String sqlId;
+    public String sqlId;
     /**
      * 数据库标识
      */
-    private String dbName;
+    public String dbName;
     /**
      * sql语句占位符参数
      */
-    private Map<String, String> params = new LinkedHashMap<>();
+    public Map<String, String> params = new LinkedHashMap<>();
 
-    public String getSqlId() {
-        return sqlId;
-    }
-
-    public void setSqlId(String sqlId) {
-        this.sqlId = sqlId;
-    }
-
-    public String getDbName() {
-        return dbName;
-    }
-
-    public void setDbName(String dbName) {
-        this.dbName = dbName;
-    }
-
-    public Map<String, String> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, String> params) {
-        this.params = params;
-    }
 }
