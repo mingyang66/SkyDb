@@ -14,17 +14,13 @@ public class HeadProtocol {
      * 包类型，0-正常RPC请求，1-心跳包
      */
     private byte packageType = 0;
-    /**
-     * 消息体长度
-     */
-    private int packageLength;
+
 
     public HeadProtocol() {
     }
 
-    public HeadProtocol(byte packageType, int packageLength) {
+    public HeadProtocol(byte packageType) {
         this.packageType = packageType;
-        this.packageLength = packageLength;
     }
 
     public byte getPackageType() {
@@ -33,13 +29,5 @@ public class HeadProtocol {
 
     public void setPackageType(byte packageType) {
         this.packageType = packageType;
-    }
-
-    public int getPackageLength() {
-        return packageLength;
-    }
-
-    public void setPackageLength(int packageLength) {
-        this.packageLength = packageLength;
     }
 }

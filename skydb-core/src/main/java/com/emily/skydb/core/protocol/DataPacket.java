@@ -20,7 +20,7 @@ public class DataPacket {
     }
 
     public DataPacket(byte packageType, byte[] body) {
-        this.head = new HeadProtocol(packageType, body.length + HeadProtocol.LENGTH);
+        this.head = new HeadProtocol(packageType);
         this.body = body;
     }
 
