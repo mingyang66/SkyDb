@@ -1,8 +1,6 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.utils.SerializeUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,7 +23,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     /**
      * 服务端返回的结果
      */
-    public BaseResponse response;
+    public byte[] response;
     /**
      * 通道
      */
@@ -69,7 +67,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
             DataPacket packet = (DataPacket) msg;
             synchronized (this.object) {
                 //将真实的消息体转换为字符串类型
-                this.response = SerializeUtils.deserialize(packet.body);
+                this.response = packet.body;
                 //唤醒等待线程
                 this.object.notify();
             }
@@ -84,7 +82,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
      *
      * @param message
      */
-    public BaseResponse send(DataPacket message) throws InterruptedException {
+    public byte[] send(DataPacket message) throws InterruptedException {
         synchronized (this.object) {
             //发送Rpc请求
             this.channel.writeAndFlush(message);

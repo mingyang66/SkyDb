@@ -1,8 +1,6 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.utils.SerializeUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -59,9 +57,11 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
                 System.out.println("心跳包是：" + heartBeat);
                 return;
             }
-            BaseResponse response = this.handler.handler(packet);
+            String response = this.handler.handler(packet);
             //发送调用方法调用结果
-            ctx.writeAndFlush(new DataPacket(SerializeUtils.serialize(response)));
+            ctx.writeAndFlush(new DataPacket(response.getBytes(StandardCharsets.UTF_8)));
+        } catch (Exception exception) {
+            exception.printStackTrace();
         } finally {
             //手动释放消息，否则会导致内存泄漏
             ReferenceCountUtil.release(msg);

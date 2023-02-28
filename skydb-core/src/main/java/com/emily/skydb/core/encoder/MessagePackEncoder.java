@@ -1,10 +1,9 @@
 package com.emily.skydb.core.encoder;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.emily.skydb.core.utils.MessagePackUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import org.msgpack.jackson.dataformat.MessagePackFactory;
 
 /**
  * @program: SkyDb
@@ -16,8 +15,6 @@ public class MessagePackEncoder extends MessageToByteEncoder<Object> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, Object msg, ByteBuf byteBuf) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
-        byte[] bytes = objectMapper.writeValueAsBytes(msg);
-        byteBuf.writeBytes(bytes);
+        byteBuf.writeBytes(MessagePackUtils.serialize(msg));
     }
 }

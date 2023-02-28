@@ -1,9 +1,12 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.protocol.BodyProtocol;
 import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.utils.JsonUtils;
+import com.emily.skydb.core.utils.MessagePackUtils;
 import com.emily.skydb.core.utils.SerializeUtils;
+
+import java.io.IOException;
 
 /**
  * @Description :  后置业务处理
@@ -17,17 +20,17 @@ public interface SkyBusinessHandler {
      * @param packet
      * @return
      */
-    default BaseResponse handler(DataPacket packet) {
+    default String handler(DataPacket packet) throws IOException {
         //请求协议
-        BodyProtocol bodyProtocol = SerializeUtils.deserialize(packet.body);
+        BodyProtocol bodyProtocol = MessagePackUtils.deSerialize(packet.body, BodyProtocol.class);
         TestEntity entity = new TestEntity();
         entity.password = "1234";
         entity.username = "田晓霞";
         try {
             //Rpc响应结果
-            return BaseResponse.buildResponse(bodyProtocol);
+            return JsonUtils.toJSONString(bodyProtocol);
         } catch (Exception exception) {
-            return BaseResponse.buildResponse("发生错误了" + exception.getMessage());
+            return "异常";
         }
     }
 }
