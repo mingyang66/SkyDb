@@ -4,7 +4,6 @@ import com.emily.skydb.core.protocol.BodyProtocol;
 import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.JsonUtils;
 import com.emily.skydb.core.utils.MessagePackUtils;
-import com.emily.skydb.core.utils.SerializeUtils;
 
 import java.io.IOException;
 
@@ -15,10 +14,11 @@ import java.io.IOException;
  */
 public interface SkyBusinessHandler {
     /**
-     * 后置业务
+     * 自定义处理后置业务
      *
      * @param packet
      * @return
+     * @throws IOException
      */
     default String handler(DataPacket packet) throws IOException {
         //请求协议

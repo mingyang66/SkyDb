@@ -4,12 +4,12 @@ import com.emily.skydb.client.connection.SkyClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
+import com.emily.skydb.core.exception.PrintExceptionInfo;
 import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.protocol.BodyProtocol;
 import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.JsonUtils;
 import com.emily.skydb.core.utils.MessagePackUtils;
-import com.emily.skydb.core.utils.SerializeUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
@@ -87,17 +87,16 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static <T> BaseResponse<T> invoke(BodyProtocol bodyProtocol, Class<? extends T> cls) throws Exception {
-        DataPacket packet = new DataPacket(MessagePackUtils.serialize(bodyProtocol));
+    public static BaseResponse<BodyProtocol> invoke(BodyProtocol bodyProtocol) throws Exception {
         //Channel对象
         SkyClientConnection connection = null;
         try {
+            DataPacket packet = new DataPacket(MessagePackUtils.serialize(bodyProtocol));
             connection = SkyClientManager.POOL.borrowObject();
             byte[] response = connection.getClientChannelHandler().send(packet);
-            return BaseResponse.buildResponse(JsonUtils.toObject(response, cls));
+            return BaseResponse.buildResponse(JsonUtils.toObject(response, BodyProtocol.class));
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return BaseResponse.buildResponse(10000, PrintExceptionInfo.printErrorInfo(e), null);
         } finally {
             if (connection != null) {
                 SkyClientManager.POOL.returnObject(connection);

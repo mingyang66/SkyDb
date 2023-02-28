@@ -2,7 +2,6 @@ package com.emily.skydb.core.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.msgpack.jackson.dataformat.MessagePackFactory;
 import org.msgpack.jackson.dataformat.MessagePackMapper;
 
 import java.io.IOException;

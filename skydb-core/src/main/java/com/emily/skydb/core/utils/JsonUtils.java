@@ -56,20 +56,6 @@ public class JsonUtils {
     }
 
     /**
-     * @Description JSON字符串转换为java对象, 支持List、Map、Collection、字符串
-     * @Version 1.0
-     */
-    public static <T> T toJavaBean(String str, Class<T> responseType) {
-        try {
-            return objectMapper.readValue(str, responseType);
-        } catch (JsonParseException e) {
-        } catch (JsonMappingException e) {
-        } catch (IOException e) {
-        }
-        return null;
-    }
-
-    /**
      * 将字节数组转化为指定的对象
      *
      * @param bytes        字节数组

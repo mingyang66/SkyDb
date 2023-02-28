@@ -1,9 +1,9 @@
 package com.emily.skydb.server.handler;
 
 import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.utils.MessagePackUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -25,13 +25,13 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
-        System.out.println("Rpc客户端连接成功：{}" + ctx.channel().remoteAddress());
+        System.out.println("Rpc客户端连接成功：" + ctx.channel().remoteAddress());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         ctx.channel().close();
-        System.out.println("Rpc服务器连接断开：{}" + ctx.channel().remoteAddress());
+        System.out.println("Rpc服务器连接断开：" + ctx.channel().remoteAddress());
     }
 
     /**
@@ -53,7 +53,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             byte packageType = packet.packageType;
             //心跳包
             if (packageType == 1) {
-                String heartBeat = new String(packet.body, StandardCharsets.UTF_8);
+                String heartBeat = MessagePackUtils.deSerialize(packet.body, String.class);
                 System.out.println("心跳包是：" + heartBeat);
                 return;
             }
@@ -69,35 +69,8 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
 
-    /**
-     * 服务端时间触发，心跳包
-     *
-     * @param ctx
-     * @param evt
-     * @throws Exception
-     */
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent e = (IdleStateEvent) evt;
-            switch (e.state()) {
-                case READER_IDLE:
-                case WRITER_IDLE:
-                case ALL_IDLE:
-                    //logger.info("客户端已经超过60秒未读写数据，关闭连接{}。", ctx.channel().remoteAddress());
-                    ctx.channel().close();
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            super.userEventTriggered(ctx, evt);
-        }
-    }
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
-        //logger.error(PrintExceptionInfo.printErrorInfo(cause));
     }
 }
