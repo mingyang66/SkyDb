@@ -1,13 +1,11 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.TransBody;
 import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.protocol.TransBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * @program: SkyDb
@@ -61,9 +59,9 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             //请求消息体
             TransBody transBody = MessagePackUtils.deSerialize(packet.body, TransBody.class);
             //获取后置处理结果
-            String response = this.handler.handler(transBody);
+            Object value = this.handler.handler(transBody);
             //发送调用方法调用结果
-            ctx.writeAndFlush(new DataPacket(response.getBytes(StandardCharsets.UTF_8)));
+            ctx.writeAndFlush(new DataPacket(MessagePackUtils.serialize(value)));
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {

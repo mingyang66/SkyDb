@@ -16,7 +16,7 @@ public class ServerBootStrap {
         SkyServerProperties properties = new SkyServerProperties();
         SkyBusinessHandler handler = new SkyBusinessHandler() {
             @Override
-            public String handler(TransBody bodyProtocol) throws IOException {
+            public Object handler(TransBody bodyProtocol) throws IOException {
                 return SkyBusinessHandler.super.handler(bodyProtocol);
             }
         };
