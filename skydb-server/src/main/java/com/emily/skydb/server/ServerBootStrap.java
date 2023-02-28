@@ -1,7 +1,7 @@
 package com.emily.skydb.server;
 
 
-import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.protocol.BodyProtocol;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.manager.SkyServerManager;
 import com.emily.skydb.server.manager.SkyServerProperties;
@@ -16,8 +16,8 @@ public class ServerBootStrap {
         SkyServerProperties properties = new SkyServerProperties();
         SkyBusinessHandler handler = new SkyBusinessHandler() {
             @Override
-            public String handler(DataPacket packet) throws IOException {
-                return SkyBusinessHandler.super.handler(packet);
+            public String handler(BodyProtocol bodyProtocol) throws IOException {
+                return SkyBusinessHandler.super.handler(bodyProtocol);
             }
         };
         SkyServerManager.init(handler, properties);

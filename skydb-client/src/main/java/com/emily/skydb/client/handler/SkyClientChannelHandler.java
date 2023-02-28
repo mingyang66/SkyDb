@@ -80,12 +80,12 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
     /**
      * 发送TCP请求，并等待返回结果
      *
-     * @param message
+     * @param packet
      */
-    public byte[] send(DataPacket message) throws InterruptedException {
+    public byte[] send(DataPacket packet) throws InterruptedException {
         synchronized (this.object) {
             //发送Rpc请求
-            this.channel.writeAndFlush(message);
+            this.channel.writeAndFlush(packet);
             //释放当前线程资源，并等待指定超时时间，默认：10000ms
             this.object.wait(readTimeOut.toMillis());
         }

@@ -1,9 +1,7 @@
 package com.emily.skydb.server.handler;
 
 import com.emily.skydb.core.protocol.BodyProtocol;
-import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.JsonUtils;
-import com.emily.skydb.core.utils.MessagePackUtils;
 
 import java.io.IOException;
 
@@ -20,9 +18,8 @@ public interface SkyBusinessHandler {
      * @return
      * @throws IOException
      */
-    default String handler(DataPacket packet) throws IOException {
+    default String handler(BodyProtocol bodyProtocol) throws IOException {
         //请求协议
-        BodyProtocol bodyProtocol = MessagePackUtils.deSerialize(packet.body, BodyProtocol.class);
         TestEntity entity = new TestEntity();
         entity.password = "1234";
         entity.username = "田晓霞";
