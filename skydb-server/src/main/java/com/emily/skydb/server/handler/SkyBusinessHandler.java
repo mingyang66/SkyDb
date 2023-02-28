@@ -28,7 +28,7 @@ public interface SkyBusinessHandler {
         entity.username = "田晓霞";
         try {
             //Rpc响应结果
-            return JsonUtils.toJSONString(bodyProtocol);
+            return JsonUtils.toJSONString(entity);
         } catch (Exception exception) {
             return "异常";
         }

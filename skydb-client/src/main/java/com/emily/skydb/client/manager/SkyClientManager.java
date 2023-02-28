@@ -4,8 +4,6 @@ import com.emily.skydb.client.connection.SkyClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
-import com.emily.skydb.core.exception.PrintExceptionInfo;
-import com.emily.skydb.core.protocol.BaseResponse;
 import com.emily.skydb.core.protocol.BodyProtocol;
 import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.JsonUtils;
@@ -87,16 +85,14 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static BaseResponse<BodyProtocol> invoke(BodyProtocol bodyProtocol) throws Exception {
+    public static <T> T invoke(BodyProtocol bodyProtocol, Class<? extends T> cls) throws Exception {
         //Channel对象
         SkyClientConnection connection = null;
         try {
             DataPacket packet = new DataPacket(MessagePackUtils.serialize(bodyProtocol));
             connection = SkyClientManager.POOL.borrowObject();
             byte[] response = connection.getClientChannelHandler().send(packet);
-            return BaseResponse.buildResponse(JsonUtils.toObject(response, BodyProtocol.class));
-        } catch (Exception e) {
-            return BaseResponse.buildResponse(10000, PrintExceptionInfo.printErrorInfo(e), null);
+            return JsonUtils.deSerialize(response, cls);
         } finally {
             if (connection != null) {
                 SkyClientManager.POOL.returnObject(connection);

@@ -1,9 +1,7 @@
 package com.emily.skydb.core.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -58,18 +56,14 @@ public class JsonUtils {
     /**
      * 将字节数组转化为指定的对象
      *
-     * @param bytes        字节数组
      * @param responseType 返回值类型
      * @param <T>
+     * @value bytes        字节数组
      */
-    public static <T> T toObject(byte[] bytes, Class<T> responseType) {
-        if (ArrayUtils.isEmpty(bytes)) {
+    public static <T> T deSerialize(byte[] value, Class<? extends T> responseType) throws IOException {
+        if (ArrayUtils.isEmpty(value)) {
             return null;
         }
-        try {
-            return objectMapper.readValue(bytes, responseType);
-        } catch (IOException e) {
-        }
-        return null;
+        return objectMapper.readValue(value, responseType);
     }
 }
