@@ -8,7 +8,7 @@ import java.io.IOException;
 
 /**
  * @Description :  编码解码
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/2/28 2:59 PM
  */
 public class MessagePackUtils {

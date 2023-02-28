@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * @Description :  测试实体类
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/2/25 5:21 PM
  */
 public class TestEntity implements Serializable {
