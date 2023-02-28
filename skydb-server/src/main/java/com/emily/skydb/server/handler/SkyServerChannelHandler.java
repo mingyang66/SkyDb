@@ -52,7 +52,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
             //请求消息
             DataPacket packet = (DataPacket) msg;
             //消息类型
-            byte packageType = packet.getHead().getPackageType();
+            byte packageType = packet.getPackageType();
             //心跳包
             if (packageType == 1) {
                 String heartBeat = new String(packet.getBody(), StandardCharsets.UTF_8);
