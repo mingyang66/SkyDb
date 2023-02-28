@@ -1,6 +1,6 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.BodyProtocol;
+import com.emily.skydb.core.protocol.TransBody;
 import com.emily.skydb.core.utils.JsonUtils;
 
 import java.io.IOException;
@@ -14,11 +14,11 @@ public interface SkyBusinessHandler {
     /**
      * 自定义处理后置业务
      *
-     * @param packet
+     * @param transBody
      * @return
      * @throws IOException
      */
-    default String handler(BodyProtocol bodyProtocol) throws IOException {
+    default String handler(TransBody transBody) throws IOException {
         //请求协议
         TestEntity entity = new TestEntity();
         entity.password = "1234";

@@ -1,6 +1,6 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.BodyProtocol;
+import com.emily.skydb.core.protocol.TransBody;
 import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -59,9 +59,9 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
                 return;
             }
             //请求消息体
-            BodyProtocol bodyProtocol = MessagePackUtils.deSerialize(packet.body, BodyProtocol.class);
+            TransBody transBody = MessagePackUtils.deSerialize(packet.body, TransBody.class);
             //获取后置处理结果
-            String response = this.handler.handler(bodyProtocol);
+            String response = this.handler.handler(transBody);
             //发送调用方法调用结果
             ctx.writeAndFlush(new DataPacket(response.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception exception) {

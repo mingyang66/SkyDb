@@ -11,7 +11,7 @@ import java.util.Map;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class BodyProtocol implements Serializable {
+public class TransBody implements Serializable {
 
     /**
      * sql语句唯一标识
