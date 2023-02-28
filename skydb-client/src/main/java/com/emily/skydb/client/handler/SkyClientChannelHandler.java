@@ -69,7 +69,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
             DataPacket packet = (DataPacket) msg;
             synchronized (this.object) {
                 //将真实的消息体转换为字符串类型
-                this.response = SerializeUtils.deserialize(packet.getBody());
+                this.response = SerializeUtils.deserialize(packet.body);
                 //唤醒等待线程
                 this.object.notify();
             }

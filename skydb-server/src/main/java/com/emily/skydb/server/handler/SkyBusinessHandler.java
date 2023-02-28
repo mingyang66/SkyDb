@@ -19,7 +19,7 @@ public interface SkyBusinessHandler {
      */
     default BaseResponse handler(DataPacket packet) {
         //请求协议
-        BodyProtocol bodyProtocol = SerializeUtils.deserialize(packet.getBody());
+        BodyProtocol bodyProtocol = SerializeUtils.deserialize(packet.body);
         TestEntity entity = new TestEntity();
         entity.password = "1234";
         entity.username = "田晓霞";
