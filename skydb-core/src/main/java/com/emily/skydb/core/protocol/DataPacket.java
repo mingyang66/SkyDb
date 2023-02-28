@@ -8,9 +8,9 @@ package com.emily.skydb.core.protocol;
  */
 public class DataPacket {
     /**
-     * 请求头
+     * 包类型，0-正常RPC请求，1-心跳包
      */
-    public HeadProtocol head;
+    public byte packageType = 0;
     /**
      * 消息
      */
@@ -24,7 +24,7 @@ public class DataPacket {
     }
 
     public DataPacket(byte packageType, byte[] body) {
-        this.head = new HeadProtocol(packageType);
+        this.packageType = packageType;
         this.body = body;
     }
 
