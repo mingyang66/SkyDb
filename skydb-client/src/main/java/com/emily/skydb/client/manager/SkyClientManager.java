@@ -91,7 +91,7 @@ public class SkyClientManager {
             //TCP发送数据包，并对发送数据序列化
             DataPacket packet = new DataPacket(MessagePackUtils.serialize(transBody));
             //获取连接
-            connection = SkyClientManager.POOL.borrowObject();
+            connection = POOL.borrowObject();
             //发送请求并获取返回结果
             byte[] response = connection.getClientChannelHandler().send(packet);
             //返回值反序列化
@@ -99,7 +99,7 @@ public class SkyClientManager {
         } finally {
             if (connection != null) {
                 //归还链接
-                SkyClientManager.POOL.returnObject(connection);
+                POOL.returnObject(connection);
             }
         }
     }
