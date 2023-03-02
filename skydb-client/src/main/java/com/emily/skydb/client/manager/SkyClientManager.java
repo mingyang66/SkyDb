@@ -5,7 +5,7 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.TransBody;
+import com.emily.skydb.core.protocol.ReqDbBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
@@ -84,12 +84,12 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static <T> T invoke(TransBody transBody, Class<? extends T> cls) throws Exception {
+    public static <T> T invoke(ReqDbBody reqDbBody, Class<? extends T> cls) throws Exception {
         //Channel对象
         SkyClientConnection connection = null;
         try {
             //TCP发送数据包，并对发送数据序列化
-            DataPacket packet = new DataPacket(MessagePackUtils.serialize(transBody));
+            DataPacket packet = new DataPacket(MessagePackUtils.serialize(reqDbBody));
             //获取连接
             connection = POOL.borrowObject();
             //发送请求并获取返回结果

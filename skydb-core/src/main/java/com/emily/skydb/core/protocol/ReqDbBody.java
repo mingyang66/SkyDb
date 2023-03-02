@@ -1,9 +1,8 @@
 package com.emily.skydb.core.protocol;
 
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: SkyDb
@@ -11,12 +10,12 @@ import java.util.Map;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class TransBody implements Serializable {
+public class ReqDbBody {
 
     /**
      * sql语句唯一标识
      */
-    public String sqlId;
+    public String id;
     /**
      * 数据库标识
      */
@@ -24,6 +23,6 @@ public class TransBody implements Serializable {
     /**
      * sql语句占位符参数
      */
-    public Map<String, String> params = new LinkedHashMap<>();
+    public List<ReqDbItem> params = new ArrayList<>();
 
 }
