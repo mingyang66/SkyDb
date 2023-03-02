@@ -20,7 +20,7 @@ public class ServerBootStrap {
                 return SkyBusinessHandler.super.handler(bodyProtocol);
             }
         };
-        SkyServerManager.init(handler, properties);
+        SkyServerManager.bootstrap(handler, properties);
     }
 
 }

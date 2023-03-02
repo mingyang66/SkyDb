@@ -7,30 +7,21 @@
         <version>1.0.1</version>
     </parent>
 
-    <artifactId>skydb-client</artifactId>
+    <artifactId>demo-mybatis</artifactId>
     <packaging>jar</packaging>
 
-    <name>skydb-client</name>
+    <name>demo-mybatis</name>
     <url>http://maven.apache.org</url>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.emily.sdkdb</groupId>
-            <artifactId>skydb-core</artifactId>
+            <artifactId>skydb-server</artifactId>
             <version>1.0.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-pool2 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-            <version>2.11.1</version>
-        </dependency>
-
     </dependencies>
 </project>

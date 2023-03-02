@@ -12,6 +12,7 @@
         <module>skydb-core</module>
         <module>skydb-client</module>
         <module>skydb-server</module>
+        <module>demo-mybatis</module>
     </modules>
 
     <properties>
@@ -23,6 +24,9 @@
         <commons.pool.version>2.11.1</commons.pool.version>
         <msgpack.core.version>0.9.3</msgpack.core.version>
         <msgpack.jackson.version>0.9.3</msgpack.jackson.version>
+        <mybatis.version>3.5.11</mybatis.version>
+        <mysql.connection.version>8.0.32</mysql.connection.version>
+        <alibaba.druid.version>1.2.16</alibaba.druid.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -52,6 +56,22 @@
                 <artifactId>jackson-dataformat-msgpack</artifactId>
                 <version>${msgpack.jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql.connection.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${alibaba.druid.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

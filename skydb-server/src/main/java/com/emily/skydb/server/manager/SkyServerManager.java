@@ -14,7 +14,7 @@ public class SkyServerManager {
      *
      * @param properties
      */
-    public static void init(SkyBusinessHandler handler, SkyServerProperties properties) {
+    public static void bootstrap(SkyBusinessHandler handler, SkyServerProperties properties) {
         if (properties == null) {
             properties = new SkyServerProperties();
         }
