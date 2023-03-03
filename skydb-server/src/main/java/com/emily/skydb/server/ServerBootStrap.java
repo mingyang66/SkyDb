@@ -2,7 +2,6 @@ package com.emily.skydb.server;
 
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.emily.skydb.core.protocol.ReqDbBody;
 import com.emily.skydb.server.db.DruidBusinessHandler;
 import com.emily.skydb.server.db.constant.DbName;
 import com.emily.skydb.server.db.helper.SqlHelper;
@@ -12,7 +11,6 @@ import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.manager.SkyServerManager;
 import com.emily.skydb.server.manager.SkyServerProperties;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

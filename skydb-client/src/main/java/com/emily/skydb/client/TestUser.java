@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
  * @CreateDate :  Created in 2023/2/25 5:21 PM
  */
 public class TestUser {
-    public int id;
+    //public int id;
     public String name;
     public String colour;
     public int age;
