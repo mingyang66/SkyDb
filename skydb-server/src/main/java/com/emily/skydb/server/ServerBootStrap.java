@@ -3,6 +3,7 @@ package com.emily.skydb.server;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.emily.skydb.core.protocol.ReqDbBody;
+import com.emily.skydb.server.db.DruidBusinessHandler;
 import com.emily.skydb.server.db.constant.DbName;
 import com.emily.skydb.server.db.helper.SqlHelper;
 import com.emily.skydb.server.db.pool.DataSourcePoolManager;
@@ -42,12 +43,7 @@ public class ServerBootStrap {
 
 //--------------------------------------------------------------------------
         SkyServerProperties properties1 = new SkyServerProperties();
-        SkyBusinessHandler handler = new SkyBusinessHandler() {
-            @Override
-            public Object handler(ReqDbBody reqDbBody) throws IOException {
-                return SkyBusinessHandler.super.handler(reqDbBody);
-            }
-        };
+        SkyBusinessHandler handler = new DruidBusinessHandler();
 
         SkyServerManager.bootstrap(handler, properties1);
     }

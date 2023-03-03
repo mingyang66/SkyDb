@@ -3,6 +3,7 @@ package com.emily.skydb.core.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class JsonUtils {
 
     static {
         objectMapper = new ObjectMapper();
+        //序列化和反序列化java.Time时间对象
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     /**

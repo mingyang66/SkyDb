@@ -24,6 +24,7 @@
         <commons.pool.version>2.11.1</commons.pool.version>
         <msgpack.core.version>0.9.3</msgpack.core.version>
         <msgpack.jackson.version>0.9.3</msgpack.jackson.version>
+        <jackson.jsr310.version>2.13.3</jackson.jsr310.version>
         <mybatis.version>3.5.11</mybatis.version>
         <mysql.connection.version>8.0.32</mysql.connection.version>
         <alibaba.druid.version>1.2.16</alibaba.druid.version>
@@ -56,6 +57,12 @@
                 <artifactId>jackson-dataformat-msgpack</artifactId>
                 <version>${msgpack.jackson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.jsr310.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>

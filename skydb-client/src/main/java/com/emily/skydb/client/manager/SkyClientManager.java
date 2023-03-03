@@ -7,6 +7,7 @@ import com.emily.skydb.client.pool.SkyPooledObjectFactory;
 import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.ReqDbBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 /**
@@ -84,7 +85,7 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static <T> T invoke(ReqDbBody reqDbBody, Class<? extends T> cls) throws Exception {
+    public static <T> T invoke(ReqDbBody reqDbBody, TypeReference<? extends T> reference) throws Exception {
         //Channel对象
         SkyClientConnection connection = null;
         try {
@@ -95,7 +96,7 @@ public class SkyClientManager {
             //发送请求并获取返回结果
             byte[] response = connection.getClientChannelHandler().send(packet);
             //返回值反序列化
-            return MessagePackUtils.deSerialize(response, cls);
+            return MessagePackUtils.deSerialize(response, reference);
         } finally {
             if (connection != null) {
                 //归还链接

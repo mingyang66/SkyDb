@@ -38,13 +38,13 @@ public class SqlHelper {
             //执行查询操作
             rs = statement.executeQuery();
             //获取一个可以获取ResultSet对象列的名称、数量等信息的对象
-            ResultSetMetaData metaData = rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
             //获取查询到的属性个数
-            int count = metaData.getColumnCount();
+            int numberOfColumns = rsmd.getColumnCount();
             while (rs.next()) {
-                Map<String, Object> dataMap = new HashMap<>(count);
-                for (int j = 1; j <= count; j++) {
-                    dataMap.put(metaData.getColumnName(j), rs.getObject(j));
+                Map<String, Object> dataMap = new HashMap<>(numberOfColumns);
+                for (int j = 1; j <= numberOfColumns; j++) {
+                    dataMap.put(rsmd.getColumnName(j), rs.getObject(j));
                 }
                 list.add(dataMap);
             }

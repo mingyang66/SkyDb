@@ -6,6 +6,10 @@ import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.protocol.ReqDbBody;
 import com.emily.skydb.core.protocol.ReqDbItem;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: SkyDb
@@ -33,9 +37,10 @@ public class ClientBootStrap {
             try {
 
                 //连接netty，并获得一个代理对象
-                TestUser bean = SkyClientManager.invoke(reqDbBody, TestUser.class);
+                List<TestUser> bean = SkyClientManager.invoke(reqDbBody, new TypeReference<>() {
+                });
                 if (bean != null) {
-                    System.out.println(bean.username + "--------" + bean.password);
+                    System.out.println(bean.get(0).name + "--------" + bean.get(0).colour);
                 }
                 //Thread.sleep(1000);
             } catch (Exception exception) {
