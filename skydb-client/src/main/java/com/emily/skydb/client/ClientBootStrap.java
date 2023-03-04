@@ -26,7 +26,7 @@ public class ClientBootStrap {
         SkyClientManager.initPool(properties, loadBalance);
         DbReqBody reqDbBody = new DbReqBody();
         reqDbBody.dbName = "account";
-        reqDbBody.id = "123";
+        reqDbBody.id = "insert_test";
         reqDbBody.params.add(new DbParamItem("name", "田晓霞"));
         reqDbBody.params.add(new DbParamItem("color", "女"));
         reqDbBody.params.add(new DbParamItem("age", "18", DbType.Int32));

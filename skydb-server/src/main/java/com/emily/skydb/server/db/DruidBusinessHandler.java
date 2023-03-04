@@ -1,11 +1,15 @@
 package com.emily.skydb.server.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.emily.skydb.core.protocol.DbOperationType;
 import com.emily.skydb.core.protocol.DbReqBody;
 import com.emily.skydb.core.utils.StrUtils;
+import com.emily.skydb.server.db.entity.MiddleWare;
+import com.emily.skydb.server.db.helper.DbCacheHelper;
 import com.emily.skydb.server.db.helper.DbHelper;
 import com.emily.skydb.server.db.pool.DataSourcePoolManager;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 
@@ -22,16 +26,17 @@ public class DruidBusinessHandler implements SkyBusinessHandler {
         List<Map<String, Object>> list = SqlHelper.executeQuery(dataSource, sql);
         System.out.println(JsonUtils.toJSONString(list));
         return list;*/
-
-        String sql = "insert into sailboat(name,colour,age,price,insertTime,updateTime,year) " +
-                "VALUES(:name,'男',:age,:price," +
-                "str_to_date(:insertTime,'%Y-%m-%d %H:%i:%s')," +
-                "str_to_date(:updateTime,'%Y-%m-%d %H:%i:%s')," +
-                ":year)";
-        String newSql = StrUtils.replacePlaceHolder(sql, dbReqBody.params);
-
-        int rows = DbHelper.executeUpdate(dataSource, newSql);
-        System.out.println("插入数据行数：" + rows);
-        return rows;
+        if (!DbCacheHelper.CACHE.containsKey(dbReqBody.id)) {
+            //todo 抛异常处理
+        }
+        MiddleWare middleWare = DbCacheHelper.CACHE.get(dbReqBody.id);
+        //String sql = "insert into sailboat(name,colour,age,price,insertTime,updateTime,year) VALUES(:name,:color,:age,:price,str_to_date(:insertTime,'%Y-%m-%d %H:%i:%s'),str_to_date(:updateTime,'%Y-%m-%d %H:%i:%s'),:year)";
+        String newSql = StrUtils.replacePlaceHolder(middleWare.sqlText, dbReqBody.params);
+        if (StringUtils.equals(middleWare.dbType, DbOperationType.INSERT)) {
+            int rows = DbHelper.executeUpdate(dataSource, newSql);
+            System.out.println("插入数据行数：" + rows);
+            return rows;
+        }
+        return null;
     }
 }

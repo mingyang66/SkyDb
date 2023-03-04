@@ -1,12 +1,15 @@
 package com.emily.skydb.server;
 
 
-import com.alibaba.druid.pool.DruidDataSource;
+import com.emily.skydb.core.utils.JsonUtils;
 import com.emily.skydb.server.db.DruidBusinessHandler;
 import com.emily.skydb.server.db.constant.DbName;
-import com.emily.skydb.server.db.helper.DbHelper;
+import com.emily.skydb.server.db.entity.MiddleWare;
+import com.emily.skydb.server.db.helper.DbCacheHelper;
 import com.emily.skydb.server.db.pool.DataSourcePoolManager;
 import com.emily.skydb.server.db.pool.DataSourceProperties;
+import com.emily.skydb.server.db.repository.MiddleWareRepository;
+import com.emily.skydb.server.db.repository.impl.MiddleWareRepositoryImpl;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
 import com.emily.skydb.server.manager.SkyServerManager;
 import com.emily.skydb.server.manager.SkyServerProperties;
@@ -20,6 +23,7 @@ import java.util.Map;
  */
 public class ServerBootStrap {
     public static void main(String[] args) {
+        //---------------------------数据库连接池初始化-----------------------------------
         DataSourceProperties properties = new DataSourceProperties();
         properties.setDbType(DbName.ACCOUNT);
         properties.setDriver("com.mysql.cj.jdbc.Driver");
@@ -31,15 +35,13 @@ public class ServerBootStrap {
 
         DataSourcePoolManager.bootstrap(list);
 
-        DruidDataSource dataSource = DataSourcePoolManager.getDataSource(DbName.ACCOUNT);
+        //-------------------------------------数据库中间件配置初始化------------------------------
+        MiddleWareRepository middleWareRepository = new MiddleWareRepositoryImpl();
+        Map<String, MiddleWare> cacheMap = middleWareRepository.queryMiddleWare();
+        DbCacheHelper.CACHE.putAll(cacheMap);
+        System.out.println(JsonUtils.toJSONString(cacheMap));
 
-        for (int i = 0; i < 1; i++) {
-            String sql = "SELECT * FROM sailboat s";
-            List<Map<String, Object>> list1 = DbHelper.executeQuery(dataSource, sql);
-            System.out.println(list1);
-        }
-
-//--------------------------------------------------------------------------
+//-------------------------------基于Netty的TCP服务器启动-------------------------------------------
         SkyServerProperties properties1 = new SkyServerProperties();
         SkyBusinessHandler handler = new DruidBusinessHandler();
 
