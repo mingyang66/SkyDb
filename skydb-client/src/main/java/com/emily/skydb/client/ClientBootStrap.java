@@ -29,7 +29,9 @@ public class ClientBootStrap {
         reqDbBody.id = "123";
         reqDbBody.params.add(new DbParamItem("name", "田晓霞"));
         reqDbBody.params.add(new DbParamItem("color", "女"));
-        reqDbBody.params.add(new DbParamItem("age", "1"));
+        reqDbBody.params.add(new DbParamItem("age", "18", DbType.Int32));
+        reqDbBody.params.add(new DbParamItem("year", "2023", DbType.Year));
+        reqDbBody.params.add(new DbParamItem("price", "6183.26", DbType.Decimal));
         reqDbBody.params.add(new DbParamItem("updateTime", "2023-03-03 17:23:56", DbType.DateTime));
         reqDbBody.params.add(new DbParamItem("insertTime", "2023-03-03 17:23:56", DbType.DateTime));
 

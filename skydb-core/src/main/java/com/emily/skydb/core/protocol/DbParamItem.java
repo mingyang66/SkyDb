@@ -23,7 +23,7 @@ public class DbParamItem {
     }
 
     public DbParamItem(String name, String value) {
-        this(name, value, "string");
+        this(name, value, DbType.String);
     }
 
     public DbParamItem(String name, String value, String valueType) {
