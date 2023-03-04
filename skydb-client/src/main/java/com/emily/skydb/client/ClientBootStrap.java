@@ -4,11 +4,10 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
-import com.emily.skydb.core.protocol.ReqDbBody;
-import com.emily.skydb.core.protocol.ReqDbItem;
+import com.emily.skydb.core.protocol.DbParamItem;
+import com.emily.skydb.core.protocol.DbReqBody;
+import com.emily.skydb.core.protocol.DbType;
 import com.fasterxml.jackson.core.type.TypeReference;
-
-import java.util.List;
 
 /**
  * @program: SkyDb
@@ -25,22 +24,27 @@ public class ClientBootStrap {
         LoadBalance loadBalance = new RoundLoadBalance();
         properties.getPool().setMinIdle(1);
         SkyClientManager.initPool(properties, loadBalance);
-        ReqDbBody reqDbBody = new ReqDbBody();
+        DbReqBody reqDbBody = new DbReqBody();
         reqDbBody.dbName = "account";
         reqDbBody.id = "123";
-        reqDbBody.params.add(new ReqDbItem("name", "田晓霞"));
-        reqDbBody.params.add(new ReqDbItem("color", "女"));
-        reqDbBody.params.add(new ReqDbItem("age", "1"));
+        reqDbBody.params.add(new DbParamItem("name", "田晓霞"));
+        reqDbBody.params.add(new DbParamItem("color", "女"));
+        reqDbBody.params.add(new DbParamItem("age", "1"));
+        reqDbBody.params.add(new DbParamItem("updateTime", "2023-03-03 17:23:56", DbType.DateTime));
+        reqDbBody.params.add(new DbParamItem("insertTime", "2023-03-03 17:23:56", DbType.DateTime));
 
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 1; i++) {
             try {
 
                 //连接netty，并获得一个代理对象
-                List<TestUser> bean = SkyClientManager.invoke(reqDbBody, new TypeReference<>() {
+               /* List<TestUser> bean = SkyClientManager.invoke(reqDbBody, new TypeReference<>() {
                 });
                 if (bean != null) {
                     System.out.println(bean.get(0).name + "--------" + bean.get(0).colour);
-                }
+                }*/
+                int rows = SkyClientManager.invoke(reqDbBody, new TypeReference<Integer>() {
+                });
+                System.out.println(rows);
                 //Thread.sleep(1000);
             } catch (Exception exception) {
                 exception.printStackTrace();

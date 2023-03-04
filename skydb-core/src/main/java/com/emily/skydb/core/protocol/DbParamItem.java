@@ -2,10 +2,10 @@ package com.emily.skydb.core.protocol;
 
 /**
  * @Description :  请求SQL参数
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/2 7:15 PM
  */
-public class ReqDbItem {
+public class DbParamItem {
     /**
      * 字段名
      */
@@ -19,14 +19,14 @@ public class ReqDbItem {
      */
     public String valueType;
 
-    public ReqDbItem() {
+    public DbParamItem() {
     }
 
-    public ReqDbItem(String name, String value) {
+    public DbParamItem(String name, String value) {
         this(name, value, "string");
     }
 
-    public ReqDbItem(String name, String value, String valueType) {
+    public DbParamItem(String name, String value, String valueType) {
         this.name = name;
         this.value = value;
         this.valueType = valueType;

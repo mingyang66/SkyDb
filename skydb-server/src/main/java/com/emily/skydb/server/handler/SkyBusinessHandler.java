@@ -1,6 +1,6 @@
 package com.emily.skydb.server.handler;
 
-import com.emily.skydb.core.protocol.ReqDbBody;
+import com.emily.skydb.core.protocol.DbReqBody;
 import com.emily.skydb.core.utils.JsonUtils;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ public interface SkyBusinessHandler {
      * @return
      * @throws IOException
      */
-    default Object handler(ReqDbBody reqDbBody) throws IOException {
+    default Object handler(DbReqBody reqDbBody) throws IOException {
         //请求协议
         TestEntity entity = new TestEntity();
         entity.password = "1234";

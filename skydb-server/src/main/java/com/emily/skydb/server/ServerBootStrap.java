@@ -4,7 +4,7 @@ package com.emily.skydb.server;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.emily.skydb.server.db.DruidBusinessHandler;
 import com.emily.skydb.server.db.constant.DbName;
-import com.emily.skydb.server.db.helper.SqlHelper;
+import com.emily.skydb.server.db.helper.DbHelper;
 import com.emily.skydb.server.db.pool.DataSourcePoolManager;
 import com.emily.skydb.server.db.pool.DataSourceProperties;
 import com.emily.skydb.server.handler.SkyBusinessHandler;
@@ -35,7 +35,7 @@ public class ServerBootStrap {
 
         for (int i = 0; i < 1; i++) {
             String sql = "SELECT * FROM sailboat s";
-            List<Map<String, Object>> list1 = SqlHelper.executeQuery(dataSource, sql);
+            List<Map<String, Object>> list1 = DbHelper.executeQuery(dataSource, sql);
             System.out.println(list1);
         }
 

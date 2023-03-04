@@ -10,7 +10,7 @@ import java.util.List;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class ReqDbBody {
+public class DbReqBody {
 
     /**
      * sql语句唯一标识
@@ -23,6 +23,6 @@ public class ReqDbBody {
     /**
      * sql语句占位符参数
      */
-    public List<ReqDbItem> params = new ArrayList<>();
+    public List<DbParamItem> params = new ArrayList<>();
 
 }

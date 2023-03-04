@@ -2,10 +2,10 @@ package com.emily.skydb.core.protocol;
 
 /**
  * @Description :  请求SQL操作方式
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/2 7:18 PM
  */
-public class ReqDbType {
+public class DbOperationType {
     public final static String SELECT = "select";
 
     public final static String INSERT = "insert";

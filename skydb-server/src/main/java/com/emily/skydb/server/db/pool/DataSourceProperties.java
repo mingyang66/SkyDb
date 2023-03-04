@@ -2,7 +2,7 @@ package com.emily.skydb.server.db.pool;
 
 /**
  * @Description :  数据库基础属性配置
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/1 2:36 PM
  */
 public class DataSourceProperties {

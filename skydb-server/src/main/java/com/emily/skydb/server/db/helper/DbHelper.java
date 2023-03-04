@@ -3,10 +3,7 @@ package com.emily.skydb.server.db.helper;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +11,10 @@ import java.util.Map;
 
 /**
  * @Description :  执行sql帮助类
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/1 5:46 PM
  */
-public class SqlHelper {
+public class DbHelper {
     /**
      * 查询数据库中符合条件的数据
      *
@@ -45,6 +42,9 @@ public class SqlHelper {
                 Map<String, Object> dataMap = new HashMap<>(numberOfColumns);
                 for (int j = 1; j <= numberOfColumns; j++) {
                     dataMap.put(rsmd.getColumnName(j), rs.getObject(j));
+                    int type = rsmd.getColumnType(j);
+                    JDBCType jdbcType = JDBCType.valueOf(type);
+                    System.out.println(jdbcType.getName());
                 }
                 list.add(dataMap);
             }

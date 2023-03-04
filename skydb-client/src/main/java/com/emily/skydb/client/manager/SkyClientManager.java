@@ -5,7 +5,7 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.SkyObjectPool;
 import com.emily.skydb.client.pool.SkyPooledObjectFactory;
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.ReqDbBody;
+import com.emily.skydb.core.protocol.DbReqBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -85,7 +85,7 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static <T> T invoke(ReqDbBody reqDbBody, TypeReference<? extends T> reference) throws Exception {
+    public static <T> T invoke(DbReqBody reqDbBody, TypeReference<? extends T> reference) throws Exception {
         //Channel对象
         SkyClientConnection connection = null;
         try {

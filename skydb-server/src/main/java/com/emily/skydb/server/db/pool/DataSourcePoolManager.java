@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * @Description :  数据库初始化管理器
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/1 5:12 PM
  */
 public class DataSourcePoolManager {
