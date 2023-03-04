@@ -23,6 +23,6 @@ public class DbTransBody {
     /**
      * sql语句占位符参数
      */
-    public List<DbParamItem> params = new ArrayList<>();
+    public List<DbModelItem> params = new ArrayList<>();
 
 }

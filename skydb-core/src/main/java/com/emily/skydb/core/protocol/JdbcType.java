@@ -5,7 +5,7 @@ package com.emily.skydb.core.protocol;
  * @Author :  Emily
  * @CreateDate :  Created in 2023/3/3 5:27 PM
  */
-public class JDBCType {
+public class JdbcType {
 
     public static final String String = "String";
     public static final String Int32 = "Int32";

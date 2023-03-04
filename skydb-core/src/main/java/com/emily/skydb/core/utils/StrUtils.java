@@ -1,7 +1,7 @@
 package com.emily.skydb.core.utils;
 
-import com.emily.skydb.core.protocol.DbParamItem;
-import com.emily.skydb.core.protocol.JDBCType;
+import com.emily.skydb.core.protocol.DbModelItem;
+import com.emily.skydb.core.protocol.JdbcType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.MessageFormat;
@@ -20,24 +20,24 @@ public class StrUtils {
      * @param items 参数列表
      * @return 替换占位符后的sql
      */
-    public static String replacePlaceHolder(String sql, List<DbParamItem> items) {
+    public static String replacePlaceHolder(String sql, List<DbModelItem> items) {
         if (StringUtils.isEmpty(sql) || items == null || items.isEmpty()) {
             return sql;
         }
         String newSql = sql;
         for (int i = 0; i < items.size(); i++) {
-            DbParamItem item = items.get(i);
+            DbModelItem item = items.get(i);
             switch (item.valueType) {
-                case JDBCType.Int32:
-                case JDBCType.Int64:
-                case JDBCType.Year:
-                case JDBCType.Decimal:
+                case JdbcType.Int32:
+                case JdbcType.Int64:
+                case JdbcType.Year:
+                case JdbcType.Decimal:
                     newSql = StringUtils.replace(newSql, MessageFormat.format(":{0}", item.name), MessageFormat.format("{0}", item.value));
                     break;
-                case JDBCType.DateTime:
-                case JDBCType.TimeStamp:
-                case JDBCType.Date:
-                case JDBCType.Time:
+                case JdbcType.DateTime:
+                case JdbcType.TimeStamp:
+                case JdbcType.Date:
+                case JdbcType.Time:
                 default:
                     newSql = StringUtils.replace(newSql, MessageFormat.format(":{0}", item.name), MessageFormat.format("{0}{1}{2}", "\'", item.value, "\'"));
                     break;
