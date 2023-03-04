@@ -5,9 +5,12 @@ import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
 import com.emily.skydb.core.protocol.DbParamItem;
-import com.emily.skydb.core.protocol.DbReqBody;
-import com.emily.skydb.core.protocol.DbType;
+import com.emily.skydb.core.protocol.DbTransBody;
+import com.emily.skydb.core.protocol.JDBCType;
+import com.emily.skydb.core.utils.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.List;
 
 /**
  * @program: SkyDb
@@ -18,41 +21,40 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 public class ClientBootStrap {
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         SkyClientProperties properties = new SkyClientProperties();
         LoadBalance loadBalance = new RoundLoadBalance();
         properties.getPool().setMinIdle(1);
         SkyClientManager.initPool(properties, loadBalance);
-        DbReqBody reqDbBody = new DbReqBody();
-        reqDbBody.dbName = "account";
-        reqDbBody.id = "insert_test";
-        reqDbBody.params.add(new DbParamItem("name", "田晓霞"));
-        reqDbBody.params.add(new DbParamItem("color", "女"));
-        reqDbBody.params.add(new DbParamItem("age", "18", DbType.Int32));
-        reqDbBody.params.add(new DbParamItem("year", "2023", DbType.Year));
-        reqDbBody.params.add(new DbParamItem("price", "6183.26", DbType.Decimal));
-        reqDbBody.params.add(new DbParamItem("updateTime", "2023-03-03 17:23:56", DbType.DateTime));
-        reqDbBody.params.add(new DbParamItem("insertTime", "2023-03-03 17:23:56", DbType.DateTime));
 
-        for (int i = 0; i < 1; i++) {
-            try {
-
-                //连接netty，并获得一个代理对象
-               /* List<TestUser> bean = SkyClientManager.invoke(reqDbBody, new TypeReference<>() {
-                });
-                if (bean != null) {
-                    System.out.println(bean.get(0).name + "--------" + bean.get(0).colour);
-                }*/
-                int rows = SkyClientManager.invoke(reqDbBody, new TypeReference<Integer>() {
-                });
-                System.out.println(rows);
-                //Thread.sleep(1000);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        }
+        selectBody();
     }
 
 
+    public static void insertBody() throws Exception {
+        DbTransBody transBody = new DbTransBody();
+        transBody.dbName = "account";
+        transBody.dbTag = "insert_test";
+        transBody.params.add(new DbParamItem("name", "田晓霞"));
+        transBody.params.add(new DbParamItem("color", "女"));
+        transBody.params.add(new DbParamItem("age", "18", JDBCType.Int32));
+        transBody.params.add(new DbParamItem("year", "2023", JDBCType.Year));
+        transBody.params.add(new DbParamItem("price", "6183.26", JDBCType.Decimal));
+        transBody.params.add(new DbParamItem("updateTime", "2023-03-03 17:23:56", JDBCType.DateTime));
+        transBody.params.add(new DbParamItem("insertTime", "2023-03-03 17:23:56", JDBCType.DateTime));
+        int rows = SkyClientManager.invoke(transBody, new TypeReference<Integer>() {
+        });
+        System.out.println(rows);
+    }
+
+    public static void selectBody() throws Exception {
+        DbTransBody transBody = new DbTransBody();
+        transBody.dbName = "account";
+        transBody.dbTag = "select_test_tj";
+        transBody.params.add(new DbParamItem("age", "1"));
+        List<TestUser> list = SkyClientManager.invoke(transBody, new TypeReference<>() {
+        });
+        System.out.println(JsonUtils.toJSONString(list));
+
+    }
 }

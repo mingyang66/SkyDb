@@ -1,7 +1,7 @@
 package com.emily.skydb.server.handler;
 
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.DbReqBody;
+import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -57,7 +57,7 @@ public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
                 return;
             }
             //请求消息体
-            DbReqBody reqDbBody = MessagePackUtils.deSerialize(packet.body, DbReqBody.class);
+            DbTransBody reqDbBody = MessagePackUtils.deSerialize(packet.body, DbTransBody.class);
             //获取后置处理结果
             Object value = this.handler.handler(reqDbBody);
             //发送调用方法调用结果

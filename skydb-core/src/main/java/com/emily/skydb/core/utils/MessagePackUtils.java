@@ -26,14 +26,23 @@ public class MessagePackUtils {
     }
 
     public static byte[] serialize(Object value) throws JsonProcessingException {
+        if (value == null) {
+            return null;
+        }
         return objectMapper.writeValueAsBytes(value);
     }
 
     public static <T> T deSerialize(byte[] buffer, Class<? extends T> cls) throws IOException {
+        if (buffer == null) {
+            return null;
+        }
         return objectMapper.readValue(buffer, cls);
     }
 
     public static <T> T deSerialize(byte[] buffer, TypeReference<? extends T> reference) throws IOException {
+        if (buffer == null) {
+            return null;
+        }
         return objectMapper.readValue(buffer, reference);
     }
 }

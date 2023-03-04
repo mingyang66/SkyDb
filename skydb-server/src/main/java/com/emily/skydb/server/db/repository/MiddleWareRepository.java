@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * @Description :  数据库中间件仓储接口
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/4 3:29 PM
  */
 public interface MiddleWareRepository {

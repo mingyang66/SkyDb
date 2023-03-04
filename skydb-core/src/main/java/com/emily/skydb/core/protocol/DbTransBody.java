@@ -10,12 +10,12 @@ import java.util.List;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class DbReqBody {
+public class DbTransBody {
 
     /**
      * sql语句唯一标识
      */
-    public String id;
+    public String dbTag;
     /**
      * 数据库标识
      */

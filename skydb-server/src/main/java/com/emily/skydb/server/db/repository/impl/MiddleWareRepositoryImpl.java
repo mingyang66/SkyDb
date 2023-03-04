@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * @Description :  数据库中间件仓储服务
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/4 3:35 PM
  */
 public class MiddleWareRepositoryImpl implements MiddleWareRepository {

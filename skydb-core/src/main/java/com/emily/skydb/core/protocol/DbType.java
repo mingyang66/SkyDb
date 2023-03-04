@@ -1,19 +1,18 @@
 package com.emily.skydb.core.protocol;
 
 /**
- * @Description :  请求参数数据库类型
+ * @Description :  请求SQL操作方式
  * @Author :  Emily
- * @CreateDate :  Created in 2023/3/3 5:27 PM
+ * @CreateDate :  Created in 2023/3/2 7:18 PM
  */
 public class DbType {
+    public final static String SELECT = "select";
 
-    public static final String String = "String";
-    public static final String Int32 = "Int32";
-    public static final String Int64 = "Int64";
-    public static final String Year = "Year";
-    public static final String Date = "Date";
-    public static final String Time = "Time";
-    public static final String DateTime = "DateTime";
-    public static final String TimeStamp = "TimeStamp";
-    public static final String Decimal = "Decimal";
+    public final static String INSERT = "insert";
+
+    public final static String UPDATE = "update";
+
+    public final static String DELETE = "delete";
+
+    public final static String TRANSACTION = "transaction";
 }
