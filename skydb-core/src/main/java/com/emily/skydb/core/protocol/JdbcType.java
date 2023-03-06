@@ -14,6 +14,5 @@ public class JdbcType {
     public static final String Date = "Date";
     public static final String Time = "Time";
     public static final String DateTime = "DateTime";
-    public static final String TimeStamp = "TimeStamp";
     public static final String Decimal = "Decimal";
 }

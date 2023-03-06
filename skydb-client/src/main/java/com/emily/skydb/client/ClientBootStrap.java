@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -60,7 +61,7 @@ public class ClientBootStrap {
         DbTransBody transBody = new DbTransBody();
         transBody.dbName = "account";
         transBody.dbTag = "select_test_tj";
-        transBody.params.add(new DbModelItem("age", "18"));
+        transBody.params.add(new DbModelItem("age", "45"));
         List<Map<String, DbModelItem>> list = SkyClientManager.invoke(transBody, new TypeReference<>() {
         });
         List<T> result = new ArrayList<>(list.size());
@@ -70,6 +71,7 @@ public class ClientBootStrap {
             itemMap.keySet().forEach(name -> {
                 try {
                     DbModelItem item = itemMap.get(name);
+                    //获取当前类的属性对象
                     Field field = t.getClass().getDeclaredField(name);
                     field.setAccessible(true);
                     switch (item.valueType) {
@@ -79,18 +81,23 @@ public class ClientBootStrap {
                             }
                             break;
                         case JdbcType.Date:
-                            if(StringUtils.isNotEmpty(item.value)){
+                            if (StringUtils.isNotEmpty(item.value)) {
                                 field.set(t, LocalDate.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD.getFormat())));
                             }
                             break;
                         case JdbcType.Time:
-                            if(StringUtils.isNotEmpty(item.value)){
+                            if (StringUtils.isNotEmpty(item.value)) {
                                 field.set(t, LocalTime.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.HH_MM_SS.getFormat())));
                             }
                             break;
                         case JdbcType.Int32:
                             if (StringUtils.isNotEmpty(item.value)) {
                                 field.set(t, Integer.valueOf(item.value));
+                            }
+                            break;
+                        case JdbcType.Decimal:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, new BigDecimal(item.value));
                             }
                             break;
                         default:

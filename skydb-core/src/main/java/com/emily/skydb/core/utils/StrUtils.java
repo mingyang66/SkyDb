@@ -35,7 +35,6 @@ public class StrUtils {
                     newSql = StringUtils.replace(newSql, MessageFormat.format(":{0}", item.name), MessageFormat.format("{0}", item.value));
                     break;
                 case JdbcType.DateTime:
-                case JdbcType.TimeStamp:
                 case JdbcType.Date:
                 case JdbcType.Time:
                 default:

@@ -1,8 +1,9 @@
 package com.emily.skydb.client;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalTime;
 
 /**
  * @Description :  测试实体类
@@ -16,6 +17,24 @@ public class TestUser {
     private int age;
     private LocalDateTime updateTime;
     private LocalDate year;
+    private LocalTime dbTime;
+    private BigDecimal price;
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public LocalTime getDbTime() {
+        return dbTime;
+    }
+
+    public void setDbTime(LocalTime dbTime) {
+        this.dbTime = dbTime;
+    }
 
     public LocalDate getYear() {
         return year;
