@@ -2,8 +2,12 @@ package com.emily.skydb.server.db.helper;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
+import com.emily.skydb.core.enums.DateFormatType;
+import com.emily.skydb.core.protocol.DbModelItem;
+import com.emily.skydb.core.protocol.JdbcType;
 
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +26,8 @@ public class DbHelper {
      * @param sql        sql语句
      * @return
      */
-    public static List<Map<String, Object>> executeQuery(DruidDataSource dataSource, String sql) {
-        List<Map<String, Object>> list = new ArrayList<>();
+    public static List<Map<String, DbModelItem>> executeQuery(DruidDataSource dataSource, String sql) {
+        List<Map<String, DbModelItem>> list = new ArrayList<>();
         DruidPooledConnection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
@@ -39,12 +43,56 @@ public class DbHelper {
             //获取查询到的属性个数
             int numberOfColumns = rsmd.getColumnCount();
             while (rs.next()) {
-                Map<String, Object> dataMap = new HashMap<>(numberOfColumns);
+                Map<String, DbModelItem> dataMap = new HashMap<>(numberOfColumns);
                 for (int j = 1; j <= numberOfColumns; j++) {
-                    dataMap.put(rsmd.getColumnName(j), rs.getObject(j));
                     int type = rsmd.getColumnType(j);
                     JDBCType jdbcType = JDBCType.valueOf(type);
                     System.out.println(jdbcType.getName());
+                    DbModelItem item = new DbModelItem();
+                    item.name = rsmd.getColumnName(j);
+                    switch (jdbcType) {
+                        case TIMESTAMP:
+                            //DATETIME、TIMESTAMP
+                            item.valueType = JdbcType.DateTime;
+                            Timestamp timestamp = rs.getTimestamp(j);
+                            if (timestamp != null) {
+                                item.value = timestamp.toLocalDateTime().format(DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD_HH_MM_SS_COLON_SSS.getFormat()));
+                            }
+                            break;
+                        case DATE:
+                            //Year、Date
+                            item.valueType = JdbcType.Date;
+                            Date date = rs.getDate(j);
+                            if (date != null) {
+                                item.value = date.toLocalDate().format(DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD.getFormat()));
+                            }
+                            break;
+                        case TIME:
+                            //TIME
+                            item.valueType = JdbcType.Time;
+                            Time time = rs.getTime(j);
+                            if (time != null) {
+                                item.value = time.toLocalTime().format(DateTimeFormatter.ofPattern(DateFormatType.HH_MM_SS.getFormat()));
+                            }
+                            break;
+                        case INTEGER:
+                            item.valueType = JdbcType.Int32;
+                            item.value = rs.getString(j);
+                            break;
+                        case BIGINT:
+                            item.valueType = JdbcType.Int64;
+                            item.value = rs.getString(j);
+                            break;
+                        case DECIMAL:
+                            item.valueType = JdbcType.Decimal;
+                            item.value = rs.getString(j);
+                            break;
+                        default:
+                            item.valueType = JdbcType.String;
+                            item.value = rs.getString(j);
+                            break;
+                    }
+                    dataMap.put(item.name, item);
                 }
                 list.add(dataMap);
             }

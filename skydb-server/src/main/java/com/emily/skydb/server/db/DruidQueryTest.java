@@ -1,6 +1,7 @@
 package com.emily.skydb.server.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.emily.skydb.core.protocol.DbModelItem;
 import com.emily.skydb.server.db.constant.DbName;
 import com.emily.skydb.server.db.helper.DbHelper;
 import com.emily.skydb.server.db.pool.DataSourcePoolManager;
@@ -31,7 +32,7 @@ public class DruidQueryTest {
 
         for (int i = 0; i < 1; i++) {
             String sql = "SELECT * FROM sailboat s";
-            List<Map<String, Object>> list1 = DbHelper.executeQuery(dataSource, sql);
+            List<Map<String, DbModelItem>> list1 = DbHelper.executeQuery(dataSource, sql);
             System.out.println(list1);
         }
 

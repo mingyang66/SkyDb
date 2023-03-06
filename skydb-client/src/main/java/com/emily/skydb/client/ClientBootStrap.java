@@ -4,13 +4,22 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.SkyClientManager;
 import com.emily.skydb.client.manager.SkyClientProperties;
+import com.emily.skydb.core.enums.DateFormatType;
 import com.emily.skydb.core.protocol.DbModelItem;
 import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.protocol.JdbcType;
 import com.emily.skydb.core.utils.JsonUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: SkyDb
@@ -27,7 +36,7 @@ public class ClientBootStrap {
         properties.getPool().setMinIdle(1);
         SkyClientManager.initPool(properties, loadBalance);
 
-        selectBody();
+        selectBody(TestUser.class);
     }
 
 
@@ -47,14 +56,56 @@ public class ClientBootStrap {
         System.out.println(rows);
     }
 
-    public static void selectBody() throws Exception {
+    public static <T> void selectBody(Class<T> cls) throws Exception {
         DbTransBody transBody = new DbTransBody();
         transBody.dbName = "account";
         transBody.dbTag = "select_test_tj";
-        transBody.params.add(new DbModelItem("age", "1"));
-        List<TestUser> list = SkyClientManager.invoke(transBody, new TypeReference<>() {
+        transBody.params.add(new DbModelItem("age", "18"));
+        List<Map<String, DbModelItem>> list = SkyClientManager.invoke(transBody, new TypeReference<>() {
         });
-        System.out.println(JsonUtils.toJSONString(list));
+        List<T> result = new ArrayList<>(list.size());
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, DbModelItem> itemMap = list.get(i);
+            T t = cls.getDeclaredConstructor().newInstance();
+            itemMap.keySet().forEach(name -> {
+                try {
+                    DbModelItem item = itemMap.get(name);
+                    Field field = t.getClass().getDeclaredField(name);
+                    field.setAccessible(true);
+                    switch (item.valueType) {
+                        case JdbcType.DateTime:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, LocalDateTime.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD_HH_MM_SS_COLON_SSS.getFormat())));
+                            }
+                            break;
+                        case JdbcType.Date:
+                            if(StringUtils.isNotEmpty(item.value)){
+                                field.set(t, LocalDate.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD.getFormat())));
+                            }
+                            break;
+                        case JdbcType.Time:
+                            if(StringUtils.isNotEmpty(item.value)){
+                                field.set(t, LocalTime.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.HH_MM_SS.getFormat())));
+                            }
+                            break;
+                        case JdbcType.Int32:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, Integer.valueOf(item.value));
+                            }
+                            break;
+                        default:
+                            field.set(t, item.value);
+                            break;
+                    }
+                } catch (NoSuchFieldException e) {
+                    System.out.println("----------------------NoSuchFieldException-----------------------");
+                } catch (IllegalAccessException e) {
+                    System.out.println("----------------------IllegalAccessException-----------------------");
+                }
+            });
+            result.add(t);
+        }
+        System.out.println(JsonUtils.toJSONString(result));
 
     }
 }

@@ -1,6 +1,7 @@
 package com.emily.skydb.server.db.repository.impl;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.emily.skydb.core.protocol.DbModelItem;
 import com.emily.skydb.server.db.constant.DbName;
 import com.emily.skydb.server.db.entity.MiddleWare;
 import com.emily.skydb.server.db.helper.DbHelper;
@@ -21,14 +22,14 @@ public class MiddleWareRepositoryImpl implements MiddleWareRepository {
     public Map<String, MiddleWare> queryMiddleWare() {
         DruidDataSource dataSource = DataSourcePoolManager.getDataSource(DbName.ACCOUNT);
         String sql = "SELECT d.sqlText,d.dbName,d.dbType,d.dbTag FROM DbMiddleware d ";
-        List<Map<String, Object>> list = DbHelper.executeQuery(dataSource, sql);
+        List<Map<String, DbModelItem>> list = DbHelper.executeQuery(dataSource, sql);
         Map<String, MiddleWare> dataMap = new HashMap<>();
         list.stream().forEach(item -> {
             MiddleWare middleWare = new MiddleWare();
-            middleWare.dbName = item.get("dbName").toString();
-            middleWare.dbTag = item.get("dbTag").toString();
-            middleWare.dbType = item.get("dbType").toString();
-            middleWare.sqlText = item.get("sqlText").toString();
+            middleWare.dbName = item.get("dbName").value;
+            middleWare.dbTag = item.get("dbTag").value;
+            middleWare.dbType = item.get("dbType").value;
+            middleWare.sqlText = item.get("sqlText").value;
             dataMap.put(middleWare.dbTag, middleWare);
         });
         return dataMap;
