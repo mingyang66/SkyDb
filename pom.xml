@@ -12,7 +12,6 @@
         <module>skydb-core</module>
         <module>skydb-client</module>
         <module>skydb-server</module>
-        <module>demo-mybatis</module>
     </modules>
 
     <properties>
