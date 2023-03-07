@@ -19,14 +19,14 @@ public class TestUser {
     private LocalDate year;
     private LocalTime dbTime;
     private BigDecimal price;
-    private boolean BooleanTest;
+    private Integer BooleanTest;
     private Integer BitTest;
 
-    public boolean isBooleanTest() {
+    public Integer getBooleanTest() {
         return BooleanTest;
     }
 
-    public void setBooleanTest(boolean booleanTest) {
+    public void setBooleanTest(Integer booleanTest) {
         BooleanTest = booleanTest;
     }
 
