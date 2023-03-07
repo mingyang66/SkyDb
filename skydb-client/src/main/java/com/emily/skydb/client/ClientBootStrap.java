@@ -26,7 +26,9 @@ public class ClientBootStrap {
         properties.getPool().setMinIdle(1);
         DbClientManager.initPool(properties, loadBalance);
 
-        selectBody(TestUser.class);
+        for (int i = 0; i < 50; i++) {
+            selectBody(TestUser.class);
+        }
     }
 
 
@@ -45,13 +47,18 @@ public class ClientBootStrap {
         System.out.println(rows);
     }
 
-    public static <T> void selectBody(Class<T> cls) throws Exception {
-        DbTransBody transBody = new DbTransBody();
-        transBody.dbName = "account";
-        transBody.dbTag = "select_test_tj";
-        transBody.params.add(new DbModelItem("age", "45"));
-        List<T> list = DbClientManager.executeQuery(transBody, cls);
-        System.out.println(JsonUtils.toJSONString(list));
+    public static <T> void selectBody(Class<T> cls) {
+        try {
+
+            DbTransBody transBody = new DbTransBody();
+            transBody.dbName = "account";
+            transBody.dbTag = "select_test_tj";
+            transBody.params.add(new DbModelItem("age", "45"));
+            List<T> list = DbClientManager.executeQuery(transBody, cls);
+            System.out.println(JsonUtils.toJSONString(list));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }
