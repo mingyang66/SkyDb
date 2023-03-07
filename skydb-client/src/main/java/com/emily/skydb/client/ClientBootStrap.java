@@ -8,6 +8,7 @@ import com.emily.skydb.core.protocol.DbModelItem;
 import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.protocol.JdbcType;
 import com.emily.skydb.core.utils.JsonUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -25,9 +26,16 @@ public class ClientBootStrap {
         LoadBalance loadBalance = new RoundLoadBalance();
         properties.getPool().setMinIdle(1);
         DbClientManager.initPool(properties, loadBalance);
-
-        for (int i = 0; i < 50; i++) {
-            selectBody(TestUser.class);
+        Thread.sleep(2 * 1000);
+        System.out.println("------------------休眠结束----------------");
+        for (int i = 0; i < 500000; i++) {
+            //selectBody(TestUser.class);
+            List<String> list = selectBody(String.class, String.valueOf(i));
+            if (StringUtils.equals(i + "", list.get(0))) {
+                System.out.println("---------true");
+            } else {
+                System.out.println("---------false");
+            }
         }
     }
 
@@ -47,7 +55,7 @@ public class ClientBootStrap {
         System.out.println(rows);
     }
 
-    public static <T> void selectBody(Class<T> cls) {
+    public static <T> List<T> selectBody(Class<T> cls) {
         try {
 
             DbTransBody transBody = new DbTransBody();
@@ -56,9 +64,25 @@ public class ClientBootStrap {
             transBody.params.add(new DbModelItem("age", "45"));
             List<T> list = DbClientManager.executeQuery(transBody, cls);
             System.out.println(JsonUtils.toJSONString(list));
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
 
+    public static <T> List<T> selectBody(Class<T> cls, String i) {
+        try {
+
+            DbTransBody transBody = new DbTransBody();
+            transBody.dbName = "account";
+            transBody.dbTag = "select_test_dual";
+            transBody.params.add(new DbModelItem("testText", i));
+            List<T> list = DbClientManager.executeQuery(transBody, cls);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

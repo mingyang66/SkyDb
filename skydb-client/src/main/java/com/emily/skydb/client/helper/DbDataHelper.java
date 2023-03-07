@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,15 +43,42 @@ public class DbDataHelper {
         List<T> result = new ArrayList<>(list.size());
         for (int i = 0; i < list.size(); i++) {
             Map<String, DbModelItem> itemMap = list.get(i);
-            T t = cls.getDeclaredConstructor().newInstance();
-            itemMap.keySet().forEach(name -> {
-                DbModelItem item = itemMap.get(name);
-                setFieldValue(item, t);
-
-            });
-            result.add(t);
+            if (isFinal(cls)) {
+                itemMap.keySet().forEach(name -> {
+                    DbModelItem item = itemMap.get(name);
+                    result.add((T) item.value);
+                });
+            } else {
+                T t = cls.getDeclaredConstructor().newInstance();
+                itemMap.keySet().forEach(name -> {
+                    DbModelItem item = itemMap.get(name);
+                    setFieldValue(item, t);
+                });
+                result.add(t);
+            }
         }
         return result;
+    }
+
+    private static boolean isFinal(Class cls) {
+        if (cls.getClass().isInstance(String.class)
+                || cls.getClass().isInstance(Byte.class)
+                || cls.getClass().isInstance(Short.class)
+                || cls.getClass().isInstance(Integer.class)
+                || cls.getClass().isInstance(Long.class)
+                || cls.getClass().isInstance(Float.class)
+                || cls.getClass().isInstance(Double.class)
+                || cls.getClass().isInstance(Boolean.class)
+                || cls.getClass().isInstance(Character.class)
+                || cls.getClass().isInstance(BigDecimal.class)
+                || cls.getClass().isInstance(BigInteger.class)
+                || cls.getClass().isInstance(LocalDateTime.class)
+                || cls.getClass().isInstance(LocalDate.class)
+                || cls.getClass().isInstance(LocalTime.class)
+        ) {
+            return true;
+        }
+        return false;
     }
 
     /**
