@@ -22,6 +22,10 @@ public class DbModelItem {
     public DbModelItem() {
     }
 
+    public DbModelItem(String name) {
+        this(name, null);
+    }
+
     public DbModelItem(String name, String value) {
         this(name, value, JdbcType.String);
     }
