@@ -1,18 +1,15 @@
 package com.emily.skydb.client;
 
-import com.emily.skydb.client.helper.DbDataHelper;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.loadbalance.RoundLoadBalance;
-import com.emily.skydb.client.manager.SkyClientManager;
-import com.emily.skydb.client.manager.SkyClientProperties;
+import com.emily.skydb.client.manager.DbClientManager;
+import com.emily.skydb.client.manager.DbClientProperties;
 import com.emily.skydb.core.protocol.DbModelItem;
 import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.protocol.JdbcType;
 import com.emily.skydb.core.utils.JsonUtils;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @program: SkyDb
@@ -24,10 +21,10 @@ import java.util.Map;
 public class ClientBootStrap {
 
     public static void main(String[] args) throws Exception {
-        SkyClientProperties properties = new SkyClientProperties();
+        DbClientProperties properties = new DbClientProperties();
         LoadBalance loadBalance = new RoundLoadBalance();
         properties.getPool().setMinIdle(1);
-        SkyClientManager.initPool(properties, loadBalance);
+        DbClientManager.initPool(properties, loadBalance);
 
         selectBody(TestUser.class);
     }
@@ -44,8 +41,7 @@ public class ClientBootStrap {
         transBody.params.add(new DbModelItem("price", "6183.26", JdbcType.Decimal));
         transBody.params.add(new DbModelItem("updateTime", "2023-03-03 17:23:56", JdbcType.DateTime));
         transBody.params.add(new DbModelItem("insertTime", "2023-03-03 17:23:56", JdbcType.DateTime));
-        int rows = SkyClientManager.invoke(transBody, new TypeReference<Integer>() {
-        });
+        int rows = DbClientManager.executeUpdate(transBody);
         System.out.println(rows);
     }
 
@@ -54,10 +50,8 @@ public class ClientBootStrap {
         transBody.dbName = "account";
         transBody.dbTag = "select_test_tj";
         transBody.params.add(new DbModelItem("age", "45"));
-        List<Map<String, DbModelItem>> list = SkyClientManager.invoke(transBody, new TypeReference<>() {
-        });
-        List<T> result = DbDataHelper.getDbEntity(list, cls);
-        System.out.println(JsonUtils.toJSONString(result));
+        List<T> list = DbClientManager.executeQuery(transBody, cls);
+        System.out.println(JsonUtils.toJSONString(list));
 
     }
 }

@@ -1,8 +1,8 @@
 package com.emily.skydb.client.pool;
 
-import com.emily.skydb.client.connection.SkyClientConnection;
+import com.emily.skydb.client.connection.DbClientConnection;
 import com.emily.skydb.client.loadbalance.LoadBalance;
-import com.emily.skydb.client.manager.SkyClientProperties;
+import com.emily.skydb.client.manager.DbClientProperties;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -15,13 +15,13 @@ import java.util.Objects;
  * @author: Emily
  * @create: 2021/09/28
  */
-public class SkyPooledObjectFactory implements PooledObjectFactory<SkyClientConnection> {
+public class DbPooledObjectFactory implements PooledObjectFactory<DbClientConnection> {
 
 
-    private SkyClientProperties properties;
+    private DbClientProperties properties;
     private LoadBalance loadBalance;
 
-    public SkyPooledObjectFactory(SkyClientProperties properties, LoadBalance loadBalance) {
+    public DbPooledObjectFactory(DbClientProperties properties, LoadBalance loadBalance) {
         this.properties = properties;
         this.loadBalance = loadBalance;
     }
@@ -33,12 +33,12 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyClientConn
      * @throws Exception
      */
     @Override
-    public PooledObject<SkyClientConnection> makeObject() throws Exception {
+    public PooledObject<DbClientConnection> makeObject() throws Exception {
         System.out.println("创建对象...");
         //获取RPC服务器地址
         String address = loadBalance.selectServiceAddress(properties.getAddress());
         //RPC连接对象
-        SkyClientConnection connection = new SkyClientConnection(properties);
+        DbClientConnection connection = new DbClientConnection(properties);
         //建立Rpc连接
         connection.connect(address);
         return new DefaultPooledObject<>(connection);
@@ -51,9 +51,9 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyClientConn
      * @throws Exception
      */
     @Override
-    public void destroyObject(PooledObject<SkyClientConnection> pooledObject) throws Exception {
+    public void destroyObject(PooledObject<DbClientConnection> pooledObject) throws Exception {
         System.out.println("销毁对象...");
-        SkyClientConnection connection = pooledObject.getObject();
+        DbClientConnection connection = pooledObject.getObject();
         if (Objects.nonNull(connection)) {
             connection.close();
         }
@@ -66,9 +66,9 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyClientConn
      * @throws Exception
      */
     @Override
-    public void activateObject(PooledObject<SkyClientConnection> pooledObject) throws Exception {
+    public void activateObject(PooledObject<DbClientConnection> pooledObject) throws Exception {
         System.out.println("激活对象...");
-        SkyClientConnection connection = pooledObject.getObject();
+        DbClientConnection connection = pooledObject.getObject();
         if (!connection.isAvailable()) {
             //获取RPC服务器地址
             String address = loadBalance.selectServiceAddress(properties.getAddress());
@@ -84,7 +84,7 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyClientConn
      * @throws Exception
      */
     @Override
-    public void passivateObject(PooledObject<SkyClientConnection> pooledObject) throws Exception {
+    public void passivateObject(PooledObject<DbClientConnection> pooledObject) throws Exception {
         System.out.println("钝化对象...");
     }
 
@@ -95,8 +95,8 @@ public class SkyPooledObjectFactory implements PooledObjectFactory<SkyClientConn
      * @return
      */
     @Override
-    public boolean validateObject(PooledObject<SkyClientConnection> pooledObject) {
-        SkyClientConnection connection = pooledObject.getObject();
+    public boolean validateObject(PooledObject<DbClientConnection> pooledObject) {
+        DbClientConnection connection = pooledObject.getObject();
         if (!connection.isAvailable()) {
             //连接不可用，关闭连接
             connection.close();

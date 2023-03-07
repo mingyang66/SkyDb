@@ -16,7 +16,7 @@ import java.time.Duration;
  * @create: 2021/09/17
  */
 @ChannelHandler.Sharable
-public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
+public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
 
 
     public final Object object = new Object();
@@ -34,7 +34,7 @@ public class SkyClientChannelHandler extends ChannelInboundHandlerAdapter {
      */
     private Duration readTimeOut;
 
-    public SkyClientChannelHandler(Duration readTimeOut) {
+    public DbClientChannelHandler(Duration readTimeOut) {
         this.readTimeOut = readTimeOut;
     }
 

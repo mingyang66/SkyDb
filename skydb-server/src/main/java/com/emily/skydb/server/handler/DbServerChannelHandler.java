@@ -13,11 +13,11 @@ import io.netty.util.ReferenceCountUtil;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class SkyServerChannelHandler extends ChannelInboundHandlerAdapter {
+public class DbServerChannelHandler extends ChannelInboundHandlerAdapter {
 
-    private SkyBusinessHandler handler;
+    private DbBusinessHandler handler;
 
-    public SkyServerChannelHandler(SkyBusinessHandler handler) {
+    public DbServerChannelHandler(DbBusinessHandler handler) {
         this.handler = handler;
     }
 

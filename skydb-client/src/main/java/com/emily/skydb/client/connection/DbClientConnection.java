@@ -1,8 +1,8 @@
 package com.emily.skydb.client.connection;
 
+import com.emily.skydb.client.handler.DbClientChannelHandler;
 import com.emily.skydb.client.handler.HeartBeatChannelHandler;
-import com.emily.skydb.client.handler.SkyClientChannelHandler;
-import com.emily.skydb.client.manager.SkyClientProperties;
+import com.emily.skydb.client.manager.DbClientProperties;
 import com.emily.skydb.core.constant.CharacterInfo;
 import com.emily.skydb.core.decoder.MessagePackDecoder;
 import com.emily.skydb.core.encoder.MessagePackEncoder;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class SkyClientConnection extends AbstractConnection<Channel> {
+public class DbClientConnection extends AbstractConnection<Channel> {
 
     /**
      * 线程工作组
@@ -37,11 +37,11 @@ public class SkyClientConnection extends AbstractConnection<Channel> {
     /**
      * 处理器
      */
-    private SkyClientChannelHandler clientChannelHandler;
+    private DbClientChannelHandler clientChannelHandler;
 
-    private SkyClientProperties properties;
+    private DbClientProperties properties;
 
-    public SkyClientConnection(SkyClientProperties properties) {
+    public DbClientConnection(DbClientProperties properties) {
         this.properties = properties;
     }
 
@@ -74,7 +74,7 @@ public class SkyClientConnection extends AbstractConnection<Channel> {
     @Override
     public boolean connect(String address) {
         try {
-            clientChannelHandler = new SkyClientChannelHandler(properties.getReadTimeOut());
+            clientChannelHandler = new DbClientChannelHandler(properties.getReadTimeOut());
             BOOTSTRAP
                     /**
                      * The timeout period of the connection.
@@ -146,7 +146,7 @@ public class SkyClientConnection extends AbstractConnection<Channel> {
         this.getConnection().close();
     }
 
-    public SkyClientChannelHandler getClientChannelHandler() {
+    public DbClientChannelHandler getClientChannelHandler() {
         return clientChannelHandler;
     }
 }

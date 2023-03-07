@@ -8,7 +8,7 @@ import java.time.Duration;
  * @author: Emily
  * @create: 2021/09/22
  */
-public class SkyServerProperties {
+public class DbServerProperties {
     /**
      * 端口号,默认：9999
      */

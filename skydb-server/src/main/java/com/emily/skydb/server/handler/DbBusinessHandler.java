@@ -10,7 +10,7 @@ import java.io.IOException;
  * @Author :  Emily
  * @CreateDate :  Created in 2023/2/24 1:34 PM
  */
-public interface SkyBusinessHandler {
+public interface DbBusinessHandler {
     /**
      * 自定义处理后置业务
      *

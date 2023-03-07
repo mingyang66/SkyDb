@@ -9,7 +9,7 @@ import com.emily.skydb.server.db.entity.MiddleWare;
 import com.emily.skydb.server.db.helper.DbCacheHelper;
 import com.emily.skydb.server.db.helper.DbHelper;
 import com.emily.skydb.server.db.pool.DataSourcePoolManager;
-import com.emily.skydb.server.handler.SkyBusinessHandler;
+import com.emily.skydb.server.handler.DbBusinessHandler;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
  * @Author :  Emily
  * @CreateDate :  Created in 2023/3/2 7:51 PM
  */
-public class DruidBusinessHandler implements SkyBusinessHandler {
+public class DruidBusinessHandler implements DbBusinessHandler {
     @Override
     public Object handler(DbTransBody dbReqBody) throws IOException {
         DruidDataSource dataSource = DataSourcePoolManager.getDataSource(dbReqBody.dbName);

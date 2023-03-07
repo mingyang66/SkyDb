@@ -2,9 +2,9 @@ package com.emily.skydb.server.connection;
 
 import com.emily.skydb.core.decoder.MessagePackDecoder;
 import com.emily.skydb.core.encoder.MessagePackEncoder;
-import com.emily.skydb.server.handler.SkyBusinessHandler;
-import com.emily.skydb.server.handler.SkyServerChannelHandler;
-import com.emily.skydb.server.manager.SkyServerProperties;
+import com.emily.skydb.server.handler.DbBusinessHandler;
+import com.emily.skydb.server.handler.DbServerChannelHandler;
+import com.emily.skydb.server.manager.DbServerProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -20,7 +20,7 @@ import java.util.Objects;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class SkyServerConnection {
+public class DbServerConnection {
 
     /**
      * 用于处理客户端的连接请求
@@ -33,13 +33,13 @@ public class SkyServerConnection {
     /**
      * 后置业务处理类
      */
-    private SkyBusinessHandler handler;
+    private DbBusinessHandler handler;
     /**
      * 属性配置
      */
-    private SkyServerProperties properties;
+    private DbServerProperties properties;
 
-    public SkyServerConnection(SkyBusinessHandler handler, SkyServerProperties properties) {
+    public DbServerConnection(DbBusinessHandler handler, DbServerProperties properties) {
         this.handler = handler;
         this.properties = properties;
     }
@@ -92,7 +92,7 @@ public class SkyServerConnection {
                             //自定义编码器
                             pipeline.addLast(new MessagePackEncoder());
                             //自定义处理器
-                            pipeline.addLast(new SkyServerChannelHandler(handler));
+                            pipeline.addLast(new DbServerChannelHandler(handler));
                         }
                     });
             //启动服务器，并绑定端口并且同步

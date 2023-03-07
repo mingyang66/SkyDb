@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +36,9 @@ public class DbDataHelper {
      * @throws IllegalAccessException
      */
     public static <T> List<T> getDbEntity(List<Map<String, DbModelItem>> list, Class<T> cls) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (list == null || list.isEmpty()) {
+            return Collections.emptyList();
+        }
         List<T> result = new ArrayList<>(list.size());
         for (int i = 0; i < list.size(); i++) {
             Map<String, DbModelItem> itemMap = list.get(i);

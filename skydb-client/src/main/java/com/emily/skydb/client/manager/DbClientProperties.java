@@ -11,7 +11,7 @@ import java.util.List;
  * @author: Emily
  * @create: 2021/09/22
  */
-public class SkyClientProperties {
+public class DbClientProperties {
     /**
      * 是否开启RPC客户端配置类
      */

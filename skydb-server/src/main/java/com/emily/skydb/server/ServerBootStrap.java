@@ -10,9 +10,9 @@ import com.emily.skydb.server.db.pool.DataSourcePoolManager;
 import com.emily.skydb.server.db.pool.DataSourceProperties;
 import com.emily.skydb.server.db.repository.MiddleWareRepository;
 import com.emily.skydb.server.db.repository.impl.MiddleWareRepositoryImpl;
-import com.emily.skydb.server.handler.SkyBusinessHandler;
-import com.emily.skydb.server.manager.SkyServerManager;
-import com.emily.skydb.server.manager.SkyServerProperties;
+import com.emily.skydb.server.handler.DbBusinessHandler;
+import com.emily.skydb.server.manager.DbServerManager;
+import com.emily.skydb.server.manager.DbServerProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +42,10 @@ public class ServerBootStrap {
         System.out.println(JsonUtils.toJSONString(cacheMap));
 
 //-------------------------------基于Netty的TCP服务器启动-------------------------------------------
-        SkyServerProperties properties1 = new SkyServerProperties();
-        SkyBusinessHandler handler = new DruidBusinessHandler();
+        DbServerProperties properties1 = new DbServerProperties();
+        DbBusinessHandler handler = new DruidBusinessHandler();
 
-        SkyServerManager.bootstrap(handler, properties1);
+        DbServerManager.bootstrap(handler, properties1);
     }
 
 }

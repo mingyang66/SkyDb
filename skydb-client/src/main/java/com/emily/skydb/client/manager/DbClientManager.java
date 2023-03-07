@@ -1,14 +1,19 @@
 package com.emily.skydb.client.manager;
 
-import com.emily.skydb.client.connection.SkyClientConnection;
+import com.emily.skydb.client.connection.DbClientConnection;
+import com.emily.skydb.client.helper.DbDataHelper;
 import com.emily.skydb.client.loadbalance.LoadBalance;
-import com.emily.skydb.client.pool.SkyObjectPool;
-import com.emily.skydb.client.pool.SkyPooledObjectFactory;
+import com.emily.skydb.client.pool.DbObjectPool;
+import com.emily.skydb.client.pool.DbPooledObjectFactory;
 import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.protocol.DbModelItem;
 import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @program: SkyDb
@@ -16,21 +21,21 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
  * @author: Emily
  * @create: 2021/09/22
  */
-public class SkyClientManager {
+public class DbClientManager {
 
 
-    public static SkyObjectPool POOL;
+    public static DbObjectPool POOL;
 
-    public static SkyObjectPool initPool(SkyClientProperties properties, LoadBalance loadBalance) {
+    public static DbObjectPool initPool(DbClientProperties properties, LoadBalance loadBalance) {
         if (POOL != null) {
             return POOL;
         }
         if (properties == null) {
-            properties = new SkyClientProperties();
+            properties = new DbClientProperties();
         }
-        SkyPooledObjectFactory factory = new SkyPooledObjectFactory(properties, loadBalance);
+        DbPooledObjectFactory factory = new DbPooledObjectFactory(properties, loadBalance);
         //设置对象池的相关参数
-        GenericObjectPoolConfig<SkyClientConnection> poolConfig = new GenericObjectPoolConfig<>();
+        GenericObjectPoolConfig<DbClientConnection> poolConfig = new GenericObjectPoolConfig<>();
         //最大空闲连接数
         poolConfig.setMaxIdle(properties.getPool().getMaxIdle());
         //最小空闲连接数
@@ -53,7 +58,7 @@ public class SkyClientManager {
         poolConfig.setJmxEnabled(false);
 
         //新建一个对象池,传入对象工厂和配置
-        POOL = new SkyObjectPool(factory, poolConfig);
+        POOL = new DbObjectPool(factory, poolConfig);
 
         initObjectPool(properties.getPool().getInitialSize(), properties.getPool().getMaxIdle());
         return POOL;
@@ -85,12 +90,12 @@ public class SkyClientManager {
      *
      * @return
      */
-    public static <T> T invoke(DbTransBody reqDbBody, TypeReference<? extends T> reference) throws Exception {
+    private static <T> T invoke(DbTransBody transBody, TypeReference<? extends T> reference) throws Exception {
         //Channel对象
-        SkyClientConnection connection = null;
+        DbClientConnection connection = null;
         try {
             //TCP发送数据包，并对发送数据序列化
-            DataPacket packet = new DataPacket(MessagePackUtils.serialize(reqDbBody));
+            DataPacket packet = new DataPacket(MessagePackUtils.serialize(transBody));
             //获取连接
             connection = POOL.borrowObject();
             //发送请求并获取返回结果
@@ -105,4 +110,31 @@ public class SkyClientManager {
         }
     }
 
+    /**
+     * 查询操作
+     *
+     * @param transBody 请求参数
+     * @param cls       响应数据类型
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public static <T> List<T> executeQuery(DbTransBody transBody, Class<T> cls) throws Exception {
+        List<Map<String, DbModelItem>> list = DbClientManager.invoke(transBody, new TypeReference<>() {
+        });
+        return DbDataHelper.getDbEntity(list, cls);
+    }
+
+    /**
+     * 更新、删除、插入操作
+     *
+     * @param transBody 请求参数
+     * @return 影响行数
+     * @throws Exception
+     */
+    public static int executeUpdate(DbTransBody transBody) throws Exception {
+        int rows = DbClientManager.invoke(transBody, new TypeReference<Integer>() {
+        });
+        return rows;
+    }
 }
