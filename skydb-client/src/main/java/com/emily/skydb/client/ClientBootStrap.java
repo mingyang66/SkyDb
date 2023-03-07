@@ -47,7 +47,7 @@ public class ClientBootStrap {
         transBody.dbTag = "insert_test";
         transBody.params.add(new DbModelItem("name", "田晓霞"));
         transBody.params.add(new DbModelItem("color", "女"));
-        transBody.params.add(new DbModelItem("age", "18", JdbcType.Int32));
+        transBody.params.add(new DbModelItem("age", "18", JdbcType.Int));
         transBody.params.add(new DbModelItem("year", "2023", JdbcType.Year));
         transBody.params.add(new DbModelItem("price", "6183.26", JdbcType.Decimal));
         transBody.params.add(new DbModelItem("updateTime", "2023-03-03 17:23:56", JdbcType.DateTime));
@@ -90,9 +90,34 @@ public class ClientBootStrap {
                                 field.set(t, LocalTime.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.HH_MM_SS.getFormat())));
                             }
                             break;
-                        case JdbcType.Int32:
+                        case JdbcType.Byte:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, Byte.valueOf(item.value));
+                            }
+                            break;
+                        case JdbcType.Short:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, Short.valueOf(item.value));
+                            }
+                            break;
+                        case JdbcType.Int:
                             if (StringUtils.isNotEmpty(item.value)) {
                                 field.set(t, Integer.valueOf(item.value));
+                            }
+                            break;
+                        case JdbcType.Long:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, Long.valueOf(item.value));
+                            }
+                            break;
+                        case JdbcType.Float:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, Float.valueOf(item.value));
+                            }
+                            break;
+                        case JdbcType.Double:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, Double.valueOf(item.value));
                             }
                             break;
                         case JdbcType.Decimal:
@@ -100,6 +125,22 @@ public class ClientBootStrap {
                                 field.set(t, new BigDecimal(item.value));
                             }
                             break;
+                        case JdbcType.Boolean:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, Integer.valueOf(item.value));
+                            }
+                            break;
+                        case JdbcType.Char:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, item.value.charAt(0));
+                            }
+                            break;
+                        case JdbcType.Binary:
+                            if (StringUtils.isNotEmpty(item.value)) {
+                                field.set(t, item.value);
+                            }
+                            break;
+                        case JdbcType.String:
                         default:
                             field.set(t, item.value);
                             break;

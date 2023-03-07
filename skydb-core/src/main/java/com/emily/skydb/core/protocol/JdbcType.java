@@ -8,11 +8,18 @@ package com.emily.skydb.core.protocol;
 public class JdbcType {
 
     public static final String String = "String";
-    public static final String Int32 = "Int32";
-    public static final String Int64 = "Int64";
+    public static final String Byte = "Byte";
+    public static final String Short = "Short";
+    public static final String Int = "Int";
+    public static final String Long = "Long";
+    public static final String Float = "Float";
+    public static final String Double = "Double";
+    public static final String Boolean = "Boolean";
+    public static final String Char = "Char";
     public static final String Year = "Year";
     public static final String Date = "Date";
     public static final String Time = "Time";
     public static final String DateTime = "DateTime";
     public static final String Decimal = "Decimal";
+    public static final String Binary = "Binary";
 }

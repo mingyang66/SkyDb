@@ -28,8 +28,8 @@ public class StrUtils {
         for (int i = 0; i < items.size(); i++) {
             DbModelItem item = items.get(i);
             switch (item.valueType) {
-                case JdbcType.Int32:
-                case JdbcType.Int64:
+                case JdbcType.Int:
+                case JdbcType.Long:
                 case JdbcType.Year:
                 case JdbcType.Decimal:
                     newSql = StringUtils.replace(newSql, MessageFormat.format(":{0}", item.name), MessageFormat.format("{0}", item.value));

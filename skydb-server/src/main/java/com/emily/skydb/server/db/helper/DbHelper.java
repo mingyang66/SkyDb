@@ -45,11 +45,11 @@ public class DbHelper {
             while (rs.next()) {
                 Map<String, DbModelItem> dataMap = new HashMap<>(numberOfColumns);
                 for (int j = 1; j <= numberOfColumns; j++) {
+                    DbModelItem item = new DbModelItem();
                     int type = rsmd.getColumnType(j);
                     JDBCType jdbcType = JDBCType.valueOf(type);
-                    System.out.println(jdbcType.getName());
-                    DbModelItem item = new DbModelItem();
                     item.name = rsmd.getColumnName(j);
+                    Object value = rs.getObject(j);
                     switch (jdbcType) {
                         case TIMESTAMP:
                             //DATETIME、TIMESTAMP
@@ -75,18 +75,54 @@ public class DbHelper {
                                 item.value = time.toLocalTime().format(DateTimeFormatter.ofPattern(DateFormatType.HH_MM_SS.getFormat()));
                             }
                             break;
+                        case TINYINT:
+                            item.valueType = JdbcType.Byte;
+                            item.value = rs.getString(j);
+                            break;
+                        case SMALLINT:
+                            item.valueType = JdbcType.Short;
+                            item.value = rs.getString(j);
+                            break;
                         case INTEGER:
-                            item.valueType = JdbcType.Int32;
+                            item.valueType = JdbcType.Int;
                             item.value = rs.getString(j);
                             break;
                         case BIGINT:
-                            item.valueType = JdbcType.Int64;
+                            item.valueType = JdbcType.Long;
                             item.value = rs.getString(j);
                             break;
+                        case REAL:
+                            //case FLOAT: 数据库中的FLOAT类型映射为REAL
+                            item.valueType = JdbcType.Float;
+                            item.value = rs.getString(j);
+                            break;
+                        case DOUBLE:
+                            //数据库中REAL类型映射为DOUBLE
+                            item.valueType = JdbcType.Double;
+                            item.value = rs.getString(j);
+                            break;
+                        //case NUMERIC: 数据库设置直接变成DECIMAL
                         case DECIMAL:
                             item.valueType = JdbcType.Decimal;
                             item.value = rs.getString(j);
                             break;
+                        case BIT:
+                            //case BOOLEAN: 数据库设置Bool、Bit映射为BIT
+                            item.valueType = JdbcType.Boolean;
+                            item.value = rs.getString(j);
+                            break;
+                        case CHAR:
+                            item.valueType = JdbcType.Char;
+                            item.value = rs.getString(j);
+                            break;
+                        case BINARY:
+                        case LONGVARBINARY:
+                        case VARBINARY:
+                            item.valueType = JdbcType.Binary;
+                            item.value = rs.getString(j);
+                            break;
+                        case VARCHAR:
+                        case LONGVARCHAR:
                         default:
                             item.valueType = JdbcType.String;
                             item.value = rs.getString(j);
