@@ -2,7 +2,7 @@ package com.emily.skydb.client.handler;
 
 import com.emily.skydb.core.protocol.DataPacket;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandler.*;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -15,7 +15,7 @@ import java.time.Duration;
  * @author: Emily
  * @create: 2021/09/17
  */
-@ChannelHandler.Sharable
+@Sharable
 public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
 
 
