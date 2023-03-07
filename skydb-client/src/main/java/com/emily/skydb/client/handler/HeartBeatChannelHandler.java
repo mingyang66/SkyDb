@@ -20,11 +20,11 @@ public class HeartBeatChannelHandler extends ChannelInboundHandlerAdapter {
                 IdleStateEvent e = (IdleStateEvent) evt;
                 switch (e.state()) {
                     case READER_IDLE:
-                    case WRITER_IDLE:
-                    case ALL_IDLE:
                         //发送心跳包
                         ctx.channel().writeAndFlush(new DataPacket((byte) 1, MessagePackUtils.serialize("heartBeat...")));
                         break;
+                    case WRITER_IDLE:
+                    case ALL_IDLE:
                     default:
                         break;
                 }
