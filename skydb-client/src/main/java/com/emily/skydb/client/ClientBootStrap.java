@@ -29,7 +29,7 @@ public class ClientBootStrap {
         Thread.sleep(2 * 1000);
         System.out.println("------------------休眠结束----------------");
         for (int i = 0; i < 500000; i++) {
-            //selectBody(TestUser.class);
+            selectBody(TestUser.class);
             List<String> list = selectBody(String.class, String.valueOf(i));
             if (StringUtils.equals(i + "", list.get(0))) {
                 System.out.println("---------true");

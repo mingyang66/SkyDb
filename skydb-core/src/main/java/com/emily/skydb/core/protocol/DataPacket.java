@@ -12,6 +12,10 @@ public class DataPacket {
      */
     public byte packageType = 0;
     /**
+     * 请求唯一标识
+     */
+    public byte[] tracedId;
+    /**
      * 消息
      */
     public byte[] body;
@@ -19,12 +23,13 @@ public class DataPacket {
     public DataPacket() {
     }
 
-    public DataPacket(byte[] body) {
-        this((byte) 0, body);
+    public DataPacket(byte[] tracedId, byte[] body) {
+        this((byte) 0, tracedId, body);
     }
 
-    public DataPacket(byte packageType, byte[] body) {
+    public DataPacket(byte packageType, byte[] tracedId, byte[] body) {
         this.packageType = packageType;
+        this.tracedId = tracedId;
         this.body = body;
     }
 

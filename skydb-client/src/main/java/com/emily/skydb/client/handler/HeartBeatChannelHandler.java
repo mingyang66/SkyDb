@@ -2,6 +2,7 @@ package com.emily.skydb.client.handler;
 
 import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.utils.MessagePackUtils;
+import com.emily.skydb.core.utils.UUIDUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -20,8 +21,9 @@ public class HeartBeatChannelHandler extends ChannelInboundHandlerAdapter {
                 IdleStateEvent e = (IdleStateEvent) evt;
                 switch (e.state()) {
                     case READER_IDLE:
+                        byte[] traceId = MessagePackUtils.serialize(UUIDUtils.randomSimpleUUID());
                         //发送心跳包
-                        ctx.channel().writeAndFlush(new DataPacket((byte) 1, MessagePackUtils.serialize("heartBeat...")));
+                        ctx.channel().writeAndFlush(new DataPacket((byte) 1, traceId, MessagePackUtils.serialize("heartBeat...")));
                         break;
                     case WRITER_IDLE:
                     case ALL_IDLE:

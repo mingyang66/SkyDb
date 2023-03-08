@@ -9,6 +9,7 @@ import com.emily.skydb.core.protocol.DataPacket;
 import com.emily.skydb.core.protocol.DbModelItem;
 import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
+import com.emily.skydb.core.utils.UUIDUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
@@ -94,8 +95,9 @@ public class DbClientManager {
         //Channel对象
         DbClientConnection connection = null;
         try {
+            byte[] traceId = MessagePackUtils.serialize(UUIDUtils.randomSimpleUUID());
             //TCP发送数据包，并对发送数据序列化
-            DataPacket packet = new DataPacket(MessagePackUtils.serialize(transBody));
+            DataPacket packet = new DataPacket(traceId, MessagePackUtils.serialize(transBody));
             //获取连接
             connection = POOL.borrowObject();
             //发送请求并获取返回结果

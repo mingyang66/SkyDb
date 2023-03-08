@@ -1,12 +1,16 @@
 package com.emily.skydb.client.handler;
 
 import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.utils.MessagePackUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.time.Duration;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program: SkyDb
@@ -18,6 +22,7 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
 
 
     public final Object object = new Object();
+    private final Map<String, DefaultFuture> futureMap = new ConcurrentHashMap<>();
     /**
      * 服务端返回的结果
      */
@@ -60,18 +65,18 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        String traceId = null;
         try {
             //将消息对象转换为指定消息体
             DataPacket packet = (DataPacket) msg;
-            synchronized (this.object) {
-                //将真实的消息体转换为字符串类型
-                this.response = packet.body;
-                //唤醒等待线程
-                this.object.notify();
-            }
+            //请求唯一标识
+            traceId = MessagePackUtils.deSerialize(packet.tracedId, String.class);
+            //设置响应结果
+            futureMap.get(traceId).set(packet.body);
         } finally {
-            //手动释放消息，否则会导致内存泄漏
-            ReferenceCountUtil.release(msg);
+            if (StringUtils.isNotEmpty(traceId)) {
+                futureMap.remove(traceId);
+            }
         }
     }
 
@@ -80,14 +85,15 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
      *
      * @param packet
      */
-    public byte[] send(DataPacket packet) throws InterruptedException {
-        synchronized (this.object) {
-            //发送Rpc请求
-            this.channel.writeAndFlush(packet);
-            //释放当前线程资源，并等待指定超时时间，默认：10000ms
-            this.object.wait(readTimeOut.toMillis());
-        }
-        return this.response;
+    public byte[] send(DataPacket packet) throws IOException {
+        //请求唯一标识
+        String traceId = MessagePackUtils.deSerialize(packet.tracedId, String.class);
+        //将当前请求和Future映射
+        this.futureMap.put(traceId, new DefaultFuture());
+        //发送TCP请求
+        this.channel.writeAndFlush(packet);
+        //获取响应体
+        return this.futureMap.get(traceId).get(this.readTimeOut.toMillis());
     }
 
     /**

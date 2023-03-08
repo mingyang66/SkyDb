@@ -8,6 +8,7 @@ package com.emily.skydb.client;
 public class Test {
     private TestUserSub userSub = new TestUserSub();
     private TestUserSub userSub1 = new TestUserSub();
+
     public static void main(String[] args) throws InterruptedException {
         Test test = new Test();
         Thread thread = test.thread("Thread-0：");
@@ -16,17 +17,18 @@ public class Test {
         Thread.sleep(100);
         thread1.start();
         System.out.println("情动完成---");
-        Thread.sleep(200*1000);
+        Thread.sleep(200 * 1000);
         System.out.println("---休眠结束");
     }
-    public Thread thread(String threadName){
+
+    public Thread thread(String threadName) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (userSub.getObject()){
+                synchronized (userSub.getObject()) {
                     try {
                         userSub.getObject().wait();
-                        System.out.println(threadName+"----------已释放");
+                        System.out.println(threadName + "----------已释放");
                     } catch (InterruptedException e) {
                         System.out.println("----------中断------------");
                     }
@@ -37,13 +39,13 @@ public class Test {
         return thread;
     }
 
-    public Thread thread1(String threadName){
+    public Thread thread1(String threadName) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized (userSub1.getObject()){
+                synchronized (userSub1.getObject()) {
                     userSub1.getObject().notify();
-                    System.out.println(threadName+"--------通知");
+                    System.out.println(threadName + "--------通知");
                 }
             }
         });

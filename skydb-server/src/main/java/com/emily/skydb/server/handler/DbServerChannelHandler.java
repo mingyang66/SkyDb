@@ -61,7 +61,7 @@ public class DbServerChannelHandler extends ChannelInboundHandlerAdapter {
             //获取后置处理结果
             Object value = this.handler.handler(reqDbBody);
             //发送调用方法调用结果
-            ctx.writeAndFlush(new DataPacket(MessagePackUtils.serialize(value)));
+            ctx.writeAndFlush(new DataPacket(packet.tracedId, MessagePackUtils.serialize(value)));
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
