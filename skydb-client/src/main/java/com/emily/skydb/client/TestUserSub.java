@@ -8,7 +8,13 @@ import java.math.BigDecimal;
  * @CreateDate :  Created in 2023/3/6 2:05 PM
  */
 public class TestUserSub extends TestUser {
+    private final Object object = new Object();
+
     private BigDecimal price;
+
+    public Object getObject() {
+        return object;
+    }
 
     public BigDecimal getPrice() {
         return price;
