@@ -20,13 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
 
-
-    public final Object object = new Object();
     private final Map<String, DefaultFuture> futureMap = new ConcurrentHashMap<>();
-    /**
-     * 服务端返回的结果
-     */
-    public byte[] response;
     /**
      * 通道
      */

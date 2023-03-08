@@ -19,6 +19,12 @@ public class DefaultFuture {
      */
     private final Object object = new Object();
 
+    /**
+     * 获取响应结果
+     *
+     * @param timeout 等待最长时间，单位：毫秒
+     * @return
+     */
     public byte[] get(long timeout) {
         synchronized (object) {
             while (!flag) {
@@ -32,6 +38,11 @@ public class DefaultFuture {
         }
     }
 
+    /**
+     * 设置响应结果
+     *
+     * @param transBody 响应结果
+     */
     public void set(byte[] transBody) {
         if (flag) {
             return;

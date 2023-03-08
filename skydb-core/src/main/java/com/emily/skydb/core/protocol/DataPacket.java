@@ -12,7 +12,7 @@ public class DataPacket {
      */
     public byte packageType = 0;
     /**
-     * 请求唯一标识
+     * 请求唯一标识，34个字节长度
      */
     public byte[] tracedId;
     /**

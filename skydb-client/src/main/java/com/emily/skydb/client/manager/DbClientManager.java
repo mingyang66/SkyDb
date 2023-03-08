@@ -95,9 +95,12 @@ public class DbClientManager {
         //Channel对象
         DbClientConnection connection = null;
         try {
+            //请求唯一标识序列化
             byte[] traceId = MessagePackUtils.serialize(UUIDUtils.randomSimpleUUID());
+            //请求体序列化
+            byte[] bodyBytes = MessagePackUtils.serialize(transBody);
             //TCP发送数据包，并对发送数据序列化
-            DataPacket packet = new DataPacket(traceId, MessagePackUtils.serialize(transBody));
+            DataPacket packet = new DataPacket(traceId, bodyBytes);
             //获取连接
             connection = POOL.borrowObject();
             //发送请求并获取返回结果
