@@ -52,12 +52,12 @@ public class DbServerChannelHandler extends ChannelInboundHandlerAdapter {
             byte packageType = packet.packageType;
             //心跳包
             if (packageType == 1) {
-                String heartBeat = MessagePackUtils.deSerialize(packet.body, String.class);
+                String heartBeat = MessagePackUtils.deSerialize(packet.content, String.class);
                 System.out.println("心跳包是：" + heartBeat);
                 return;
             }
             //请求消息体
-            DbTransBody reqDbBody = MessagePackUtils.deSerialize(packet.body, DbTransBody.class);
+            DbTransBody reqDbBody = MessagePackUtils.deSerialize(packet.content, DbTransBody.class);
             //获取后置处理结果
             Object value = this.handler.handler(reqDbBody);
             //发送调用方法调用结果

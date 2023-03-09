@@ -18,19 +18,19 @@ public class DataPacket {
     /**
      * 消息
      */
-    public byte[] body;
+    public byte[] content;
 
     public DataPacket() {
     }
 
-    public DataPacket(byte[] tracedId, byte[] body) {
-        this((byte) 0, tracedId, body);
+    public DataPacket(byte[] tracedId, byte[] content) {
+        this((byte) 0, tracedId, content);
     }
 
-    public DataPacket(byte packageType, byte[] tracedId, byte[] body) {
+    public DataPacket(byte packageType, byte[] tracedId, byte[] content) {
         this.packageType = packageType;
         this.tracedId = tracedId;
-        this.body = body;
+        this.content = content;
     }
 
 

@@ -69,7 +69,7 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
             //请求唯一标识
             traceId = MessagePackUtils.deSerialize(packet.tracedId, String.class);
             //设置响应结果
-            futureMap.get(traceId).set(packet.body);
+            futureMap.get(traceId).set(packet.content);
         } finally {
             if (StringUtils.isNotEmpty(traceId)) {
                 futureMap.remove(traceId);
@@ -80,7 +80,9 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
     /**
      * 发送TCP请求，并等待返回结果
      *
-     * @param packet
+     * @param traceId   请求唯一标识符
+     * @param transBody 请求体
+     * @param reference 返回值目标类型
      */
     public <T> T send(String traceId, DbTransBody transBody, TypeReference<? extends T> reference) throws IOException {
         //请求唯一标识序列化
