@@ -1,5 +1,6 @@
 package com.emily.skydb.core.utils;
 
+import com.emily.skydb.core.constant.CharacterInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ public class UUIDUtils {
      * 生成简洁版UUID，即：删除横杠的UUID
      */
     public static String randomSimpleUUID() {
-        return StringUtils.replace(randomUUID(), "-", "");
+        return StringUtils.replace(randomUUID(), CharacterInfo.LINE_THROUGH_CENTER, "");
     }
 
     /**
