@@ -1,7 +1,10 @@
 package com.emily.skydb.client.handler;
 
+import com.emily.skydb.client.future.DefaultFuture;
 import com.emily.skydb.core.protocol.DataPacket;
+import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.utils.MessagePackUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -79,15 +82,21 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
      *
      * @param packet
      */
-    public byte[] send(DataPacket packet) throws IOException {
-        //请求唯一标识
-        String traceId = MessagePackUtils.deSerialize(packet.tracedId, String.class);
+    public <T> T send(String traceId, DbTransBody transBody, TypeReference<? extends T> reference) throws IOException {
+        //请求唯一标识序列化
+        byte[] traceIdBytes = MessagePackUtils.serialize(traceId);
+        //请求体序列化
+        byte[] bodyBytes = MessagePackUtils.serialize(transBody);
+        //TCP发送数据包，并对发送数据序列化
+        DataPacket packet = new DataPacket(traceIdBytes, bodyBytes);
         //将当前请求和Future映射
         this.futureMap.put(traceId, new DefaultFuture());
         //发送TCP请求
         this.channel.writeAndFlush(packet);
         //获取响应体
-        return this.futureMap.get(traceId).get(this.readTimeOut.toMillis());
+        byte[] response = this.futureMap.get(traceId).get(this.readTimeOut.toMillis());
+
+        return MessagePackUtils.deSerialize(response, reference);
     }
 
     /**
