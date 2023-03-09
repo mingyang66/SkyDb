@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 /**
  * @Description :  继承子类
- * @Author :  姚明洋
+ * @Author :  Emily
  * @CreateDate :  Created in 2023/3/6 2:05 PM
  */
 public class TestUserSub extends TestUser {

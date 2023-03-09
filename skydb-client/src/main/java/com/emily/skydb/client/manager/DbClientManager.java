@@ -116,8 +116,7 @@ public class DbClientManager {
      * @throws Exception
      */
     public static <T> List<T> executeQuery(TransContent transContent, Class<T> cls) throws Exception {
-        TransHeader transHeader = new TransHeader();
-        transHeader.tracedId = UUIDUtils.randomSimpleUUID();
+        TransHeader transHeader = new TransHeader(UUIDUtils.randomSimpleUUID());
         List<Map<String, DbModelItem>> list = DbClientManager.invoke(transHeader, transContent, new TypeReference<>() {
         });
         return DbDataHelper.getDbEntity(list, cls);
@@ -131,8 +130,7 @@ public class DbClientManager {
      * @throws Exception
      */
     public static int executeUpdate(TransContent transContent) throws Exception {
-        TransHeader transHeader = new TransHeader();
-        transHeader.tracedId = UUIDUtils.randomSimpleUUID();
+        TransHeader transHeader = new TransHeader(UUIDUtils.randomSimpleUUID());
         int rows = DbClientManager.invoke(transHeader, transContent, new TypeReference<Integer>() {
         });
         return rows;
