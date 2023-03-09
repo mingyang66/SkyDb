@@ -9,7 +9,7 @@ public class DefaultFuture {
     /**
      * 传输消息体
      */
-    private byte[] transBody;
+    private byte[] transContent;
     /**
      * 请求消息体设置成功标记
      */
@@ -34,21 +34,21 @@ public class DefaultFuture {
                     e.printStackTrace();
                 }
             }
-            return transBody;
+            return transContent;
         }
     }
 
     /**
      * 设置响应结果
      *
-     * @param transBody 响应结果
+     * @param transContent 响应结果
      */
-    public void set(byte[] transBody) {
+    public void set(byte[] transContent) {
         if (flag) {
             return;
         }
         synchronized (object) {
-            this.transBody = transBody;
+            this.transContent = transContent;
             this.flag = true;
             object.notify();
         }

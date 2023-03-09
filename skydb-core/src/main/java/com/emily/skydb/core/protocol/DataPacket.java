@@ -14,7 +14,7 @@ public class DataPacket {
     /**
      * 请求唯一标识，34个字节长度
      */
-    public byte[] tracedId;
+    public byte[] header;
     /**
      * 消息
      */
@@ -23,13 +23,13 @@ public class DataPacket {
     public DataPacket() {
     }
 
-    public DataPacket(byte[] tracedId, byte[] content) {
-        this((byte) 0, tracedId, content);
+    public DataPacket(byte[] header, byte[] content) {
+        this((byte) 0, header, content);
     }
 
-    public DataPacket(byte packageType, byte[] tracedId, byte[] content) {
+    public DataPacket(byte packageType, byte[] header, byte[] content) {
         this.packageType = packageType;
-        this.tracedId = tracedId;
+        this.header = header;
         this.content = content;
     }
 

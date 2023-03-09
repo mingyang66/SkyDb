@@ -10,7 +10,7 @@ import java.util.List;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class DbTransBody {
+public class TransContent {
 
     /**
      * sql语句唯一标识

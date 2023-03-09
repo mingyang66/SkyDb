@@ -1,8 +1,8 @@
 package com.emily.skydb.server.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.protocol.DbType;
+import com.emily.skydb.core.protocol.TransContent;
 import com.emily.skydb.core.utils.JsonUtils;
 import com.emily.skydb.core.utils.StrUtils;
 import com.emily.skydb.server.db.entity.MiddleWare;
@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class DruidBusinessHandler implements DbBusinessHandler {
     @Override
-    public Object handler(DbTransBody dbReqBody) throws IOException {
+    public Object handler(TransContent dbReqBody) throws IOException {
         DruidDataSource dataSource = DataSourcePoolManager.getDataSource(dbReqBody.dbName);
        /* String sql = "SELECT * FROM sailboat s";
         List<Map<String, Object>> list = SqlHelper.executeQuery(dataSource, sql);

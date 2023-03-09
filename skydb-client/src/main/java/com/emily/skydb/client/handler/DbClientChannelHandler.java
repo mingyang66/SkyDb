@@ -2,7 +2,8 @@ package com.emily.skydb.client.handler;
 
 import com.emily.skydb.client.future.DefaultFuture;
 import com.emily.skydb.core.protocol.DataPacket;
-import com.emily.skydb.core.protocol.DbTransBody;
+import com.emily.skydb.core.protocol.TransContent;
+import com.emily.skydb.core.protocol.TransHeader;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.netty.channel.Channel;
@@ -66,8 +67,10 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
         try {
             //将消息对象转换为指定消息体
             DataPacket packet = (DataPacket) msg;
+            //请求头
+            TransHeader transHeader = MessagePackUtils.deSerialize(packet.header, TransHeader.class);
             //请求唯一标识
-            traceId = MessagePackUtils.deSerialize(packet.tracedId, String.class);
+            traceId = transHeader.tracedId;
             //设置响应结果
             futureMap.get(traceId).set(packet.content);
         } finally {
@@ -80,23 +83,23 @@ public class DbClientChannelHandler extends ChannelInboundHandlerAdapter {
     /**
      * 发送TCP请求，并等待返回结果
      *
-     * @param traceId   请求唯一标识符
-     * @param transBody 请求体
-     * @param reference 返回值目标类型
+     * @param transHeader  请求头
+     * @param transContent 请求体
+     * @param reference    返回值目标类型
      */
-    public <T> T send(String traceId, DbTransBody transBody, TypeReference<? extends T> reference) throws IOException {
+    public <T> T send(TransHeader transHeader, TransContent transContent, TypeReference<? extends T> reference) throws IOException {
         //请求唯一标识序列化
-        byte[] traceIdBytes = MessagePackUtils.serialize(traceId);
+        byte[] headerBytes = MessagePackUtils.serialize(transHeader);
         //请求体序列化
-        byte[] bodyBytes = MessagePackUtils.serialize(transBody);
+        byte[] contentBytes = MessagePackUtils.serialize(transContent);
         //TCP发送数据包，并对发送数据序列化
-        DataPacket packet = new DataPacket(traceIdBytes, bodyBytes);
+        DataPacket packet = new DataPacket(headerBytes, contentBytes);
         //将当前请求和Future映射
-        this.futureMap.put(traceId, new DefaultFuture());
+        this.futureMap.put(transHeader.tracedId, new DefaultFuture());
         //发送TCP请求
         this.channel.writeAndFlush(packet);
         //获取响应体
-        byte[] response = this.futureMap.get(traceId).get(this.readTimeOut.toMillis());
+        byte[] response = this.futureMap.get(transHeader.tracedId).get(this.readTimeOut.toMillis());
 
         return MessagePackUtils.deSerialize(response, reference);
     }

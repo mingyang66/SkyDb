@@ -5,8 +5,8 @@ import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.DbClientManager;
 import com.emily.skydb.client.manager.DbClientProperties;
 import com.emily.skydb.core.protocol.DbModelItem;
-import com.emily.skydb.core.protocol.DbTransBody;
 import com.emily.skydb.core.protocol.JdbcType;
+import com.emily.skydb.core.protocol.TransContent;
 import com.emily.skydb.core.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,28 +41,28 @@ public class ClientBootStrap {
 
 
     public static void insertBody() throws Exception {
-        DbTransBody transBody = new DbTransBody();
-        transBody.dbName = "account";
-        transBody.dbTag = "insert_test";
-        transBody.params.add(new DbModelItem("name", "田晓霞"));
-        transBody.params.add(new DbModelItem("color", "女"));
-        transBody.params.add(new DbModelItem("age", "18", JdbcType.Int));
-        transBody.params.add(new DbModelItem("year", "2023", JdbcType.Year));
-        transBody.params.add(new DbModelItem("price", "6183.26", JdbcType.Decimal));
-        transBody.params.add(new DbModelItem("updateTime", "2023-03-03 17:23:56", JdbcType.DateTime));
-        transBody.params.add(new DbModelItem("insertTime", "2023-03-03 17:23:56", JdbcType.DateTime));
-        int rows = DbClientManager.executeUpdate(transBody);
+        TransContent transContent = new TransContent();
+        transContent.dbName = "account";
+        transContent.dbTag = "insert_test";
+        transContent.params.add(new DbModelItem("name", "田晓霞"));
+        transContent.params.add(new DbModelItem("color", "女"));
+        transContent.params.add(new DbModelItem("age", "18", JdbcType.Int));
+        transContent.params.add(new DbModelItem("year", "2023", JdbcType.Year));
+        transContent.params.add(new DbModelItem("price", "6183.26", JdbcType.Decimal));
+        transContent.params.add(new DbModelItem("updateTime", "2023-03-03 17:23:56", JdbcType.DateTime));
+        transContent.params.add(new DbModelItem("insertTime", "2023-03-03 17:23:56", JdbcType.DateTime));
+        int rows = DbClientManager.executeUpdate(transContent);
         System.out.println(rows);
     }
 
     public static <T> List<T> selectBody(Class<T> cls) {
         try {
 
-            DbTransBody transBody = new DbTransBody();
-            transBody.dbName = "account";
-            transBody.dbTag = "select_test_tj";
-            transBody.params.add(new DbModelItem("age", "45"));
-            List<T> list = DbClientManager.executeQuery(transBody, cls);
+            TransContent transContent = new TransContent();
+            transContent.dbName = "account";
+            transContent.dbTag = "select_test_tj";
+            transContent.params.add(new DbModelItem("age", "45"));
+            List<T> list = DbClientManager.executeQuery(transContent, cls);
             System.out.println(JsonUtils.toJSONString(list));
             return list;
         } catch (Exception e) {
@@ -74,11 +74,11 @@ public class ClientBootStrap {
     public static <T> List<T> selectBody(Class<T> cls, String i) {
         try {
 
-            DbTransBody transBody = new DbTransBody();
-            transBody.dbName = "account";
-            transBody.dbTag = "select_test_dual";
-            transBody.params.add(new DbModelItem("testText", i));
-            List<T> list = DbClientManager.executeQuery(transBody, cls);
+            TransContent transContent = new TransContent();
+            transContent.dbName = "account";
+            transContent.dbTag = "select_test_dual";
+            transContent.params.add(new DbModelItem("testText", i));
+            List<T> list = DbClientManager.executeQuery(transContent, cls);
             return list;
         } catch (Exception e) {
             e.printStackTrace();

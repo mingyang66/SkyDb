@@ -6,7 +6,8 @@ import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.DbObjectPool;
 import com.emily.skydb.client.pool.DbPooledObjectFactory;
 import com.emily.skydb.core.protocol.DbModelItem;
-import com.emily.skydb.core.protocol.DbTransBody;
+import com.emily.skydb.core.protocol.TransContent;
+import com.emily.skydb.core.protocol.TransHeader;
 import com.emily.skydb.core.utils.UUIDUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -89,14 +90,14 @@ public class DbClientManager {
      *
      * @return
      */
-    private static <T> T invoke(DbTransBody transBody, TypeReference<? extends T> reference) throws Exception {
+    private static <T> T invoke(TransHeader transHeader, TransContent transContent, TypeReference<? extends T> reference) throws Exception {
         //Channel对象
         DbClientConnection connection = null;
         try {
             //获取连接
             connection = POOL.borrowObject();
             //发送请求并获取返回结果
-            return connection.getClientChannelHandler().send(UUIDUtils.randomSimpleUUID(), transBody, reference);
+            return connection.getClientChannelHandler().send(transHeader, transContent, reference);
         } finally {
             if (connection != null) {
                 //归还链接
@@ -108,14 +109,16 @@ public class DbClientManager {
     /**
      * 查询操作
      *
-     * @param transBody 请求参数
-     * @param cls       响应数据类型
+     * @param transContent 请求参数
+     * @param cls          响应数据类型
      * @param <T>
      * @return
      * @throws Exception
      */
-    public static <T> List<T> executeQuery(DbTransBody transBody, Class<T> cls) throws Exception {
-        List<Map<String, DbModelItem>> list = DbClientManager.invoke(transBody, new TypeReference<>() {
+    public static <T> List<T> executeQuery(TransContent transContent, Class<T> cls) throws Exception {
+        TransHeader transHeader = new TransHeader();
+        transHeader.tracedId = UUIDUtils.randomSimpleUUID();
+        List<Map<String, DbModelItem>> list = DbClientManager.invoke(transHeader, transContent, new TypeReference<>() {
         });
         return DbDataHelper.getDbEntity(list, cls);
     }
@@ -123,12 +126,14 @@ public class DbClientManager {
     /**
      * 更新、删除、插入操作
      *
-     * @param transBody 请求参数
+     * @param transContent 请求参数
      * @return 影响行数
      * @throws Exception
      */
-    public static int executeUpdate(DbTransBody transBody) throws Exception {
-        int rows = DbClientManager.invoke(transBody, new TypeReference<Integer>() {
+    public static int executeUpdate(TransContent transContent) throws Exception {
+        TransHeader transHeader = new TransHeader();
+        transHeader.tracedId = UUIDUtils.randomSimpleUUID();
+        int rows = DbClientManager.invoke(transHeader, transContent, new TypeReference<Integer>() {
         });
         return rows;
     }
