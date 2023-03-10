@@ -87,6 +87,8 @@ public class DbServerConnection {
                             /**
                              * 基于消息中的长度字段动态的分割接收到的ByteBuf
                              * byteOrder:表示协议中Length字段的字节是大端还是小端
+                             *         ByteOrder#BIG_ENDIAN：大端是高位字节在前，低位字节在后
+                             *         ByteOrder#LITTLE_ENDIAN：小端是低位字节在前，高位字节在后
                              * maxFrameLength：表示协议中Content字段的最大长度，如果超出，则抛出TooLongFrameException异常
                              * lengthFieldOffset：表示Length字段的偏移量，即在读取一个二进制流时，跳过指定长度个字节之后的才是Length字段。如果Length字段之前没有其他报文头，指定为0即可。如果Length字段之前还有其他报文头，则需要跳过之前的报文头的字节数。
                              * lengthFieldLength：表示Length字段占用的字节数。指定为多少，需要看实际要求，不同的字节数，限制了Content字段的最大长度。
@@ -101,6 +103,11 @@ public class DbServerConnection {
                              * 在消息前面加上前缀的编码器（只能是1、2、3、4、8，默认不包含长度字段的长度）
                              * byteOrder:表示Length字段本身占用的字节数使用的是大端还是小端编码
                              * lengthFieldLength：表示Length字段本身占用的字节数,只可以指定 1, 2, 3, 4, 或 8
+                             *     1：8位无符号二进制最大整数255
+                             *     2：16位无符号二进制最大整数65535
+                             *     3：24位无符号二进制最大整数是16777215
+                             *     4：32位无符号二进制最大整数是xxxx
+                             *     8: 64位无符号二进制最大整数是xxxx
                              * lengthAdjustment：表示Length字段调整值
                              * lengthIncludesLengthFieldLength:表示Length字段本身占用的字节数是否包含在Length字段表示的值中
                              * Length字段的值=真实数据可读字节数+Length字段调整值
@@ -114,7 +121,7 @@ public class DbServerConnection {
                     });
             //启动服务器，并绑定端口并且同步
             ChannelFuture channelFuture = serverBootstrap.bind(properties.getPort()).sync();
-            System.out.println("Rpc server start success，port is [" + properties.getPort() + "]");
+            System.out.println("Rpc server start success，port is " + properties.getPort());
             //对关闭通道进行监听,监听到通道关闭后，往下执行
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {

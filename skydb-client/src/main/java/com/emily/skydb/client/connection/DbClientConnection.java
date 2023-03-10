@@ -104,6 +104,11 @@ public class DbClientConnection extends AbstractConnection<Channel> {
                              * 在消息前面加上前缀的编码器（只能是1、2、3、4、8，默认不包含长度字段的长度）
                              * byteOrder:表示Length字段本身占用的字节数使用的是大端还是小端编码
                              * lengthFieldLength：表示Length字段本身占用的字节数,只可以指定 1, 2, 3, 4, 或 8
+                             *     1：8位无符号二进制最大整数255
+                             *     2：16位无符号二进制最大整数65535
+                             *     3：24位无符号二进制最大整数是16777215
+                             *     4：32位无符号二进制最大整数是xxxx
+                             *     8: 64位无符号二进制最大整数是xxxx
                              * lengthAdjustment：表示Length字段调整值
                              * lengthIncludesLengthFieldLength:表示Length字段本身占用的字节数是否包含在Length字段表示的值中
                              * Length字段的值=真实数据可读字节数+Length字段调整值
