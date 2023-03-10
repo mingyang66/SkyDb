@@ -1,7 +1,7 @@
 package com.emily.skydb.server.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.emily.skydb.core.protocol.DbType;
+import com.emily.skydb.core.db.DbType;
 import com.emily.skydb.core.protocol.TransContent;
 import com.emily.skydb.core.utils.JsonUtils;
 import com.emily.skydb.core.utils.StrUtils;

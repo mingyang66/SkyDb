@@ -1,8 +1,8 @@
 package com.emily.skydb.server.db.helper;
 
 import com.emily.skydb.core.enums.DateFormatType;
-import com.emily.skydb.core.protocol.DbModelItem;
-import com.emily.skydb.core.protocol.JdbcType;
+import com.emily.skydb.core.db.DbModelItem;
+import com.emily.skydb.core.db.JdbcType;
 
 import java.sql.*;
 import java.time.format.DateTimeFormatter;

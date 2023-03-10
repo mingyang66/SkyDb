@@ -5,7 +5,7 @@ import com.emily.skydb.client.helper.DbDataHelper;
 import com.emily.skydb.client.loadbalance.LoadBalance;
 import com.emily.skydb.client.pool.DbObjectPool;
 import com.emily.skydb.client.pool.DbPooledObjectFactory;
-import com.emily.skydb.core.protocol.DbModelItem;
+import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.protocol.TransContent;
 import com.emily.skydb.core.protocol.TransHeader;
 import com.emily.skydb.core.utils.UUIDUtils;

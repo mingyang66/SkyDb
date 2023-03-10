@@ -1,4 +1,4 @@
-package com.emily.skydb.core.protocol;
+package com.emily.skydb.core.db;
 
 /**
  * @Description :  请求参数数据库类型

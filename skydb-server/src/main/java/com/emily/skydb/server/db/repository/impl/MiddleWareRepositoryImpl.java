@@ -1,7 +1,7 @@
 package com.emily.skydb.server.db.repository.impl;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.emily.skydb.core.protocol.DbModelItem;
+import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.server.db.constant.DbName;
 import com.emily.skydb.server.db.entity.MiddleWare;
 import com.emily.skydb.server.db.helper.DbHelper;

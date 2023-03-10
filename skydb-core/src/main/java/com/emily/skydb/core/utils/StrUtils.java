@@ -1,7 +1,7 @@
 package com.emily.skydb.core.utils;
 
-import com.emily.skydb.core.protocol.DbModelItem;
-import com.emily.skydb.core.protocol.JdbcType;
+import com.emily.skydb.core.db.DbModelItem;
+import com.emily.skydb.core.db.JdbcType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.MessageFormat;

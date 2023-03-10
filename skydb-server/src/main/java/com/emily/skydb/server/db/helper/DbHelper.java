@@ -2,7 +2,7 @@ package com.emily.skydb.server.db.helper;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
-import com.emily.skydb.core.protocol.DbModelItem;
+import com.emily.skydb.core.db.DbModelItem;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
