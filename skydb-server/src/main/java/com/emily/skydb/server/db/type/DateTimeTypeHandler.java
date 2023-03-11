@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
  * @Author :  Emily
  * @CreateDate :  Created in 2023/3/10 5:13 PM
  */
-public class TimestampTypeHandler implements TypeHandler {
+public class DateTimeTypeHandler implements TypeHandler {
     @Override
     public DbModelItem getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         DbModelItem item = new DbModelItem();

@@ -36,11 +36,11 @@ public class TypeHandlerRegistry {
         /**
          * DATETIME
          */
-        typeHandlerMap.put(LocalDateTime.class.getName(), new TimestampTypeHandler());
+        typeHandlerMap.put(LocalDateTime.class.getName(), new DateTimeTypeHandler());
         /**
          * TIMESTAMP[(M)]
          */
-        typeHandlerMap.put(Timestamp.class.getName(), new TimestampTypeHandler());
+        typeHandlerMap.put(Timestamp.class.getName(), new DateTimeTypeHandler());
         /**
          * DATE
          * YEAR[(2|4)]:如果yearIsDateType 属性设置为true
