@@ -3,7 +3,6 @@ package com.emily.skydb.server.db.type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
-import java.sql.JDBCType;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -98,10 +97,10 @@ public class TypeHandlerRegistry {
      * @param type 数据类型
      * @return
      */
-    public TypeHandler getTypeHandler(String type) {
-        TypeHandler typeHandler = typeHandlerMap.get(type);
+    public TypeHandler getTypeHandler(String className) {
+        TypeHandler typeHandler = typeHandlerMap.get(className);
         if (typeHandler == null) {
-            typeHandler = typeHandlerMap.get(JDBCType.VARCHAR);
+            typeHandler = typeHandlerMap.get(String.class.getName());
         }
         return typeHandler;
     }
