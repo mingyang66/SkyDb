@@ -1,8 +1,8 @@
 package com.emily.skydb.server.db.helper;
 
-import com.emily.skydb.core.enums.DateFormatType;
 import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.db.JdbcType;
+import com.emily.skydb.core.enums.DateFormatType;
 
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +27,7 @@ public class DbDataHelper {
         switch (jdbcType) {
             case TIMESTAMP:
                 //DATETIME、TIMESTAMP
-                item.valueType = JdbcType.DateTime;
+                item.valueType = JdbcType.TimeStamp;
                 Timestamp timestamp = rs.getTimestamp(j);
                 if (timestamp != null) {
                     item.value = timestamp.toLocalDateTime().format(DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD_HH_MM_SS_COLON_SSS.getFormat()));
@@ -77,7 +77,7 @@ public class DbDataHelper {
                 break;
             //case NUMERIC: 数据库设置直接变成DECIMAL
             case DECIMAL:
-                item.valueType = JdbcType.Decimal;
+                item.valueType = JdbcType.BigDecimal;
                 item.value = rs.getString(j);
                 break;
             case BIT:

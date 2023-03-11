@@ -26,10 +26,10 @@ public class MiddleWareRepositoryImpl implements MiddleWareRepository {
         Map<String, MiddleWare> dataMap = new HashMap<>();
         list.stream().forEach(item -> {
             MiddleWare middleWare = new MiddleWare();
-            middleWare.dbName = item.get("dbName").value;
-            middleWare.dbTag = item.get("dbTag").value;
-            middleWare.dbType = item.get("dbType").value;
-            middleWare.sqlText = item.get("sqlText").value;
+            middleWare.dbName = item.get("dbName").value.toString();
+            middleWare.dbTag = item.get("dbTag").value.toString();
+            middleWare.dbType = item.get("dbType").value.toString();
+            middleWare.sqlText = item.get("sqlText").value.toString();
             dataMap.put(middleWare.dbTag, middleWare);
         });
         return dataMap;

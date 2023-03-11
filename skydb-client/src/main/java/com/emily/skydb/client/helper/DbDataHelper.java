@@ -1,8 +1,8 @@
 package com.emily.skydb.client.helper;
 
-import com.emily.skydb.core.enums.DateFormatType;
 import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.db.JdbcType;
+import com.emily.skydb.core.enums.DateFormatType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -94,7 +94,7 @@ public class DbDataHelper {
             Field field = t.getClass().getDeclaredField(item.name);
             field.setAccessible(true);
             switch (item.valueType) {
-                case JdbcType.DateTime:
+                case JdbcType.TimeStamp:
                     if (StringUtils.isNotEmpty(item.value)) {
                         field.set(t, LocalDateTime.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD_HH_MM_SS_COLON_SSS.getFormat())));
                     }
@@ -139,7 +139,7 @@ public class DbDataHelper {
                         field.set(t, Double.valueOf(item.value));
                     }
                     break;
-                case JdbcType.Decimal:
+                case JdbcType.BigDecimal:
                     if (StringUtils.isNotEmpty(item.value)) {
                         field.set(t, new BigDecimal(item.value));
                     }

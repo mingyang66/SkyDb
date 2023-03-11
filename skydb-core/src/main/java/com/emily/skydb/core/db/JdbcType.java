@@ -19,7 +19,7 @@ public class JdbcType {
     public static final String Year = "Year";
     public static final String Date = "Date";
     public static final String Time = "Time";
-    public static final String DateTime = "DateTime";
-    public static final String Decimal = "Decimal";
+    public static final String TimeStamp = "TimeStamp";
+    public static final String BigDecimal = "BigDecimal";
     public static final String Binary = "Binary";
 }

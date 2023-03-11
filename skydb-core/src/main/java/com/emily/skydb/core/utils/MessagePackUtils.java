@@ -12,6 +12,7 @@ import java.io.IOException;
 /**
  * MessagePack是一种高效的二进制序列化格式，它允许你在多种语言（如JSON）之间交换数据。但它更快、更小。
  * 小整数被编码成一个字节，典型的短字符串除了字符串本身外，只需要一个额外的字节。
+ *
  * @Description :  编码解码
  * @Author :  Emily
  * @CreateDate :  Created in 2023/2/28 2:59 PM

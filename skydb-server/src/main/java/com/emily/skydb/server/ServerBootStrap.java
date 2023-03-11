@@ -27,7 +27,7 @@ public class ServerBootStrap {
         DataSourceProperties properties = new DataSourceProperties();
         properties.setDbType(DbName.ACCOUNT);
         properties.setDriver("com.mysql.cj.jdbc.Driver");
-        properties.setUrl("jdbc:mysql://127.0.0.1:3306/ocean_sky?characterEncoding=utf-8&rewriteBatchedStatements=true");
+        properties.setUrl("jdbc:mysql://127.0.0.1:3306/ocean_sky?characterEncoding=utf-8&rewriteBatchedStatements=true&yearIsDateType=false");
         properties.setUsername("root");
         properties.setPassword("smallgrain");
         List<DataSourceProperties> list = new ArrayList<>();
@@ -41,7 +41,7 @@ public class ServerBootStrap {
         DbCacheHelper.CACHE.putAll(cacheMap);
         System.out.println(JsonUtils.toJSONString(cacheMap));
 
-//-------------------------------基于Netty的TCP服务器启动-------------------------------------------
+        //-------------------------------基于Netty的TCP服务器启动-------------------------------------------
         DbServerProperties properties1 = new DbServerProperties();
         DbBusinessHandler handler = new DruidBusinessHandler();
 

@@ -48,9 +48,9 @@ public class ClientBootStrap {
         transContent.params.add(new DbModelItem("color", "女"));
         transContent.params.add(new DbModelItem("age", "18", JdbcType.Int));
         transContent.params.add(new DbModelItem("year", "2023", JdbcType.Year));
-        transContent.params.add(new DbModelItem("price", "6183.26", JdbcType.Decimal));
-        transContent.params.add(new DbModelItem("updateTime", "2023-03-03 17:23:56", JdbcType.DateTime));
-        transContent.params.add(new DbModelItem("insertTime", "2023-03-03 17:23:56", JdbcType.DateTime));
+        transContent.params.add(new DbModelItem("price", "6183.26", JdbcType.BigDecimal));
+        transContent.params.add(new DbModelItem("updateTime", "2023-03-03 17:23:56", JdbcType.TimeStamp));
+        transContent.params.add(new DbModelItem("insertTime", "2023-03-03 17:23:56", JdbcType.TimeStamp));
         int rows = DbClientManager.executeUpdate(transContent);
         System.out.println(rows);
     }

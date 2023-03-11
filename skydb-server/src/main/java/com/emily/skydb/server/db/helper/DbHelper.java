@@ -3,11 +3,10 @@ package com.emily.skydb.server.db.helper;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidPooledConnection;
 import com.emily.skydb.core.db.DbModelItem;
+import com.emily.skydb.server.db.type.TypeHandler;
+import com.emily.skydb.server.db.type.TypeHandlerRegistry;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +18,8 @@ import java.util.Map;
  * @CreateDate :  Created in 2023/3/1 5:46 PM
  */
 public class DbHelper {
+    private static final TypeHandlerRegistry registry = new TypeHandlerRegistry();
+
     /**
      * 查询数据库中符合条件的数据
      *
@@ -45,7 +46,9 @@ public class DbHelper {
             while (rs.next()) {
                 Map<String, DbModelItem> dataMap = new HashMap<>(numberOfColumns);
                 for (int j = 1; j <= numberOfColumns; j++) {
-                    DbModelItem item = DbDataHelper.getDbModelItem(rs, rsmd, j);
+                    JDBCType jdbcType = JDBCType.valueOf(rsmd.getColumnType(j));
+                    TypeHandler handler = registry.getTypeHandler(jdbcType);
+                    DbModelItem item = handler.getNullableResult(rs, j);
                     dataMap.put(item.name, item);
                 }
                 list.add(dataMap);
