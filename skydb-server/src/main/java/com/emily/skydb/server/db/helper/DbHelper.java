@@ -6,7 +6,10 @@ import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.server.db.type.TypeHandler;
 import com.emily.skydb.server.db.type.TypeHandlerRegistry;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,10 +49,14 @@ public class DbHelper {
             while (rs.next()) {
                 Map<String, DbModelItem> dataMap = new HashMap<>(numberOfColumns);
                 for (int j = 1; j <= numberOfColumns; j++) {
-                    JDBCType jdbcType = JDBCType.valueOf(rsmd.getColumnType(j));
-                    TypeHandler handler = registry.getTypeHandler(jdbcType);
-                    DbModelItem item = handler.getNullableResult(rs, j);
-                    dataMap.put(item.name, item);
+                    //Object t = rs.getObject(j);
+                    String className = rsmd.getColumnClassName(j);
+                    //JDBCType jdbcType = JDBCType.valueOf(rsmd.getColumnType(j));
+                    TypeHandler handler = registry.getTypeHandler(className);
+                    if (handler != null) {
+                        DbModelItem item = handler.getNullableResult(rs, j);
+                        dataMap.put(item.name, item);
+                    }
                 }
                 list.add(dataMap);
             }

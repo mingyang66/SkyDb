@@ -22,7 +22,7 @@ public class TimestampTypeHandler implements TypeHandler {
         item.name = rs.getMetaData().getColumnName(columnIndex);
         Timestamp timestamp = rs.getTimestamp(columnIndex);
         if (timestamp != null) {
-            item.value = timestamp.toLocalDateTime().format(DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD_HH_MM_SS_COLON_SSS.getFormat()));
+            item.value = timestamp.toLocalDateTime().format(DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD_HH_MM_SS.getFormat()));
         }
         return item;
     }

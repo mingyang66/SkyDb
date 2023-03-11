@@ -61,7 +61,7 @@ public class ClientBootStrap {
             TransContent transContent = new TransContent();
             transContent.dbName = "account";
             transContent.dbTag = "select_test_tj";
-            transContent.params.add(new DbModelItem("age", "45"));
+            transContent.params.add(new DbModelItem("age", "46"));
             List<T> list = DbClientManager.executeQuery(transContent, cls);
             System.out.println(JsonUtils.toJSONString(list));
             return list;
