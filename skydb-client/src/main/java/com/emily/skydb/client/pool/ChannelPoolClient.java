@@ -85,7 +85,7 @@ public class ChannelPoolClient {
             //如果ChannelPool不存在，则会创建一个新的对象
             @Override
             protected ChannelPool newPool(InetSocketAddress key) {
-                return new FixedChannelPool(bootstrap.remoteAddress(key), new SimpleChannelPoolHandler(), properties.getMaxConnection());
+                return new FixedChannelPool(bootstrap.remoteAddress(key), new SimpleChannelPoolHandler(), properties.getMaxConnections());
             }
         };
     }
