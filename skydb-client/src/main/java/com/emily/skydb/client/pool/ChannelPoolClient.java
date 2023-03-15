@@ -81,7 +81,7 @@ public class ChannelPoolClient {
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, NumberUtils.toInt(String.valueOf(properties.getConnectTimeOut().toMillis())));
 
         //ChannelPool存储、创建、删除管理Map类
-        poolMap = new AbstractChannelPoolMap<InetSocketAddress, ChannelPool>() {
+        poolMap = new AbstractChannelPoolMap<>() {
             //如果ChannelPool不存在，则会创建一个新的对象
             @Override
             protected ChannelPool newPool(InetSocketAddress key) {

@@ -18,11 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Description :  客户端连接池
+ * @Description :  为ChannelPool处理各种操作调用的处理程序，如：创建、释放、获取处理程序
  * @Author :  Emily
  * @CreateDate :  Created in 2023/3/15 10:31 AM
  */
 public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
+    /**
+     * 缓存Channel与handler的映射关系
+     */
     public static final Map<ChannelId, IoChannelHandler> ioChannelMap = new ConcurrentHashMap<>();
 
     /**
@@ -33,6 +36,7 @@ public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
      */
     @Override
     public void channelCreated(Channel ch) throws Exception {
+        //缓存当前Channel对应的handler
         ioChannelMap.put(ch.id(), new IoChannelHandler());
 
         ChannelPipeline pipeline = ch.pipeline();

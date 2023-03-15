@@ -25,7 +25,7 @@ public class ClientBootStrap {
         //DbClientManager.initPool(properties, loadBalance);
         //Thread.sleep(2 * 1000);
         //System.out.println("------------------休眠结束----------------");
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 50000; i++) {
             try {
 
                 selectBody(TestUser.class);
