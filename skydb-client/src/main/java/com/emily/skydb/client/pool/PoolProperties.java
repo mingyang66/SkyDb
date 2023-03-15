@@ -29,9 +29,9 @@ public class PoolProperties {
      */
     private Duration idleTimeOut = Duration.ofSeconds(30);
     /**
-     * 最大连接数，默认：50
+     * 连接池中的最大连接数，默认：5
      */
-    private int maxConnection = 5;
+    private int maxConnections = 5;
 
     public List<Address> getAddress() {
         return address;
@@ -65,12 +65,12 @@ public class PoolProperties {
         this.idleTimeOut = idleTimeOut;
     }
 
-    public int getMaxConnection() {
-        return maxConnection;
+    public int getMaxConnections() {
+        return maxConnections;
     }
 
-    public void setMaxConnection(int maxConnection) {
-        this.maxConnection = maxConnection;
+    public void setMaxConnections(int maxConnections) {
+        this.maxConnections = maxConnections;
     }
 
     public static class Address {

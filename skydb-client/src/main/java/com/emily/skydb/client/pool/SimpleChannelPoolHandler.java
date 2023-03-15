@@ -28,8 +28,20 @@ public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
      */
     public static final Map<ChannelId, IoChannelHandler> ioHandlerMap = new ConcurrentHashMap<>();
 
+    @Override
+    public void channelAcquired(Channel ch) throws Exception {
+        super.channelAcquired(ch);
+        System.out.println("--------------------------------------------------------channelAcquired");
+    }
+
+    @Override
+    public void channelReleased(Channel ch) throws Exception {
+        super.channelReleased(ch);
+        System.out.println("--------------------------------------------------------channelReleased");
+    }
+
     /**
-     * 在ChannelPool中创建一个新的Channel信道后调用
+     * 在创建ChannelPool连接池时会调用此方法对Channel进行初始化
      *
      * @param ch
      * @throws Exception
