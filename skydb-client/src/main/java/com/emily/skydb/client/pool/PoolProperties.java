@@ -31,7 +31,7 @@ public class PoolProperties {
     /**
      * 最大连接数，默认：50
      */
-    private int maxConnection = 50;
+    private int maxConnection = 5;
 
     public List<Address> getAddress() {
         return address;

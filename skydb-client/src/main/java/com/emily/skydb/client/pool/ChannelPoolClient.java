@@ -99,8 +99,8 @@ public class ChannelPoolClient {
             future.await();
             //判定I/O操作是否成功完成
             if (future.isSuccess()) {
-                //获取Channel对象
-                final Channel ch = future.get();
+                //无阻塞获取Channel对象
+                final Channel ch = future.getNow();
                 if (ch != null && ch.isActive() && ch.isWritable()) {
                     //获取信道对应的handler对象
                     final IoChannelHandler ioHandler = SimpleChannelPoolHandler.ioHandlerMap.get(ch.id());
