@@ -6,8 +6,8 @@ import com.emily.skydb.core.decoder.MessagePackDecoder;
 import com.emily.skydb.core.encoder.MessagePackEncoder;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -22,16 +22,20 @@ import java.util.concurrent.TimeUnit;
  * @Author :  Emily
  * @CreateDate :  Created in 2023/3/15 10:31 AM
  */
-public class ChannelPoolHandler extends AbstractChannelPoolHandler {
+public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
     public static final Map<ChannelId, IoChannelHandler> ioChannelMap = new ConcurrentHashMap<>();
 
+    /**
+     * 在ChannelPool中创建一个新的Channel信道后调用
+     *
+     * @param ch
+     * @throws Exception
+     */
     @Override
     public void channelCreated(Channel ch) throws Exception {
         ioChannelMap.put(ch.id(), new IoChannelHandler());
-        SocketChannel socketChannel = (SocketChannel) ch;
-        socketChannel.config().setKeepAlive(true);
-        socketChannel.config().setTcpNoDelay(true);
 
+        ChannelPipeline pipeline = ch.pipeline();
         /**
          * 基于消息中的长度字段动态的分割接收到的ByteBuf
          * byteOrder:表示协议中Length字段的字节是大端还是小端
@@ -42,9 +46,9 @@ public class ChannelPoolHandler extends AbstractChannelPoolHandler {
          * initialBytesToStrip：解码后跳过的初始字节数，表示获取完一个完整的数据报文之后，忽略前面指定个数的字节
          * failFast:如果为true，则表示读取到Length字段时，如果其值超过maxFrameLength，就立马抛出一个 TooLongFrameException
          */
-        ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(ByteOrder.BIG_ENDIAN, 65535, 0, 2, 0, 2, true));
+        pipeline.addLast(new LengthFieldBasedFrameDecoder(ByteOrder.BIG_ENDIAN, 65535, 0, 2, 0, 2, true));
         //自定义解码器
-        ch.pipeline().addLast(new MessagePackDecoder());
+        pipeline.addLast(new MessagePackDecoder());
         /**
          * 在消息前面加上前缀的编码器（只能是1、2、3、4、8，默认不包含长度字段的长度）
          * byteOrder:表示Length字段本身占用的字节数使用的是大端还是小端编码
@@ -58,14 +62,14 @@ public class ChannelPoolHandler extends AbstractChannelPoolHandler {
          * lengthIncludesLengthFieldLength:表示Length字段本身占用的字节数是否包含在Length字段表示的值中
          * Length字段的值=真实数据可读字节数+Length字段调整值
          */
-        ch.pipeline().addLast(new LengthFieldPrepender(ByteOrder.BIG_ENDIAN, 2, 0, false));
+        pipeline.addLast(new LengthFieldPrepender(ByteOrder.BIG_ENDIAN, 2, 0, false));
         //自定义编码器
-        ch.pipeline().addLast(new MessagePackEncoder());
+        pipeline.addLast(new MessagePackEncoder());
         //自定义handler处理
-        ch.pipeline().addLast(ioChannelMap.get(ch.id()));
+        pipeline.addLast(ioChannelMap.get(ch.id()));
         //空闲状态处理器，参数说明：读时间空闲时间，0禁用时间|写事件空闲时间，0则禁用|读或写空闲时间，0则禁用
-        ch.pipeline().addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
+        pipeline.addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
         //心跳处理器
-        ch.pipeline().addLast(new HeartBeatChannelHandler());
+        pipeline.addLast(new HeartBeatChannelHandler());
     }
 }

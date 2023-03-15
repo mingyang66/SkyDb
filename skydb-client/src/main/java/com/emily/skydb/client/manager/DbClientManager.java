@@ -1,7 +1,7 @@
 package com.emily.skydb.client.manager;
 
 import com.emily.skydb.client.helper.DbDataHelper;
-import com.emily.skydb.client.pool.PoolClient;
+import com.emily.skydb.client.pool.ChannelPoolClient;
 import com.emily.skydb.client.pool.PoolProperties;
 import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.protocol.TransContent;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class DbClientManager {
 
-    private static PoolClient poolClient = new PoolClient(new PoolProperties());
+    private static ChannelPoolClient channelPoolClient = new ChannelPoolClient(new PoolProperties());
 
     /**
      * 查询操作
@@ -33,7 +33,7 @@ public class DbClientManager {
      */
     public static <T> List<T> executeQuery(TransContent transContent, Class<T> cls) throws Exception {
         TransHeader transHeader = new TransHeader(UUIDUtils.randomSimpleUUID());
-        List<Map<String, DbModelItem>> list = poolClient.sendRequest(transHeader, transContent, new TypeReference<>() {
+        List<Map<String, DbModelItem>> list = channelPoolClient.sendRequest(transHeader, transContent, new TypeReference<>() {
         });
         return DbDataHelper.getDbEntity(list, cls);
     }
@@ -47,7 +47,7 @@ public class DbClientManager {
      */
     public static int executeUpdate(TransContent transContent) throws Exception {
         TransHeader transHeader = new TransHeader(UUIDUtils.randomSimpleUUID());
-        int rows = poolClient.sendRequest(transHeader, transContent, new TypeReference<Integer>() {
+        int rows = channelPoolClient.sendRequest(transHeader, transContent, new TypeReference<Integer>() {
         });
         return rows;
     }

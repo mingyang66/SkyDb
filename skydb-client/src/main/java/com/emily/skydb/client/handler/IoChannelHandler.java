@@ -1,6 +1,6 @@
 package com.emily.skydb.client.handler;
 
-import com.emily.skydb.client.pool.ChannelPoolHandler;
+import com.emily.skydb.client.pool.SimpleChannelPoolHandler;
 import com.emily.skydb.core.protocol.DataPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -43,8 +43,8 @@ public class IoChannelHandler extends SimpleChannelInboundHandler<DataPacket> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         System.out.println(cause.getMessage());
-        if (ctx.channel().id() != null && ChannelPoolHandler.ioChannelMap.containsKey(ctx.channel().id())) {
-            ChannelPoolHandler.ioChannelMap.remove(ctx.channel().id());
+        if (ctx.channel().id() != null && SimpleChannelPoolHandler.ioChannelMap.containsKey(ctx.channel().id())) {
+            SimpleChannelPoolHandler.ioChannelMap.remove(ctx.channel().id());
         }
         ctx.close();
     }

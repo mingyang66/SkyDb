@@ -2,6 +2,8 @@ package com.emily.skydb.client.pool;
 
 
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @program: SkyDb
@@ -11,17 +13,13 @@ import java.time.Duration;
  */
 public class PoolProperties {
     /**
-     * RPC服务器host地址列表，默认：127.0.0.1
+     * 服务器地址，支持集群配置
      */
-    private String ip = "127.0.0.1";
+    private List<Address> address = Arrays.asList(new Address());
     /**
-     * 端口号 默认：9999
+     * 请求超时时间，默认：5秒
      */
-    private int port = 9999;
-    /**
-     * 读取超时时间，默认：10秒
-     */
-    private Duration readTimeOut = Duration.ofSeconds(10);
+    private Duration readTimeOut = Duration.ofSeconds(5);
     /**
      * 连接超时时间，默认：5秒
      */
@@ -35,20 +33,12 @@ public class PoolProperties {
      */
     private int maxConnection = 50;
 
-    public String getIp() {
-        return ip;
+    public List<Address> getAddress() {
+        return address;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+    public void setAddress(List<Address> address) {
+        this.address = address;
     }
 
     public Duration getReadTimeOut() {
@@ -81,5 +71,32 @@ public class PoolProperties {
 
     public void setMaxConnection(int maxConnection) {
         this.maxConnection = maxConnection;
+    }
+
+    public static class Address {
+        /**
+         * ip地址，默认：127.0.0.1
+         */
+        private String ip = "127.0.0.1";
+        /**
+         * 端口号 默认：9999
+         */
+        private int port = 9999;
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
     }
 }

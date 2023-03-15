@@ -12,9 +12,9 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolMap;
+import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolMap;
 import io.netty.channel.pool.FixedChannelPool;
-import io.netty.channel.pool.SimpleChannelPool;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -27,25 +27,33 @@ import java.net.InetSocketAddress;
  * @author: Emily
  * @create: 2021/09/17
  */
-public class PoolClient {
+public class ChannelPoolClient {
     /**
      * 线程工作组
      */
     private static final EventLoopGroup workerGroup = new NioEventLoopGroup();
     /**
-     * 创建客户端的启动对象 bootstrap ，不是 serverBootStrap
+     * 创建客户端的启动对象 bootstrap
      */
     private static final Bootstrap bootstrap = new Bootstrap();
-    private static ChannelPoolMap<InetSocketAddress, SimpleChannelPool> poolMap;
-
-    private static SimpleChannelPool simpleChannelPool;
+    /**
+     * 允许将特定的key映射到ChannelPool，可以获取匹配的ChannelPool,如果不存在则会创建一个新的对象
+     * 即：根据不同的服务器地址初始化ChannelPoolMap
+     */
+    private static ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap;
+    /**
+     * 允许获取和释放Channel,从而可以充当Channel的池
+     */
+    private static ChannelPool channelPool;
 
     private PoolProperties properties;
 
-    public PoolClient(PoolProperties properties) {
+    public ChannelPoolClient(PoolProperties properties) {
         this.properties = properties;
         build();
-        simpleChannelPool = poolMap.get(new InetSocketAddress(properties.getIp(), properties.getPort()));
+        properties.getAddress().stream().forEach(address -> {
+            channelPool = poolMap.get(new InetSocketAddress(address.getIp(), address.getPort()));
+        });
     }
 
     private void build() {
@@ -72,10 +80,12 @@ public class PoolClient {
                  */
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, NumberUtils.toInt(String.valueOf(properties.getConnectTimeOut().toMillis())));
 
-        poolMap = new AbstractChannelPoolMap<InetSocketAddress, SimpleChannelPool>() {
+        //ChannelPool存储、创建、删除管理Map类
+        poolMap = new AbstractChannelPoolMap<InetSocketAddress, ChannelPool>() {
+            //如果ChannelPool不存在，则会创建一个新的对象
             @Override
-            protected SimpleChannelPool newPool(InetSocketAddress key) {
-                return new FixedChannelPool(bootstrap.remoteAddress(key), new ChannelPoolHandler(), properties.getMaxConnection());
+            protected ChannelPool newPool(InetSocketAddress key) {
+                return new FixedChannelPool(bootstrap.remoteAddress(key), new SimpleChannelPoolHandler(), properties.getMaxConnection());
             }
         };
     }
@@ -83,12 +93,17 @@ public class PoolClient {
     public <T> T sendRequest(TransHeader transHeader, TransContent transContent, TypeReference<? extends T> reference) throws Exception {
         T response = null;
         try {
-            Future<Channel> future = simpleChannelPool.acquire();
+            //从ChannelPool中获取一个Channel
+            final Future<Channel> future = channelPool.acquire();
+            //等待future完成
             future.await();
+            //判定I/O操作是否成功完成
             if (future.isSuccess()) {
-                Channel ch = future.get();
+                //获取Channel对象
+                final Channel ch = future.get();
                 if (ch != null && ch.isActive() && ch.isWritable()) {
-                    IoChannelHandler ioHandler = ChannelPoolHandler.ioChannelMap.get(ch.id());
+                    //获取信道对应的handler对象
+                    final IoChannelHandler ioHandler = SimpleChannelPoolHandler.ioChannelMap.get(ch.id());
                     if (ioHandler != null) {
                         //请求唯一标识序列化
                         byte[] headerBytes = MessagePackUtils.serialize(transHeader);
@@ -99,8 +114,10 @@ public class PoolClient {
                         synchronized (ioHandler.object) {
                             //发送TCP请求
                             ch.writeAndFlush(packet);
-                            ioHandler.object.wait(10000);
+                            //等待请求返回结果
+                            ioHandler.object.wait(this.properties.getReadTimeOut().toMillis());
                         }
+                        //根据返回结果做后续处理
                         if (ioHandler.result == null) {
                             //todo
                         } else {
@@ -115,7 +132,8 @@ public class PoolClient {
                     //todo
                 }
                 if (ch != null) {
-                    simpleChannelPool.release(ch);
+                    //释放Channel到ChannelPool
+                    channelPool.release(ch);
                 }
 
             } else {
