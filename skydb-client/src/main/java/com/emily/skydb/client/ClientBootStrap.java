@@ -1,9 +1,6 @@
 package com.emily.skydb.client;
 
-import com.emily.skydb.client.loadbalance.LoadBalance;
-import com.emily.skydb.client.loadbalance.RoundLoadBalance;
 import com.emily.skydb.client.manager.DbClientManager;
-import com.emily.skydb.client.manager.DbClientProperties;
 import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.db.JdbcType;
 import com.emily.skydb.core.protocol.TransContent;
@@ -22,19 +19,24 @@ import java.util.List;
 public class ClientBootStrap {
 
     public static void main(String[] args) throws Exception {
-        DbClientProperties properties = new DbClientProperties();
-        LoadBalance loadBalance = new RoundLoadBalance();
-        properties.getPool().setMinIdle(1);
-        DbClientManager.initPool(properties, loadBalance);
-        Thread.sleep(2 * 1000);
-        System.out.println("------------------休眠结束----------------");
-        for (int i = 0; i < 500000; i++) {
-            selectBody(TestUser.class);
-            List<String> list = selectBody(String.class, String.valueOf(i));
-            if (StringUtils.equals(i + "", list.get(0))) {
-                System.out.println("---------true");
-            } else {
-                System.out.println("---------false");
+        // DbClientProperties properties = new DbClientProperties();
+        //LoadBalance loadBalance = new RoundLoadBalance();
+        //properties.getPool().setMinIdle(1);
+        //DbClientManager.initPool(properties, loadBalance);
+        //Thread.sleep(2 * 1000);
+        //System.out.println("------------------休眠结束----------------");
+        for (int i = 0; i < 50; i++) {
+            try {
+
+                selectBody(TestUser.class);
+                List<String> list = selectBody(String.class, String.valueOf(i));
+                if (StringUtils.equals(i + "", list.get(0))) {
+                    System.out.println(i + "---------true");
+                } else {
+                    System.out.println(i + "---------false");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

@@ -22,13 +22,13 @@ public class HeartBeatChannelHandler extends ChannelInboundHandlerAdapter {
                 IdleStateEvent e = (IdleStateEvent) evt;
                 switch (e.state()) {
                     case READER_IDLE:
+                    case WRITER_IDLE:
                         TransHeader transHeader = new TransHeader(UUIDUtils.randomSimpleUUID());
                         //序列化请求头
                         byte[] header = MessagePackUtils.serialize(transHeader);
                         //发送心跳包
                         ctx.channel().writeAndFlush(new DataPacket((byte) 1, header, MessagePackUtils.serialize("heartBeat...")));
                         break;
-                    case WRITER_IDLE:
                     case ALL_IDLE:
                     default:
                         break;
