@@ -30,11 +30,11 @@ public class DbClientConnection extends AbstractConnection<Channel> {
     /**
      * 线程工作组
      */
-    private static final EventLoopGroup GROUP = new NioEventLoopGroup();
+    private static final EventLoopGroup workerGroup = new NioEventLoopGroup();
     /**
      * 创建客户端的启动对象 bootstrap ，不是 serverBootStrap
      */
-    private static final Bootstrap BOOTSTRAP = new Bootstrap();
+    private static final Bootstrap bootstrap = new Bootstrap();
     /**
      * 处理器
      */
@@ -48,9 +48,9 @@ public class DbClientConnection extends AbstractConnection<Channel> {
 
     static {
         //设置线程组
-        BOOTSTRAP.group(GROUP);
+        bootstrap.group(workerGroup);
         //初始化通道
-        BOOTSTRAP.channel(NioSocketChannel.class)
+        bootstrap.channel(NioSocketChannel.class)
                 /**
                  * 是否启用心跳保活机制。在双方TCP套接字建立连接后（即都进入ESTABLISHED状态）并且在两个小时左右上层没有任何数据传输的情况下，
                  * 这套机制才会被激活
@@ -76,7 +76,7 @@ public class DbClientConnection extends AbstractConnection<Channel> {
     public boolean connect(String address) {
         try {
             clientChannelHandler = new DbClientChannelHandler(properties.getReadTimeOut());
-            BOOTSTRAP
+            bootstrap
                     /**
                      * The timeout period of the connection.
                      * If this time is exceeded or the connection cannot be established, the connection fails.
@@ -127,7 +127,7 @@ public class DbClientConnection extends AbstractConnection<Channel> {
             //分割Rpc服务器地址
             String[] addr = StringUtils.split(address, CharacterInfo.COLON_EN);
             //连接服务器
-            ChannelFuture channelFuture = BOOTSTRAP.connect(addr[0], NumberUtils.toInt(addr[1])).sync();
+            ChannelFuture channelFuture = bootstrap.connect(addr[0], NumberUtils.toInt(addr[1])).sync();
             channelFuture.addListener(listener -> {
                 if (listener.isSuccess()) {
                     System.out.println("connect success...");
