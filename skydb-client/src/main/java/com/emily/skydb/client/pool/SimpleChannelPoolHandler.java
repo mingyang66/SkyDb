@@ -11,6 +11,7 @@ import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.internal.PlatformDependent;
 
 import java.nio.ByteOrder;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
     /**
      * 缓存Channel与handler的映射关系
      */
-    public static final Map<ChannelId, IoChannelHandler> ioHandlerMap = new ConcurrentHashMap<>();
+    public static final Map<ChannelId, IoChannelHandler> ioHandlerMap = PlatformDependent.newConcurrentHashMap();
 
     @Override
     public void channelAcquired(Channel ch) throws Exception {
