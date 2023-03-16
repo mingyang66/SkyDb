@@ -100,7 +100,7 @@ public class ChannelPoolClient {
      *
      * @return ChannelPool
      */
-    public ChannelPool choose() {
+    public ChannelPool selectChannelPool() {
         AbstractChannelPoolMap temp = ((AbstractChannelPoolMap) poolMap);
         List<Map.Entry<InetSocketAddress, FixedChannelPool>> list = Lists.newArrayList(temp.iterator());
         //数据增加到最大Integer.MAX_VALUE后绝对值开始减小
@@ -122,7 +122,7 @@ public class ChannelPoolClient {
         T response = null;
         try {
             //获取ChannelPool连接池
-            ChannelPool channelPool = choose();
+            ChannelPool channelPool = selectChannelPool();
             //从ChannelPool中获取一个Channel
             final Future<Channel> future = channelPool.acquire();
             //等待future完成
