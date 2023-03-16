@@ -43,8 +43,8 @@ public class IoChannelHandler extends SimpleChannelInboundHandler<DataPacket> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         System.out.println(cause.getMessage());
-        if (ctx.channel().id() != null && SimpleChannelPoolHandler.ioHandlerMap.containsKey(ctx.channel().id())) {
-            SimpleChannelPoolHandler.ioHandlerMap.remove(ctx.channel().id());
+        if (ctx.channel().id() != null && SimpleChannelPoolHandler.IO_HANDLER_MAP.containsKey(ctx.channel().id())) {
+            SimpleChannelPoolHandler.IO_HANDLER_MAP.remove(ctx.channel().id());
         }
         ctx.close();
     }

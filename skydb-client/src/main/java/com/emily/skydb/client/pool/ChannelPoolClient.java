@@ -133,7 +133,7 @@ public class ChannelPoolClient {
                 final Channel ch = future.getNow();
                 if (ch != null && ch.isActive() && ch.isWritable()) {
                     //获取信道对应的handler对象
-                    final IoChannelHandler ioHandler = SimpleChannelPoolHandler.ioHandlerMap.get(ch.id());
+                    final IoChannelHandler ioHandler = SimpleChannelPoolHandler.IO_HANDLER_MAP.get(ch.id());
                     if (ioHandler != null) {
                         //请求唯一标识序列化
                         byte[] headerBytes = MessagePackUtils.serialize(transHeader);

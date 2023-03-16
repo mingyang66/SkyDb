@@ -26,7 +26,7 @@ public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
     /**
      * 缓存Channel与handler的映射关系
      */
-    public static final Map<ChannelId, IoChannelHandler> ioHandlerMap = PlatformDependent.newConcurrentHashMap();
+    public static final Map<ChannelId, IoChannelHandler> IO_HANDLER_MAP = PlatformDependent.newConcurrentHashMap();
 
     @Override
     public void channelAcquired(Channel ch) throws Exception {
@@ -49,7 +49,7 @@ public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
     @Override
     public void channelCreated(Channel ch) throws Exception {
         //缓存当前Channel对应的handler
-        ioHandlerMap.put(ch.id(), new IoChannelHandler());
+        IO_HANDLER_MAP.put(ch.id(), new IoChannelHandler());
 
         ChannelPipeline pipeline = ch.pipeline();
         /**
@@ -82,7 +82,7 @@ public class SimpleChannelPoolHandler extends AbstractChannelPoolHandler {
         //自定义编码器
         pipeline.addLast(new MessagePackEncoder());
         //自定义handler处理
-        pipeline.addLast(ioHandlerMap.get(ch.id()));
+        pipeline.addLast(IO_HANDLER_MAP.get(ch.id()));
         //空闲状态处理器，参数说明：读时间空闲时间，0禁用时间|写事件空闲时间，0则禁用|读或写空闲时间，0则禁用
         pipeline.addLast(new IdleStateHandler(0, 5, 0, TimeUnit.SECONDS));
         //心跳处理器
