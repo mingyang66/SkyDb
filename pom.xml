@@ -27,6 +27,7 @@
         <mybatis.version>3.5.11</mybatis.version>
         <mysql.connection.version>8.0.32</mysql.connection.version>
         <alibaba.druid.version>1.2.16</alibaba.druid.version>
+        <guava.version>31.1-jre</guava.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -76,6 +77,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${alibaba.druid.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
 
         </dependencies>

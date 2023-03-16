@@ -6,6 +6,7 @@ import com.emily.skydb.core.protocol.TransContent;
 import com.emily.skydb.core.protocol.TransHeader;
 import com.emily.skydb.core.utils.MessagePackUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Lists;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -20,6 +21,9 @@ import io.netty.util.concurrent.Future;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @program: SkyDb
@@ -42,17 +46,17 @@ public class ChannelPoolClient {
      */
     private static ChannelPoolMap<InetSocketAddress, ChannelPool> poolMap;
     /**
-     * 允许获取和释放Channel,从而可以充当Channel的池
+     * 计数器
      */
-    private static ChannelPool channelPool;
-
+    private AtomicInteger counter = new AtomicInteger();
     private PoolProperties properties;
 
     public ChannelPoolClient(PoolProperties properties) {
         this.properties = properties;
         build();
+        //初始化ChannelPoolMap
         properties.getAddress().stream().forEach(address -> {
-            channelPool = poolMap.get(new InetSocketAddress(address.getIp(), address.getPort()));
+            poolMap.get(new InetSocketAddress(address.getIp(), address.getPort()));
         });
     }
 
@@ -90,9 +94,35 @@ public class ChannelPoolClient {
         };
     }
 
+
+    /**
+     * 通过轮询机制公平获取ChannelPool
+     *
+     * @return ChannelPool
+     */
+    public ChannelPool choose() {
+        AbstractChannelPoolMap temp = ((AbstractChannelPoolMap) poolMap);
+        List<Map.Entry<InetSocketAddress, FixedChannelPool>> list = Lists.newArrayList(temp.iterator());
+        //数据增加到最大Integer.MAX_VALUE后绝对值开始减小
+        int pos = Math.abs(counter.getAndIncrement());
+        return list.get(pos % list.size()).getValue();
+    }
+
+    /**
+     * 发送请求
+     *
+     * @param transHeader  请求头
+     * @param transContent 请求体
+     * @param reference    返回值数据类型
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
     public <T> T sendRequest(TransHeader transHeader, TransContent transContent, TypeReference<? extends T> reference) throws Exception {
         T response = null;
         try {
+            //获取ChannelPool连接池
+            ChannelPool channelPool = choose();
             //从ChannelPool中获取一个Channel
             final Future<Channel> future = channelPool.acquire();
             //等待future完成

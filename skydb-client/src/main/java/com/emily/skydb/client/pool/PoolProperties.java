@@ -15,7 +15,7 @@ public class PoolProperties {
     /**
      * 服务器地址，支持集群配置
      */
-    private List<Address> address = Arrays.asList(new Address());
+    private List<Address> address = Arrays.asList(new Address(), new Address("172.30.71.95", 9999));
     /**
      * 请求超时时间，默认：5秒
      */
@@ -82,6 +82,14 @@ public class PoolProperties {
          * 端口号 默认：9999
          */
         private int port = 9999;
+
+        public Address() {
+        }
+
+        public Address(String ip, int port) {
+            this.ip = ip;
+            this.port = port;
+        }
 
         public String getIp() {
             return ip;
