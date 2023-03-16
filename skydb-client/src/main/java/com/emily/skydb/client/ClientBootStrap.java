@@ -30,6 +30,9 @@ public class ClientBootStrap {
 
                 selectBody(TestUser.class);
                 List<String> list = selectBody(String.class, String.valueOf(i));
+                if (list.size() == 0) {
+                    continue;
+                }
                 if (StringUtils.equals(i + "", list.get(0))) {
                     System.out.println(i + "---------true");
                 } else {
