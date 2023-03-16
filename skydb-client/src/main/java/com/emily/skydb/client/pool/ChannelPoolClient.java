@@ -100,9 +100,12 @@ public class ChannelPoolClient {
      *
      * @return ChannelPool
      */
-    public ChannelPool selectChannelPool() {
+    public ChannelPool selectChannelPool() throws IllegalAccessException {
         AbstractChannelPoolMap temp = ((AbstractChannelPoolMap) poolMap);
         List<Map.Entry<InetSocketAddress, FixedChannelPool>> list = Lists.newArrayList(temp.iterator());
+        if(list.size() == 0){
+            throw new IllegalAccessException("ChannelPool中无有效连接");
+        }
         //数据增加到最大Integer.MAX_VALUE后绝对值开始减小
         int pos = Math.abs(counter.getAndIncrement());
         return list.get(pos % list.size()).getValue();
