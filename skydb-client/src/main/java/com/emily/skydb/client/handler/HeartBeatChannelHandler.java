@@ -17,7 +17,7 @@ public class HeartBeatChannelHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         {
-            System.out.println("通道{}已经超过20秒未与服务端进行读写操作，发送心跳包..." + ctx.channel().remoteAddress());
+            System.out.println("通道已经超过20秒未与服务端进行读写操作，发送心跳包..." + ctx.channel().remoteAddress());
             if (evt instanceof IdleStateEvent) {
                 IdleStateEvent e = (IdleStateEvent) evt;
                 switch (e.state()) {
