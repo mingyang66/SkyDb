@@ -79,6 +79,7 @@ public class ChannelPoolClient {
                  */
                 .option(ChannelOption.TCP_NODELAY, true)
                 /**
+                 * Channel连接超时时间，默认：5s
                  * The timeout period of the connection.
                  * If this time is exceeded or the connection cannot be established, the connection fails.
                  */
