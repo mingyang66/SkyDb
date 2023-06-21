@@ -1,4 +1,4 @@
-package com.emily.middleware.manager;
+package com.emily.middleware.server.manager;
 
 import com.emily.middleware.server.connection.DbServerConnection;
 import com.emily.middleware.server.handler.DbBusinessHandler;

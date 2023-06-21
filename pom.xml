@@ -30,6 +30,7 @@
         <guava.version>31.1-jre</guava.version>
         <oceansky-date.version>4.3.4</oceansky-date.version>
         <oceansky-json.version>4.3.4</oceansky-json.version>
+        <oceansky-common.version>4.3.4</oceansky-common.version>
         <junit-test.version>4.13.2</junit-test.version>
     </properties>
     <dependencyManagement>
@@ -96,6 +97,11 @@
                 <groupId>io.github.mingyang66</groupId>
                 <artifactId>oceansky-json</artifactId>
                 <version>${oceansky-json.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.mingyang66</groupId>
+                <artifactId>oceansky-common</artifactId>
+                <version>${oceansky-common.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

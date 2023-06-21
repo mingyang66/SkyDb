@@ -4,7 +4,7 @@ import com.emily.middleware.server.handler.DbBusinessHandler;
 import com.emily.middleware.server.handler.DbServerChannelHandler;
 import com.emily.skydb.core.decoder.MessagePackDecoder;
 import com.emily.skydb.core.encoder.MessagePackEncoder;
-import com.emily.middleware.manager.DbServerProperties;
+import com.emily.middleware.server.manager.DbServerProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

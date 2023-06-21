@@ -52,5 +52,9 @@
             <groupId>io.github.mingyang66</groupId>
             <artifactId>oceansky-json</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.mingyang66</groupId>
+            <artifactId>oceansky-common</artifactId>
+        </dependency>
     </dependencies>
 </project>
