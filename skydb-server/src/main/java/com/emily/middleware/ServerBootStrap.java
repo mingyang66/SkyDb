@@ -30,11 +30,11 @@ public class ServerBootStrap {
         Properties prop = PropertiesUtils.loadConfig("classpath:application.properties");
         List<DataSourceProperties> list = new ArrayList<>();
         DataSourceProperties properties = new DataSourceProperties();
-        properties.setDbType(prop.getProperty("db.test.type"));
-        properties.setDriver(prop.getProperty("db.test.driver"));
-        properties.setUrl(prop.getProperty("db.test.url"));
         properties.setUsername(prop.getProperty("db.test.username"));
         properties.setPassword(prop.getProperty("db.test.password"));
+        properties.setUrl(prop.getProperty("db.test.url"));
+        properties.setDriver(prop.getProperty("db.test.driver"));
+        properties.setDbType(prop.getProperty("db.test.db-type"));
         list.add(properties);
 
         DataSourcePoolManager.bootstrap(list);
