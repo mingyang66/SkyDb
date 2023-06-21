@@ -1,7 +1,7 @@
 package com.emily.skydb.server;
 
 
-import com.emily.skydb.core.utils.JsonUtils;
+import com.emily.infrastructure.json.JsonUtils;
 import com.emily.skydb.server.db.DruidBusinessHandler;
 import com.emily.skydb.server.db.constant.DbName;
 import com.emily.skydb.server.db.entity.MiddleWare;

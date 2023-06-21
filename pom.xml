@@ -28,7 +28,8 @@
         <mysql.connection.version>8.0.32</mysql.connection.version>
         <alibaba.druid.version>1.2.16</alibaba.druid.version>
         <guava.version>31.1-jre</guava.version>
-        <oceansky.version>4.3.4</oceansky.version>
+        <oceansky.date.version>4.3.4</oceansky.date.version>
+        <oceansky.json.version>4.3.4</oceansky.json.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -88,7 +89,12 @@
             <dependency>
                 <groupId>io.github.mingyang66</groupId>
                 <artifactId>oceansky-date</artifactId>
-                <version>${oceansky.version}</version>
+                <version>${oceansky.date.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.mingyang66</groupId>
+                <artifactId>oceansky-json</artifactId>
+                <version>${oceansky.json.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

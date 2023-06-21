@@ -1,10 +1,10 @@
 package com.emily.skydb.client;
 
+import com.emily.infrastructure.json.JsonUtils;
 import com.emily.skydb.client.manager.DbClientManager;
 import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.db.JdbcType;
 import com.emily.skydb.core.protocol.TransContent;
-import com.emily.skydb.core.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -27,7 +27,6 @@ public class ClientBootStrap {
         //System.out.println("------------------休眠结束----------------");
         for (int i = 0; i < 5000; i++) {
             try {
-
                 selectBody(TestUser.class);
                 List<String> list = selectBody(String.class, String.valueOf(i));
                 if (list.size() == 0) {
