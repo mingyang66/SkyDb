@@ -1,8 +1,8 @@
 package com.emily.skydb.client.helper;
 
+import com.emily.infrastructure.date.DatePatternInfo;
 import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.db.JdbcType;
-import com.emily.skydb.core.enums.DateFormatType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
@@ -96,17 +96,17 @@ public class DbDataHelper {
             switch (item.valueType) {
                 case JdbcType.TimeStamp:
                     if (StringUtils.isNotEmpty(item.value)) {
-                        field.set(t, LocalDateTime.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD_HH_MM_SS_COLON_SSS.getFormat())));
+                        field.set(t, LocalDateTime.parse(item.value, DateTimeFormatter.ofPattern(DatePatternInfo.YYYY_MM_DD_HH_MM_SS_SSS)));
                     }
                     break;
                 case JdbcType.Date:
                     if (StringUtils.isNotEmpty(item.value)) {
-                        field.set(t, LocalDate.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD.getFormat())));
+                        field.set(t, LocalDate.parse(item.value, DateTimeFormatter.ofPattern(DatePatternInfo.YYYY_MM_DD)));
                     }
                     break;
                 case JdbcType.Time:
                     if (StringUtils.isNotEmpty(item.value)) {
-                        field.set(t, LocalTime.parse(item.value, DateTimeFormatter.ofPattern(DateFormatType.HH_MM_SS.getFormat())));
+                        field.set(t, LocalTime.parse(item.value, DateTimeFormatter.ofPattern(DatePatternInfo.HH_MM_SS)));
                     }
                     break;
                 case JdbcType.Byte:

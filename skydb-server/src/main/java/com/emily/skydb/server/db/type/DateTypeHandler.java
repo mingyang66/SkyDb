@@ -1,8 +1,8 @@
 package com.emily.skydb.server.db.type;
 
+import com.emily.infrastructure.date.DatePatternInfo;
 import com.emily.skydb.core.db.DbModelItem;
 import com.emily.skydb.core.db.JdbcType;
-import com.emily.skydb.core.enums.DateFormatType;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -22,7 +22,7 @@ public class DateTypeHandler implements TypeHandler {
         item.name = rs.getMetaData().getColumnName(columnIndex);
         Date date = rs.getDate(columnIndex);
         if (date != null) {
-            item.value = date.toLocalDate().format(DateTimeFormatter.ofPattern(DateFormatType.YYYY_MM_DD.getFormat()));
+            item.value = date.toLocalDate().format(DateTimeFormatter.ofPattern(DatePatternInfo.YYYY_MM_DD));
         }
         return item;
     }

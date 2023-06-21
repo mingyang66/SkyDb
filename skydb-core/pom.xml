@@ -44,5 +44,9 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.mingyang66</groupId>
+            <artifactId>oceansky-date</artifactId>
+        </dependency>
     </dependencies>
 </project>

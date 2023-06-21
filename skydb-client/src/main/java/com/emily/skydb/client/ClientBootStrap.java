@@ -25,7 +25,7 @@ public class ClientBootStrap {
         //DbClientManager.initPool(properties, loadBalance);
         //Thread.sleep(2 * 1000);
         //System.out.println("------------------休眠结束----------------");
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5000; i++) {
             try {
 
                 selectBody(TestUser.class);
@@ -38,6 +38,7 @@ public class ClientBootStrap {
                 } else {
                     System.out.println(i + "---------false");
                 }
+                Thread.sleep(1000*60*1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,7 +67,7 @@ public class ClientBootStrap {
             TransContent transContent = new TransContent();
             transContent.dbName = "account";
             transContent.dbTag = "select_test_tj";
-            transContent.params.add(new DbModelItem("age", "46"));
+            transContent.params.add(new DbModelItem("age", "6277"));
             List<T> list = DbClientManager.executeQuery(transContent, cls);
             System.out.println(JsonUtils.toJSONString(list));
             return list;
