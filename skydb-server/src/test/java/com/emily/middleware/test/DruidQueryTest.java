@@ -5,19 +5,21 @@ import com.emily.middleware.datasource.constant.DbName;
 import com.emily.middleware.datasource.helper.DbHelper;
 import com.emily.middleware.datasource.pool.DataSourcePoolManager;
 import com.emily.middleware.datasource.pool.DataSourceProperties;
+import com.emily.skydb.core.db.DbModelItem;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description :
  * @Author :  Emily
  * @CreateDate :  Created in 2023/3/1 3:02 PM
  */
-public class DruidUpdateTest {
+public class DruidQueryTest {
     @Test
-    public void update() {
+    public void query() {
         DataSourceProperties properties = new DataSourceProperties();
         properties.setDbType(DbName.ACCOUNT);
         properties.setDriver("com.mysql.cj.jdbc.Driver");
@@ -31,12 +33,9 @@ public class DruidUpdateTest {
         DruidDataSource dataSource = DataSourcePoolManager.getDataSource(DbName.ACCOUNT);
 
         for (int i = 0; i < 1; i++) {
-            //String sql = "UPDATE sailboat s set s.updateTime=NOW() WHERE s.id=2";
-            //String sql = "DELETE FROM sailboat s WHERE s.id=14";
-            //String sql = "INSERT INTO sailboat(name,colour,age,updateTime) VALUES('孙少安','男',21,NOW())";
-            String sql = "INSERT INTO sailboat(name,colour,age,updateTime) VALUES('孙少安','男',21,NOW()),('田晓霞','女',20,NOW())";
-            int row = DbHelper.executeUpdate(dataSource, sql);
-            System.out.println("新增数据条数：" + row);
+            String sql = "SELECT * FROM sailboat s";
+            List<Map<String, DbModelItem>> list1 = DbHelper.executeQuery(dataSource, sql);
+            System.out.println(list1);
         }
 
     }
